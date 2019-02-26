@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>jSearch</title>
+    <link rel="stylesheet" type="text/css" href="../public/iview.css">
+    <link rel="stylesheet" type="text/css" href="../content/search_bar.css">
+    <script src="../public/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../public/vue.min.js"></script>
+    <!--iview 3.2.2-->
+    <script type="text/javascript" src="../public/iview.min.js"></script>
+    <style>
+
+
+            /*baidu css*/
+            em {
+                font-style: normal;
+                color: #c00;
+            }
+            .c-tools {
+                display: inline;
+            }
+            .result {
+                margin-bottom: 14px;
+                border-collapse: collapse;
+            }
+            .c-abstract{    word-break: break-all;}
+             /*baidu css*/
+
+
+            .col{
+                height: 100%;
+                width: 600px;
+                float: left;
+                padding: 0 0 0 5px;
+            }
+            .content{
+                width: 100%;
+                height: 500px;
+            }
+            .list-over{color:#c5c8ce;}
+
+            .alipay .slid-show{
+                transition: max-height 1s;
+                max-height:0px;
+                display: block;
+                overflow: hidden;
+            }
+
+            .alipay:hover .slid-show{
+                max-height: 250px;
+            }
+            @-webkit-keyframes alipay{
+                from {height: 0px;}
+                to{height: 100px;}
+            }
+            .header_bar{
+                background-color: rgba(255,255,255,0.8);    
+                box-shadow: 0 0 1px rgba(0,0,0,0.25);
+                top:-100px;    
+                position: fixed;
+                width:100%;    
+                z-index: 1000;
+                transition: all .8s cubic-bezier(0.68,-0.55, 0.19, 2.03);
+            }
+            .down{top:0;}
+            .top_area{
+                width: 100%;
+                height: 30px;
+                position: fixed;
+                z-index: 900;
+            }
+    </style>
+</head>
+<body>
+
+        <div id="app">
+                
+                    <Layout>
+                            <div class="top_area"></div>
+                        <i-header class="header_bar">
+                                <Row type="flex" align="middle"  class="opacity-7">
+                                        <i-col span="12"><span style="font-size:24px;font-weight:bold;color: #2d8cf0;">jSearch<span style="font-size:14px;">&nbsp;聚搜</span></span>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>just Search it!</strong></i-col>
+                                        <i-col span="10">
+                                            <form v-bind:action="'#'+searchInputValue" >
+                                                <i-input search placeholder="Enter something..." v-model="searchInputValue" @on-search="searchInputSubmit" ></i-input>
+                                            </form>
+                                        </i-col>
+                                        <i-col span="1"></i-col>
+                                        <i-col span="1">
+                                               <i-button  type="text" shape="circle" style="background:none;box-shadow:none;">
+                                                        <Icon @click="drawer.show = true" type="ios-cog-outline" :size='30' />
+                                               </i-button>
+                                        </i-col>
+                                    </Row>
+                                
+                        </i-header>
+                        
+                        <div class="content" v-bind:style="{height:clientHeight+'px',overflowX: 'scroll',overflowY: 'hidden'}">
+                            <div class="slider" v-bind:style="{ height: '100%', width: sliderWidth + 'px' }">
+                                <div class="col" v-for="(item1, index1) in searchData.models" v-if="item1.show && !(searchData.results[index1].length==1 && searchData.results[index1][0]=='') && searchData.results[index1].length>0"> 
+                                        <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight">
+                                           
+                                                <Card dis-hover v-for="(item, index) in searchData.results[index1]" :key="index" v-if="item!=''" style="margin-bottom:5px;">
+                                                     
+                                                     <span v-html="item"></span>
+                                                     
+                                                </Card>
+                                                <Alert class="opacity-7" type="warning" v-if="searchData.results[index1][searchData.results[index1].length-1] == ''" >
+                                                    No more ...
+                                               </Alert>
+
+                                            </Scroll>   
+                                            <Scroll v-if="item1.type=='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight">
+                                                    
+                                                        <Card dis-hover style="margin-bottom:5px;" >
+                                                                <div class="result c-container " v-for="(item, index) in searchData.results[index1]" :key="index" >
+                                                                        <h3 class="t">
+                                                                                <img :src="'chrome://favicon/'+item.url"/>
+                                                                            <a  :href="item.url" target="_blank"><span v-html="item.title"></span></a>
+                                                                           
+                                                                        </h3>
+                                                                        <div class="c-abstract">
+                                                                                
+                                                                            <span class=" newTimeFactor_before_abs m">{{item.dateAdded}}&nbsp;-&nbsp;</span>
+                                                                            {{item.url}} - <Icon :type="item.tag=='bookmark'?'ios-bookmark':'ios-time'" :title="item.tag" /></div>
+                                                                    </div>
+                                                        </Card>
+                                                        <Alert class="opacity-7" type="warning">No more ...</Alert>
+                                                    </Scroll>   
+                                </div>
+                                 
+                            </div>
+                                       
+                                    
+                        </div>
+                       
+                    </Layout>
+               
+
+                    <Drawer
+                    title="Settings"
+                    v-model="drawer.show"
+                    width="520"
+                    :mask-closable="true"
+                    :styles="drawer.styles"
+                >
+                <i-form :model="searchData.models">
+                        <Row :gutter="32" type="flex" align="middle"  v-for="(item, index) in searchData.models">
+                            <i-col span="5">
+                                    <form-item >
+                                    <i-select v-model="item.type" placeholder="搜索引擎"  :disabled="!item.canEdit">
+                                            <i-option value="baidu">百度</i-option>
+                                            
+                                        </i-select>
+                                </form-item>
+                            </i-col>
+                            <i-col span="15">
+                                    <form-item >
+                                    <i-input :value="item.scope" @on-blur="if($event.target.composing)return;item.scope =$event.target.value" placeholder="输入想要搜索的网站域名或一个Url" :disabled="!item.canEdit" autocomplete="on"/>
+                                </form-item>
+                            </i-col>
+                            <i-col span="4">
+                                    <form-item >
+                                    <i-switch v-model="item.show" />
+                                </form-item>
+                            </i-col>
+
+                        </Row>
+                    </i-form>
+                        <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">新增搜索域</Divider>
+                        <i-form :model="settingFormData">
+                        <Row :gutter="32" type="flex" align="middle"  >
+                            <i-col span="5">
+                                    <form-item >
+                                    <i-select v-model="settingFormData.type" placeholder="please choose the type">
+                                            <i-option value="baidu">百度</i-option>
+                                        </i-select>
+                                </form-item>
+                            </i-col>
+                            <i-col span="15">
+                                    <form-item >
+                                    <i-input v-model="settingFormData.scope" placeholder="输入想要搜索的网站域名或一个Url" />
+                                </form-item>
+                            </i-col>
+                            <i-col span="4">
+                                    <form-item >
+                                     <i-button type="primary" @click="settingAddSearchScope">Add</i-button>
+                                    
+                                </form-item>
+                            </i-col>
+
+                        </Row>
+                        
+                    </i-form>
+                    <div class="demo-drawer-footer" style="position: absolute;bottom: 5px;">
+                        
+                        <Card style="width:50%;float: right;margin-right: 5px;" class="alipay">
+                            <img src="../public/imgs/alipay.png" width="100%"  class="slid-show">
+                            <div style="text-align:center" class="slid-show">
+                                <h5>您的捐赠是对我最大的鼓励和支持</h5>
+                                <h5>Your donation is the greatest encouragement and support for me.</h5>
+                                <Divider dashed style="margin:5px 0;"></Divider>
+                            </div>
+                            <div style="text-align:center">
+                                <h5 >如果有任何问题或建议可发送邮件至：<a href="mailto:dubo_x@qq.com">dubo_x@qq.com</a></h5>
+                            </div>
+                            
+                        </Card>
+                    </div>
+                </Drawer>  
+        </div>
+
+
+
+
+<script type="text/javascript" src="../public/hotkeys.min.js"></script>
+<script type="text/javascript" src="../content/search_bar_effect.js"></script>
+<script type="text/javascript" src="../content/search_bar.js"></script>
+<script type="text/javascript" src="../content/content.js"></script>
+<script type="text/javascript" src="options.js"></script>
+</body>
+</html>
+
+

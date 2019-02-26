@@ -1,0 +1,83 @@
+{
+    "manifest_version": 2,
+  
+    "name": "jSearch",
+    "description": "jSearch(聚搜)，重新定义搜索，一次搜索聚合多平台内容，支持自定义站点搜索、收藏夹搜索、历史记录搜索，帮你开启新世界大门",
+    "version": "1.0.1",
+    "icons": { 
+      "16": "public/icons/icon128.png",
+      "48": "public/icons/icon128.png",
+     "128": "public/icons/icon128.png" },
+     "author":"dubox(dubo_x@qq.com)",
+
+
+    // 会一直常驻的后台JS或后台页面
+    "background":
+    {
+        // 2种指定方式，如果指定JS，那么会自动生成一个背景页
+        //"page": "bg/bg.html",
+        "scripts": ["bg/main.js"]
+    },
+    "permissions": [
+        "contextMenus", // 右键菜单
+        "tabs", // 标签
+        "bookmarks", // 书签
+        "history", // 浏览历史
+        "notifications", // 通知
+        "webRequest", // web请求
+        "webRequestBlocking",
+        "storage", // 插件本地存储
+        "chrome://favicon/",
+        "*://*/*", // 可以通过executeScript或者insertCSS访问的网站
+        "http://*/*", // 可以通过executeScript或者insertCSS访问的网站
+        "https://*/*" // 可以通过executeScript或者insertCSS访问的网站
+    ],
+    "content_scripts": [
+      {
+        "js":[
+              "public/jquery-3.3.1.min.js"
+            ],
+        "matches":[ 
+                "http://*/*",
+                "https://*/*"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "options_page": "options/search.html",
+    
+    "web_accessible_resources": [
+        "public/jquery-3.3.1.min.js",
+        "public/vue.min.js"
+      ],
+
+
+      "omnibox": { "keyword" : "j" },
+
+      /*
+      "chrome_settings_overrides": {
+        "homepage": "http://www.homepage.com",
+        "search_provider": {
+            "name": "name.__MSG_url_domain__",
+            "keyword": "keyword.__MSG_url_domain__",
+            "search_url": "http://nkpckmeglfimcoomippkeclcdapmekjn/options/search.html#{searchTerms}",
+            "favicon_url": "http://www.foo.__MSG_url_domain__/favicon.ico",
+            "suggest_url": "http://www.foo.__MSG_url_domain__/suggest?q={searchTerms}",
+            "instant_url": "http://www.foo.__MSG_url_domain__/instant?q={searchTerms}",
+            "image_url": "http://www.foo.__MSG_url_domain__/image?q={searchTerms}",
+            "search_url_post_params": "search_lang=__MSG_url_domain__",
+            "suggest_url_post_params": "suggest_lang=__MSG_url_domain__",
+            "instant_url_post_params": "instant_lang=__MSG_url_domain__",
+            "image_url_post_params": "image_lang=__MSG_url_domain__",
+            "alternate_urls": [
+              "http://www.moo.__MSG_url_domain__/s?q={searchTerms}",
+              "http://www.noo.__MSG_url_domain__/s?q={searchTerms}"
+            ],
+            "encoding": "UTF-8",
+            "is_default": true
+        }
+    },
+    */
+      //安全策略
+      "content_security_policy": "script-src 'self' 'unsafe-eval' https://vuejs.org/ https://unpkg.com/;default-src 'self' 'unsafe-inline' 'unsafe-eval'  https://*/ chrome://*; connect-src 'self' 'unsafe-inline' 'unsafe-eval'  data: chrome://* https://*/  http://* ;img-src 'self' data: chrome://* chrome-resource://* 'unsafe-inline' 'unsafe-eval' http://* https://*; object-src 'self' ;style-src 'self' 'unsafe-inline' 'unsafe-eval';font-src 'self' 'unsafe-inline' 'unsafe-eval'"
+  }
