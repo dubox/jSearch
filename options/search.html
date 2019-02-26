@@ -82,17 +82,19 @@
                                 <Row type="flex" align="middle"  class="opacity-7">
                                         <i-col span="12"><span style="font-size:24px;font-weight:bold;color: #2d8cf0;">jSearch<span style="font-size:14px;">&nbsp;聚搜</span></span>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>just Search it!</strong></i-col>
-                                        <i-col span="10">
+                                        <i-col span="9">
                                             <form v-bind:action="'#'+searchInputValue" >
                                                 <i-input search placeholder="Enter something..." v-model="searchInputValue" @on-search="searchInputSubmit" ></i-input>
                                             </form>
                                         </i-col>
-                                        <i-col span="1"></i-col>
+                                        <i-col span="1"> </i-col>
+                                        
                                         <i-col span="1">
                                                <i-button  type="text" shape="circle" style="background:none;box-shadow:none;">
                                                         <Icon @click="drawer.show = true" type="ios-cog-outline" :size='30' />
                                                </i-button>
                                         </i-col>
+                                        <i-col span="1" style="text-align:center;"><a href="https://github.com/dubox/jSearch" target="_blank"><Icon type="logo-github" :size='30'/></a></i-col>
                                     </Row>
                                 
                         </i-header>
@@ -201,6 +203,7 @@
                             <div style="text-align:center" class="slid-show">
                                 <h5>您的捐赠是对我最大的鼓励和支持</h5>
                                 <h5>Your donation is the greatest encouragement and support for me.</h5>
+                                
                                 <Divider dashed style="margin:5px 0;"></Divider>
                             </div>
                             <div style="text-align:center">
