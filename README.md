@@ -1,13 +1,15 @@
 # jSearch
- jSearch(聚搜) 一个自用的改善搜索体验的 chrome 插件，本来想发布到 chrome 商店的但是被拒绝了。。。
+ jSearch(聚搜) 是一款专注内容的chrome搜索扩展，一次搜索聚合多平台内容。
 
 下载： [github](https://github.com/dubox/jSearch/releases/) ,[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)
 
 <img width=200 src="./public/jsearch-logo.svg"/>
 
-jSearch(聚搜)是一款专注内容的搜索扩展，一次搜索聚合多平台内容，
-* 支持自定义站点搜索
+jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合多平台内容，
+* 支持自定义搜索站点
 * 收藏夹搜索、历史记录搜索  
+* 支持地址栏搜索
+* 超级方便的搜索快捷键
   
 帮你开启新世界大门。
 

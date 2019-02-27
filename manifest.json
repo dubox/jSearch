@@ -45,7 +45,9 @@
             ],
         "css": ["content/search_bar.css"],
         "matches":[
-          "\u003Call_urls>"
+          "\u003Call_urls>",
+          "http://*/*",
+          "https://*/*"
             ],
             "run_at": "document_idle"
         }
