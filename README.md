@@ -1,7 +1,7 @@
 # jSearch
  jSearch(聚搜) 一个自用的改善搜索体验的 chrome 插件，本来想发布到 chrome 商店的但是被拒绝了。。。
 
-下载： https://github.com/dubox/jSearch/releases/
+下载： [github](https://github.com/dubox/jSearch/releases/) ,[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)
 
 <img width=200 src="./public/jsearch-logo.svg"/>
 
