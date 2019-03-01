@@ -87,7 +87,7 @@ var VueDND = function (Vue, options) {
     let isSwap = false
     let Current = null
 
-    function handleDragStart(e) {console.log(e.target);
+    function handleDragStart(e) {
         const el = getBlockEl(e.target)
         const key = el.getAttribute('drag_group')
         const drag_key = el.getAttribute('drag_key')

@@ -158,6 +158,7 @@
                                     <form-item >
                                     <i-select v-model="item.type" placeholder="搜索引擎"  :disabled="!item.canEdit">
                                             <i-option value="baidu">百度</i-option>
+                                            <i-option v-if="item.type == 'bookmarks'" value="bookmarks">书签&浏览历史</i-option>
                                             
                                         </i-select>
                                 </form-item>
