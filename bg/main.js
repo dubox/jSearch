@@ -60,6 +60,14 @@ chrome.runtime.onInstalled.addListener(details => {
                 canDelete:true
             },
             {
+                type:'baidu',
+                symbol:'site:',
+                scope:'mp.weixin.qq.com',
+                show:true,
+                canEdit:true,
+                canDelete:true
+            },
+            {
                 type:'bookmarks',
                 symbol:'',
                 scope:'bookmarks & history',

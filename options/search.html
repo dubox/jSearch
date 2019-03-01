@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="../public/iview.css">
     <link rel="stylesheet" type="text/css" href="../content/search_bar.css">
     <script src="../public/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../public/vue-dragging.js"></script>
     <script type="text/javascript" src="../public/vue.min.js"></script>
     <!--iview 3.2.2-->
     <script type="text/javascript" src="../public/iview.min.js"></script>
@@ -70,6 +71,8 @@
                 position: fixed;
                 z-index: 900;
             }
+            .ivu-form-item {
+    margin-bottom: 14px;}
     </style>
 </head>
 <body>
@@ -144,12 +147,13 @@
                     <Drawer
                     title="Settings"
                     v-model="drawer.show"
-                    width="520"
+                    width="550"
                     :mask-closable="true"
                     :styles="drawer.styles"
                 >
                 <i-form :model="searchData.models">
-                        <Row :gutter="32" type="flex" align="middle"  v-for="(item, index) in searchData.models">
+                   
+                        <Row :gutter="32" type="flex" align="middle"  v-for="(item, index) in searchData.models" v-dragging="{ item: item, list: searchData.models, group: 'models'}" :key="item.scope" :draggable="drawer.itemDraggable">
                             <i-col span="5">
                                     <form-item >
                                     <i-select v-model="item.type" placeholder="搜索引擎"  :disabled="!item.canEdit">
@@ -160,7 +164,7 @@
                             </i-col>
                             <i-col span="15">
                                     <form-item >
-                                    <i-input :value="item.scope" @on-blur="if($event.target.composing)return;item.scope =$event.target.value" placeholder="输入想要搜索的网站域名或一个Url" :disabled="!item.canEdit" autocomplete="on"/>
+                                    <i-input :value="item.scope" @on-blur="if($event.target.composing)return;item.scope =$event.target.value;drawer.itemDraggable = true;" placeholder="输入想要搜索的网站域名或一个Url" :disabled="!item.canEdit" autocomplete="on" @on-focus="drawer.itemDraggable = false;"/>
                                 </form-item>
                             </i-col>
                             <i-col span="4">
@@ -170,6 +174,7 @@
                             </i-col>
 
                         </Row>
+                       
                     </i-form>
                         <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">新增搜索域</Divider>
                         <i-form :model="settingFormData">
@@ -207,7 +212,7 @@
                                 <Divider dashed style="margin:5px 0;"></Divider>
                             </div>
                             <div style="text-align:center">
-                                <h5 >如果有任何问题或建议可发送邮件至：<a href="mailto:dubo_x@qq.com">dubo_x@qq.com</a></h5>
+                                <h5 >如果有任何问题或建议可反馈至：<a href="https://github.com/dubox/jSearch/issues" target="_blank">issues@jSearch</a></h5>
                             </div>
                             
                         </Card>

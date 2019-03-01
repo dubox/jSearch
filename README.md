@@ -15,7 +15,7 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 
 ---
 ### &使用方法
-> a.将浏览器默认搜索引擎设置为 google 或百度时，可使用地址栏搜索直接进入本插件。
+> a.直接在地址栏输入要搜索的内容，敲回车即可（需将浏览器默认搜索引擎设置为 google 或百度）。
 
 > b.使用快捷键呼出快捷搜索框(jBar)，进行快捷搜索  
 > 快捷键支持：呼出：Ctrl+j、space(在可编辑区域无效)、j(在可编辑区域无效) ，    收起：Ctrl+j、tab、esc、space(只在搜索框没有内容时有效)
@@ -38,7 +38,7 @@ https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html
 
 
 ### &鸣谢
-感谢开源项目：[VUE](https://github.com/vuejs/vue) 、[iview](https://github.com/iview/iview) 、[hotkeys.js](https://github.com/jaywcjlove/hotkeys)
+感谢开源项目：[VUE](https://github.com/vuejs/vue) 、[iview](https://github.com/iview/iview) 、[hotkeys.js](https://github.com/jaywcjlove/hotkeys)、[vue-dragging](https://github.com/hilongjw/vue-dragging)
 
 ### &最后。。。
 

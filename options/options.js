@@ -1,3 +1,4 @@
+Vue.use(VueDND);
 var app = new Vue({
     el: '#app',
     data: {
@@ -29,6 +30,7 @@ var app = new Vue({
                     paddingBottom: '70px',
                     position: 'static'
                 },
+                itemDraggable:true
                 
             },
     },
@@ -219,6 +221,14 @@ var app = new Vue({
             h_bar.classList.remove('down');
             
         });
+
+        //拖拽排序
+        this.$dragging.$on('dragged', ({ value }) => {
+            //console.log(value.item)
+            //console.log(value.list)
+            //console.log(value.otherData)
+            
+          })
 
         this.init();
       },
