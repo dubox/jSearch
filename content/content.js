@@ -12,7 +12,7 @@ function parseDom(arg) {
     
     　　 return objE.childNodes;
     
-};
+}
 
 //console.log(chrome.extension);
 

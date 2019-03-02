@@ -10,6 +10,8 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 * 收藏夹搜索、历史记录搜索  
 * 支持地址栏搜索
 * 超级方便的搜索快捷键
+* 支持百度、谷歌双搜索引擎
+* 支持公众号&公众号文章搜索
   
 帮你开启新世界大门。
 
@@ -32,9 +34,19 @@ https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html
 ### &插件截图
 
 ![](https://oscimg.oschina.net/oscnet/d68dd624b7a412a1973d4199299e9e8f657.jpg)
+<center>多组快捷键极速呼出快捷搜索Bar， just Search it!</center>
+
 ![](https://oscimg.oschina.net/oscnet/6b65ce0ca639cc304fe05177236078cc83c.jpg)
+<center>聚合式结果展示页</center>
+
 ![](https://oscimg.oschina.net/oscnet/248a2a2c4067f2ec24390bc65b2d96384a4.jpg)
+<center>无多余干扰项；沉浸式；最大屏幕利用</center>
+
 ![](https://oscimg.oschina.net/oscnet/f173db8c70b223d8186a2f6fb4c93fdbcd7.jpg)
+<center>可自定义搜索站点，支持拖拽排序</center>
+
+![](https://oscimg.oschina.net/oscnet/e0fd0f60491d6497dbb8d6f01523dda296b.jpg)
+<center>新增 google 搜索引擎、公众号&公众号文章搜索</center>
 
 
 ### &鸣谢

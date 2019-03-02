@@ -44,6 +44,14 @@ chrome.runtime.onInstalled.addListener(details => {
                 canDelete:false
             },
             {
+                type:'google',
+                symbol:'',
+                scope:'www.google.com',
+                show:false,
+                canEdit:false,
+                canDelete:false
+            },
+            {
                 type:'baidu',
                 symbol:'site:',
                 scope:'www.zhihu.com',
@@ -60,12 +68,20 @@ chrome.runtime.onInstalled.addListener(details => {
                 canDelete:true
             },
             {
-                type:'baidu',
-                symbol:'site:',
-                scope:'mp.weixin.qq.com',
+                type:'weixin',
+                symbol:'1',
+                scope:'weixin.sogou.com',
                 show:true,
-                canEdit:true,
-                canDelete:true
+                canEdit:false,
+                canDelete:false
+            },
+            {
+                type:'weixin',
+                symbol:'2',
+                scope:'weixin.sogou.com',
+                show:true,
+                canEdit:false,
+                canDelete:false
             },
             {
                 type:'bookmarks',
