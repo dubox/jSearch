@@ -1,11 +1,9 @@
 # jSearch
- jSearch(聚搜) 是一款专注内容的chrome搜索扩展，一次搜索聚合多平台内容。
 
-下载： [github](https://github.com/dubox/jSearch/releases/) ,[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)
 
 <img width=200 src="./public/jsearch-logo.svg"/>
 
-jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合多平台内容，
+jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合多平台内容；
 * 支持自定义搜索站点
 * 收藏夹搜索、历史记录搜索  
 * 支持地址栏搜索
@@ -14,6 +12,8 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 * 支持公众号&公众号文章搜索
   
 帮你开启新世界大门。
+
+下载： [github](https://github.com/dubox/jSearch/releases/) ,[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)
 
 ---
 ### &使用方法
