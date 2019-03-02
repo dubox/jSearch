@@ -393,7 +393,7 @@
                 >
                 <i-form :model="searchData.models">
                    
-                        <Row :gutter="32" type="flex" align="middle"  v-for="(item, index) in searchData.models" v-dragging="{ item: item, list: searchData.models, group: 'models'}" :key="item.scope" :draggable="drawer.itemDraggable">
+                        <Row :gutter="32" type="flex" align="middle"  v-for="(item, index) in searchData.models" v-dragging="{ item: item, list: searchData.models, group: 'models'}" :key="index" :draggable="drawer.itemDraggable">
                             <i-col span="5">
                                     <form-item >
                                     <i-select v-model="item.type" placeholder="搜索引擎"  :disabled="!item.canEdit">
