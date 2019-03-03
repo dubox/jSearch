@@ -26,9 +26,13 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 ### &隐私声明
 本人以人格担保：插件不上传任何用户隐私信息
 
-### &插件安装方法
-
-https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html
+### &插件安装&更新
+安装：
+https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html  
+更新：  
+1.下载新版本插件  
+2.解压并覆盖原插件文件夹  
+3.到插件管理(扩展管理),刷新本插件 即可
 
 
 ### &插件截图
