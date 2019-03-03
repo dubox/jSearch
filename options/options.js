@@ -330,7 +330,11 @@ var app = new Vue({
             document.querySelector('.header_bar input').blur();
             let h_bar = document.querySelector('.header_bar');
             h_bar.classList.remove('down');
-
+        });
+        document.querySelector('.content').addEventListener('click', function () {
+            document.querySelector('.header_bar input').blur();
+            let h_bar = document.querySelector('.header_bar');
+            h_bar.classList.remove('down');
         });
 
         //拖拽排序
