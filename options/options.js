@@ -276,10 +276,19 @@ var app = new Vue({
                     continue;
                 }
                 var _this = this;
-                this.handleReachBottom(i)().then(function () {
-                    if (!(_this.searchData.results[i].length == 1 && _this.searchData.results[i][0] == '') && _this.searchData.results[i].length > 0)
-                        _this.sliderWidth += 600;
-                });
+                if(this.searchData.models[i].type=='weixin' && this.searchData.models[i].symbol==1){
+                    setTimeout(function(){ //延迟执行微信公众号搜索，试图解决因被服务器察觉而需要输入验证码的情况
+                        _this.handleReachBottom(i)().then(function () {
+                            if (!(_this.searchData.results[i].length == 1 && _this.searchData.results[i][0] == '') && _this.searchData.results[i].length > 0)
+                                _this.sliderWidth += 600;
+                        });
+                    },2000);
+                }else{
+                    this.handleReachBottom(i)().then(function () {
+                        if (!(_this.searchData.results[i].length == 1 && _this.searchData.results[i][0] == '') && _this.searchData.results[i].length > 0)
+                            _this.sliderWidth += 600;
+                    });
+                }
 
             }
         },

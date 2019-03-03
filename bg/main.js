@@ -65,7 +65,7 @@ chrome.runtime.onInstalled.addListener(details => {
         },
         {
             type:'weixin',
-            symbol:'1',
+            symbol:'1', //公众号
             scope:'weixin.sogou.com',
             show:true,
             canEdit:false,
@@ -73,7 +73,7 @@ chrome.runtime.onInstalled.addListener(details => {
         },
         {
             type:'weixin',
-            symbol:'2',
+            symbol:'2', //公众号文章
             scope:'weixin.sogou.com',
             show:true,
             canEdit:false,
