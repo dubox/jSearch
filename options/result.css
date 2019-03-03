@@ -8,7 +8,7 @@
     display: inline;
 }
 
-.result {
+.result,.c-container {
     margin-bottom: 14px;
     border-collapse: collapse;
     line-height: 1.54;
