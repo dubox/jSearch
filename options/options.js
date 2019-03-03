@@ -51,9 +51,9 @@ var app = new Vue({
                                     resolve();
                                     return false;
                                 }
-                                $.get(`https://www.baidu.com/s?wd=${search_scope} ${_this.searchData.keyword}&pn=${_this.searchData.pageNums[index]*10}`, function (data) {
+                                axios.get(`https://www.baidu.com/s?wd=${search_scope} ${_this.searchData.keyword}&pn=${_this.searchData.pageNums[index]*10}`).then( function (response) {
                                     //console.log(data);
-                                    let res_obj = $(data).find('#content_left');
+                                    let res_obj = $(response.data).find('#content_left');
                                     res_obj.children().not('.c-container').remove();
                                     let res = res_obj.html();
                                     let text_for_check = $(res).text(); //将字符串再次转换为对象又转为字符串  会经过一次格式化 这样得到的字符串才是稳定的，才能用于比较
@@ -68,6 +68,9 @@ var app = new Vue({
                                         _this.searchData.results[index].push(res);
                                         _this.searchData.pageNums[index]++;
                                     }
+                                    resolve();
+                                }).catch(function (error) {
+                                    console.log(error);
                                     resolve();
                                 });
                                 break;
@@ -138,9 +141,11 @@ var app = new Vue({
                                     }
                                 }).then(function (response) {
                                     //console.log(response);
-                                    let data = response.data.replace(/onerror/g, 'ss').replace(/src="\/\//g, 'src="http://').replace(/\/new\/pc\/images\/ico_ewm\.png/g, 'https://weixin.sogou.com/new/pc/images/ico_ewm.png').replace(/onload="resizeImage\(.*\)"/g,'height="105"').replace(/<script>document\.write\(timeConvert\('(.*)'\)\)<\/script>/g,function(match,item1){return getDate(parseInt(item1)*1000);});
+                                    let data = response.data.replace(/onerror/g, 'ss').replace(/src="\/\//g, 'src="http://').replace(/\/new\/pc\/images\/ico_ewm\.png/g, 'https://weixin.sogou.com/new/pc/images/ico_ewm.png').replace(/onload="resizeImage\(.*\)"/g, 'height="105"').replace(/<script>document\.write\(timeConvert\('(.*)'\)\)<\/script>/g, function (match, item1) {
+                                        return getDate(parseInt(item1) * 1000);
+                                    });
                                     let res_obj = $(data).find('.news-box>ul');
-                                    res_obj.find('.pop').css('display','');
+                                    res_obj.find('.pop').css('display', '');
                                     if (res_obj.length < 1) {
                                         if ($(data).find('#seccodeForm').length > 0) {
                                             _this.searchData.results[index].push(`您需要进行验证后才能继续使用：<a href="https://weixin.sogou.com/weixin" target="_blank">去验证</a>`);
@@ -167,32 +172,37 @@ var app = new Vue({
                                 })
                                 .catch(function (error) {
                                     console.log(error);
+                                    resolve();
                                 });
                                 break;
                             }
-                        case 'google':{
-                            if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
-                                resolve();
-                                return false;
-                            }
-                            axios.get(`https://www.google.com/search?q=${search_scope} ${_this.searchData.keyword}&start=${_this.searchData.pageNums[index]*10}`)
-                                .then(function (response) {
-                                //console.log(response);
-                                let res_obj = $(response.data).find('.srg');
-                                let res = res_obj[0].outerHTML;
-                                let text_for_check = $(res).text();
-                                if ($(_this.searchData.results[index][_this.searchData.results[index].length - 1]).text() == text_for_check) {
-                                    _this.searchData.results[index].push('');
-                                } else if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
-
-                                } else {
-                                    _this.searchData.results[index].push(res);
-                                    _this.searchData.pageNums[index]++;
+                        case 'google':
+                            {
+                                if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
+                                    resolve();
+                                    return false;
                                 }
-                                resolve();
-                            });
-                            break;
-                        }
+                                axios.get(`https://www.google.com/search?q=${search_scope} ${_this.searchData.keyword}&start=${_this.searchData.pageNums[index]*10}`)
+                                .then(function (response) {
+                                    //console.log(response.data);
+                                    let res_obj = $(response.data.replace('src="/','src="https://www.google.com.hk/').replace('onload="','ss="')).find('.srg');
+                                    let res = res_obj[0].outerHTML;
+                                    let text_for_check = $(res).text();
+                                    if ($(_this.searchData.results[index][_this.searchData.results[index].length - 1]).text() == text_for_check) {
+                                        _this.searchData.results[index].push('');
+                                    } else if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
+
+                                    } else {
+                                        _this.searchData.results[index].push(res);
+                                        _this.searchData.pageNums[index]++;
+                                    }
+                                    resolve();
+                                }).catch(function (error) {
+                                    console.log(error);
+                                    resolve();
+                                });
+                                break;
+                            }
                         default:
                             null;
                     }
@@ -411,8 +421,6 @@ var aaa = {
 //todo
 //windows 滚动条丑陋问题
 //搜索历史
-//支持谷歌
 //支持删除自定义站点
 //支持当前网页地址生成二维码
 //修复空格快捷键的兼容问题（在简书编辑器）
-//安装插件时合并配置而不是覆盖

@@ -39,11 +39,11 @@ https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html
 ![](https://oscimg.oschina.net/oscnet/6b65ce0ca639cc304fe05177236078cc83c.jpg)
 △ 聚合式结果展示页
 
-![](https://oscimg.oschina.net/oscnet/248a2a2c4067f2ec24390bc65b2d96384a4.jpg)
-△ 无多余干扰项；沉浸式；最大屏幕利用
+![](https://oscimg.oschina.net/oscnet/26743cbf5109aa972b0519011c02eb1f121.jpg)
+△ 视觉：无多余干扰项，沉浸式；最大屏幕利用；保持各搜索引擎原始风格，避免视觉疲劳；
 
-![](https://oscimg.oschina.net/oscnet/f173db8c70b223d8186a2f6fb4c93fdbcd7.jpg)
-△ 可自定义搜索站点，支持拖拽排序
+![](https://oscimg.oschina.net/oscnet/7c20c97872bd252704d06eadc4b0863da77.jpg)  
+△ 可自定义搜索站点，支持百度和 google 双引擎，支持拖拽排序
 
 ![](https://oscimg.oschina.net/oscnet/e0fd0f60491d6497dbb8d6f01523dda296b.jpg)
 △ 新增 google 搜索引擎、公众号&公众号文章搜索
