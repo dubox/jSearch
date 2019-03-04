@@ -33,6 +33,11 @@ var app = new Vue({
             itemDraggable: true
 
         },
+        version:{
+            notice:'',
+            localVer:'',
+            latestVer:'',
+        }
     },
     methods: {
 
@@ -263,6 +268,8 @@ var app = new Vue({
             //console.log(chrome.extension.getURL(''));
             _this.setKeyword();
             //this.sliderWidth = 700 * this.searchData.models.length;
+
+            _this.checkUpdate();
         },
         doSearch() {
             console.log(this.searchData.keyword);
@@ -300,6 +307,19 @@ var app = new Vue({
             this.searchData.keyword = decodeURIComponent(hash).trim();
             this.searchInputValue = this.searchData.keyword;
             jBar.setKeyword(this.searchInputValue);
+        },
+        checkUpdate(){
+            var _this = this;
+            _this.version.localVer = chrome.runtime.getManifest().version;
+            axios.get('http://gitee.jsearch.site/manifest.json').then(function(resp){
+                //console.log(resp);
+                
+                _this.version.latestVer = resp.data.version;
+                if(_this.version.localVer != _this.version.latestVer){
+                    console.log('new version:'+_this.version.latestVer)
+                    _this.version.notice = 'new';
+                }
+            });
         }
     },
     beforeMounted() {

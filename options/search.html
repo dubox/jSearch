@@ -82,12 +82,13 @@
                     <i-col span="1"> </i-col>
 
                     <i-col span="1">
-                        <i-button type="text" shape="circle" style="background:none;box-shadow:none;">
-                            <Icon @click="drawer.show = true" type="ios-cog-outline" :size='30' />
+                        <i-button type="text" shape="circle" @click="drawer.show = true" style="background:none;box-shadow:none;">
+                                <Badge :text="version.notice"><Icon type="ios-cog-outline" :size='30' /></Badge>
                         </i-button>
                     </i-col>
                     <i-col span="1" style="text-align:center;"><a href="https://github.com/dubox/jSearch" target="_blank">
-                            <Icon type="logo-github" :size='30' /></a></i-col>
+                        <Icon type="logo-github" :size='30' />
+                        </a></i-col>
                 </Row>
 
             </i-header>
@@ -139,6 +140,15 @@
 
 
         <Drawer title="Settings" v-model="drawer.show" width="550" :mask-closable="true" :styles="drawer.styles">
+                <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">版本信息</Divider>
+                <Row type="flex">
+                        <i-col span="2"></i-col>
+                        <i-col span="22">
+                            <span>当前版本：v{{version.localVer}}</span><span style="color:coral;" v-if="version.notice=='new'">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;发现新版本：<a href="https://github.com/dubox/jSearch/releases" target="_blank">v{{version.latestVer}}</a></span>
+                        </i-col>
+                </Row>
+                <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">配置站点</Divider>
             <i-form :model="searchData.models">
 
                 <Row :gutter="32" type="flex" align="middle" v-for="(item, index) in searchData.models" v-dragging="{ item: item, list: searchData.models, group: 'models'}"
@@ -170,7 +180,7 @@
                 </Row>
 
             </i-form>
-            <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">新增搜索域</Divider>
+           
             <i-form :model="settingFormData">
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="6">
