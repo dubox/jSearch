@@ -373,11 +373,20 @@ var app = new Vue({
         this.$dragging.$on('dragged', ({
             value
         }) => {
-            //console.log(value.item)
-            //console.log(value.list)
-            //console.log(value.otherData)
-
         })
+        window.addEventListener('mousewheel', function(e){
+            if(!e.altKey && e.buttons !== 1)return ;
+            let scrollY = $('.content').scrollLeft();
+            if(e.deltaY>0){
+                scrollY-=50;
+                $('.content').scrollLeft(scrollY);
+            }
+            else{
+                scrollY+=50;
+                $('.content').scrollLeft(scrollY);
+            }
+            e.preventDefault();
+        });
 
         this.init();
     },
@@ -469,3 +478,5 @@ var aaa = {
 //支持删除自定义站点
 //支持当前网页地址生成二维码
 //修复空格快捷键的兼容问题（在简书编辑器）
+
+//站点搜索的默认搜索(即搜索词为空时)修改为检索最近一天的内容；修改 google 结果链接为新页面打开；
