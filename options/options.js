@@ -56,7 +56,13 @@ var app = new Vue({
                                     resolve();
                                     return false;
                                 }
-                                axios.get(`https://www.baidu.com/s?wd=${search_scope} ${_this.searchData.keyword}&pn=${_this.searchData.pageNums[index]*10}`).then( function (response) {
+                                let gpc = '';
+                                if(_this.searchData.keyword == ''){
+                                    //当搜索词为空时 搜索最近一天的内容，主要针对 site 站点
+                                    let now = parseInt((new Date()).getTime()/1000);
+                                     gpc = encodeURIComponent(`stf=${now-86400},${now}|stftype=1`);
+                                }
+                                axios.get(`https://www.baidu.com/s?wd=${search_scope} ${_this.searchData.keyword}&pn=${_this.searchData.pageNums[index]*10}&gpc=${gpc}`).then( function (response) {
                                     //console.log(data);
                                     let res_obj = $(response.data).find('#content_left');
                                     res_obj.children().not('.c-container').remove();
@@ -65,6 +71,38 @@ var app = new Vue({
                                     //console.log(res);
                                     //console.log($(_this.searchData.results[index][_this.searchData.results[index].length-1]).text());
                                     //检查现在获得的内容和目前列表中最后一条是否一样  一样则表示没有新内容了
+                                    if ($(_this.searchData.results[index][_this.searchData.results[index].length - 1]).text() == text_for_check) {
+                                        _this.searchData.results[index].push('');
+                                    } else if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
+
+                                    } else {
+                                        _this.searchData.results[index].push(res);
+                                        _this.searchData.pageNums[index]++;
+                                    }
+                                    resolve();
+                                }).catch(function (error) {
+                                    console.log(error);
+                                    resolve();
+                                });
+                                break;
+                            }
+                            case 'google':
+                            {
+                                if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
+                                    resolve();
+                                    return false;
+                                }
+                                let tbs = '';
+                                if(_this.searchData.keyword == ''){
+                                    //当搜索词为空时 搜索最近一天的内容，主要针对 site 站点
+                                    tbs = 'qdr:d';
+                                }
+                                axios.get(`https://www.google.com/search?q=${search_scope} ${_this.searchData.keyword}&start=${_this.searchData.pageNums[index]*10}&tbs=${tbs}`)
+                                .then(function (response) {
+                                    //console.log(response.data);
+                                    let res_obj = $(response.data.replace('src="/','src="https://www.google.com.hk/').replace('onload="','ss="')).find('.srg');
+                                    let res = res_obj[0].outerHTML;
+                                    let text_for_check = $(res).text();
                                     if ($(_this.searchData.results[index][_this.searchData.results[index].length - 1]).text() == text_for_check) {
                                         _this.searchData.results[index].push('');
                                     } else if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
@@ -181,33 +219,7 @@ var app = new Vue({
                                 });
                                 break;
                             }
-                        case 'google':
-                            {
-                                if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
-                                    resolve();
-                                    return false;
-                                }
-                                axios.get(`https://www.google.com/search?q=${search_scope} ${_this.searchData.keyword}&start=${_this.searchData.pageNums[index]*10}`)
-                                .then(function (response) {
-                                    //console.log(response.data);
-                                    let res_obj = $(response.data.replace('src="/','src="https://www.google.com.hk/').replace('onload="','ss="')).find('.srg');
-                                    let res = res_obj[0].outerHTML;
-                                    let text_for_check = $(res).text();
-                                    if ($(_this.searchData.results[index][_this.searchData.results[index].length - 1]).text() == text_for_check) {
-                                        _this.searchData.results[index].push('');
-                                    } else if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
-
-                                    } else {
-                                        _this.searchData.results[index].push(res);
-                                        _this.searchData.pageNums[index]++;
-                                    }
-                                    resolve();
-                                }).catch(function (error) {
-                                    console.log(error);
-                                    resolve();
-                                });
-                                break;
-                            }
+                        
                         default:
                             null;
                     }
