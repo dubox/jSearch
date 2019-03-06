@@ -2,6 +2,7 @@ Vue.use(VueDND);
 var app = new Vue({
     el: '#app',
     data: {
+        isInit:false,   //是否完成初始化
         //sliderWidth: 0,
         searchInputValue: '',
         searchData: {
@@ -48,7 +49,8 @@ var app = new Vue({
         sliderWidth: function () {
             let sliderWidth = 0;
             for(let i in this.searchData.results)
-                if (!(this.searchData.results[i].length == 1 && this.searchData.results[i][0] == '') && this.searchData.results[i].length > 0)
+                //if (!(this.searchData.results[i].length == 1 && this.searchData.results[i][0] == '') && this.searchData.results[i].length > 0)
+                if (this.searchData.results[i].length > 0 && this.searchData.results[i][0] != '')
                     sliderWidth += this.settings.resultListWidth;
 
           return sliderWidth;
@@ -288,14 +290,17 @@ var app = new Vue({
             chrome.storage.sync.getBytesInUse('searchModels', function (size) {
                 console.log(size);
             });
-            //console.log(chrome.extension.getURL(''));
-            _this.setKeyword();
-            //this.sliderWidth = 700 * this.searchData.models.length;
+            
 
             _this.checkUpdate();
+
+            _this.setKeyword();
+
+            //_this.isInit = true;
+            //_this.doSearch();
         },
         doSearch() {
-            console.log(this.searchData.keyword);
+            console.log('doSearch:'+this.searchData.keyword);
             this.sliderWidth = 0;
             for (let i in this.searchData.models) {
 
@@ -399,6 +404,11 @@ var app = new Vue({
 
         //左右方向键 横向滚屏
         hotkeys('left,right', function(event, handler){ 
+            let tagName = (event.target || event.srcElement).tagName;
+            if(tagName.isContentEditable ||
+            tagName == 'INPUT' ||
+            tagName == 'SELECT' ||
+            tagName == 'TEXTAREA'){return;}
             if(!_this.settings.pageScroll.includes("navKeys"))return;
             let scrollX = $('.content').scrollLeft();
              if(handler.key == 'left'){
@@ -453,10 +463,7 @@ var app = new Vue({
             },
             deep: true
         },
-        'settings.resultListWidth': function () {
-            //修改
-            this.doSearch();
-        },
+        
 
     },
     directives: {
