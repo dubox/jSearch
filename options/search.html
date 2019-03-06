@@ -96,7 +96,7 @@
 
             <div class="content" v-bind:style="{height:clientHeight+'px',overflowX: 'scroll',overflowY: 'hidden'}">
                 <div class="slider" v-bind:style="{ height: '100%', width: sliderWidth + 'px' }">
-                    <div class="col" v-for="(item1, index1) in searchData.models" v-if="item1.show && !(searchData.results[index1].length==1 && searchData.results[index1][0]=='') && searchData.results[index1].length>0">
+                    <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' }" v-for="(item1, index1) in searchData.models" v-if="item1.show && !(searchData.results[index1].length==1 && searchData.results[index1][0]=='') && searchData.results[index1].length>0">
                         <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight">
 
                             <Card dis-hover v-for="(item, index) in searchData.results[index1]" :key="index" v-if="item!=''"
@@ -198,7 +198,9 @@
                     <i-col span="14">
                         <form-item>
                             <i-input v-model="settingFormData.scope" placeholder="输入想要搜索的网站域名或一个Url" />
+                            
                         </form-item>
+                        <input style="display:none;" />
                     </i-col>
                     <i-col span="4">
                         <form-item>
@@ -236,6 +238,15 @@
                                             
                                         </checkbox-group>
                                     </form-item>
+                            </i-col>
+
+                        </Row>
+                    <Row :gutter="32" type="flex" align="middle">
+                        <i-col span="4">列表宽度:</i-col>
+                        <i-col span="4">
+                               
+                                        <i-input v-model="settings.resultListWidth" number="true" placeholder="" />
+                                        <input style="display:none;" />
                             </i-col>
 
                         </Row>

@@ -2,7 +2,7 @@ Vue.use(VueDND);
 var app = new Vue({
     el: '#app',
     data: {
-        sliderWidth: 0,
+        //sliderWidth: 0,
         searchInputValue: '',
         searchData: {
             keyword: null,
@@ -10,8 +10,7 @@ var app = new Vue({
             results: [], //搜索结果
             pageNums: [] //搜索结果
         },
-
-        clientHeight: 500,
+        clientHeight:500,
 
         settingFormData: {
             type: 'baidu',
@@ -40,8 +39,20 @@ var app = new Vue({
         },
         settings:{
             jBar:{hotkeys:[]},
-            pageScroll:[]
+            pageScroll:[],
+            resultListWidth:600,
         }
+    },
+    computed: {
+        // 仅读取
+        sliderWidth: function () {
+            let sliderWidth = 0;
+            for(let i in this.searchData.results)
+                if (!(this.searchData.results[i].length == 1 && this.searchData.results[i][0] == '') && this.searchData.results[i].length > 0)
+                    sliderWidth += this.settings.resultListWidth;
+
+          return sliderWidth;
+        },
     },
     methods: {
 
@@ -297,16 +308,10 @@ var app = new Vue({
                 var _this = this;
                 if(this.searchData.models[i].type=='weixin' && this.searchData.models[i].symbol==1){
                     setTimeout(function(){ //延迟执行微信公众号搜索，试图解决因被服务器察觉而需要输入验证码的情况
-                        _this.handleReachBottom(i)().then(function () {
-                            if (!(_this.searchData.results[i].length == 1 && _this.searchData.results[i][0] == '') && _this.searchData.results[i].length > 0)
-                                _this.sliderWidth += 600;
-                        });
+                        _this.handleReachBottom(i)();
                     },2000);
                 }else{
-                    this.handleReachBottom(i)().then(function () {
-                        if (!(_this.searchData.results[i].length == 1 && _this.searchData.results[i][0] == '') && _this.searchData.results[i].length > 0)
-                            _this.sliderWidth += 600;
-                    });
+                    this.handleReachBottom(i)();
                 }
 
             }
@@ -397,11 +402,11 @@ var app = new Vue({
             if(!_this.settings.pageScroll.includes("navKeys"))return;
             let scrollX = $('.content').scrollLeft();
              if(handler.key == 'left'){
-                scrollX-=500;
+                scrollX-=_this.settings.resultListWidth;;
                 $('.content').scrollLeft(scrollX);
             }
             else{
-                scrollX+=500;
+                scrollX+=_this.settings.resultListWidth;;
                 $('.content').scrollLeft(scrollX);
             }
             event.preventDefault();
@@ -447,7 +452,11 @@ var app = new Vue({
                 jBar.setSettings(this.settings.jBar);
             },
             deep: true
-        }
+        },
+        'settings.resultListWidth': function () {
+            //修改
+            this.doSearch();
+        },
 
     },
     directives: {
@@ -511,3 +520,4 @@ var aaa = {
 //新增鼠标横向滚动方案（alt+滚轮，左键+滚轮）
 //对搜索词转码，解决搜索词带特殊符号引发的问题
 //新增通用设置:支持 jBar 热键设置；页面横向滚动设置
+//新增横向滚屏方案：左右方向键

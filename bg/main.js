@@ -98,7 +98,8 @@ chrome.runtime.onInstalled.addListener(details => {
     ],
     settings:{
         jBar:{hotkeys:['space','tab','j','ctrl+j','esc']},
-        pageScroll:['navKeys','mLeftKey+mw','alt+mw']
+        pageScroll:['navKeys','mLeftKey+mw','alt+mw'],
+        resultListWidth:600
     }
 };
     if (details.reason === 'install') {

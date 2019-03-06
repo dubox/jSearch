@@ -168,7 +168,7 @@
     font-size: 18px;
     font-weight: normal;
     overflow: hidden;
-    white-space: nowrap;
+   /* white-space: nowrap;*/
     text-overflow: ellipsis;
     word-wrap: normal;
 }
