@@ -37,6 +37,9 @@ var app = new Vue({
             notice:'',
             localVer:'',
             latestVer:'',
+        },
+        settings:{
+
         }
     },
     methods: {
@@ -62,7 +65,7 @@ var app = new Vue({
                                     let now = parseInt((new Date()).getTime()/1000);
                                      gpc = encodeURIComponent(`stf=${now-86400},${now}|stftype=1`);
                                 }
-                                axios.get(`https://www.baidu.com/s?wd=${search_scope} ${_this.searchData.keyword}&pn=${_this.searchData.pageNums[index]*10}&gpc=${gpc}`).then( function (response) {
+                                axios.get(`https://www.baidu.com/s?wd=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&pn=${_this.searchData.pageNums[index]*10}&gpc=${gpc}`).then( function (response) {
                                     //console.log(data);
                                     let res_obj = $(response.data).find('#content_left');
                                     res_obj.children().not('.c-container').remove();
@@ -97,7 +100,7 @@ var app = new Vue({
                                     //当搜索词为空时 搜索最近一天的内容，主要针对 site 站点
                                     tbs = 'qdr:d';
                                 }
-                                axios.get(`https://www.google.com/search?q=${search_scope} ${_this.searchData.keyword}&start=${_this.searchData.pageNums[index]*10}&tbs=${tbs}`)
+                                axios.get(`https://www.google.com/search?q=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&start=${_this.searchData.pageNums[index]*10}&tbs=${tbs}`)
                                 .then(function (response) {
                                     //console.log(response.data);
                                     let res_obj = $(response.data.replace('src="/','src="https://www.google.com.hk/').replace('onload="','ss="')).find('.srg');
@@ -174,7 +177,7 @@ var app = new Vue({
                                     return false;
                                 }
 
-                                axios.get(`https://weixin.sogou.com/weixin?query=${_this.searchData.keyword}&type=${_this.searchData.models[index].symbol}&page=${++_this.searchData.pageNums[index]}&_sug_type_=&s_from=input&_sug_=n&ie=utf8`, {
+                                axios.get(`https://weixin.sogou.com/weixin?query=${encodeURIComponent(_this.searchData.keyword)}&type=${_this.searchData.models[index].symbol}&page=${++_this.searchData.pageNums[index]}&_sug_type_=&s_from=input&_sug_=n&ie=utf8`, {
                                     headers: {
                                         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                                         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
