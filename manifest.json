@@ -27,6 +27,7 @@
         "webRequest",
         "webRequestBlocking",
         "storage",
+        "webview",
         "chrome://favicon/",
         "*://*/*",
         "\u003Call_urls>",

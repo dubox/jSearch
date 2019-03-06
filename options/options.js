@@ -39,7 +39,8 @@ var app = new Vue({
             latestVer:'',
         },
         settings:{
-
+            jBar:{hotkeys:[]},
+            pageScroll:[]
         }
     },
     methods: {
@@ -263,19 +264,15 @@ var app = new Vue({
 
         init: function () {
             var _this = this;
-            //chrome.storage.sync.set({a:[{aa:'aa'}]});
-            //chrome.storage.sync.get('a',function(items){console.log(items);});
-            //chrome.storage.sync.clear();
+            //加载站点配置
             chrome.storage.sync.get('searchModels', function (items) {
                 //console.log(items);
                 _this.searchData.models = items.searchModels;
-                /*
-                for(let i in _this.searchData.models){
-                    _this.$watch('searchData.models.'+i+'.scope', (newVal, oldVal) => {
-                        console.log(`${newVal} : ${oldVal}`);
-                    })
-                }
-                */
+            });
+            //加载通用设置
+            chrome.storage.sync.get('settings', function (items) {
+                //console.log(items);
+                _this.settings = items.settings;
             });
             chrome.storage.sync.getBytesInUse('searchModels', function (size) {
                 console.log(size);
@@ -342,6 +339,9 @@ var app = new Vue({
 
     },
     mounted() {
+
+        var _this = this;
+
         // 获取浏览器可视区域高度
         this.clientHeight = document.documentElement.clientHeight; //document.body.clientWidth;
         //console.log(self.clientHeight);
@@ -377,8 +377,9 @@ var app = new Vue({
             value
         }) => {
         })
+
         window.addEventListener('mousewheel', function(e){
-            if(!e.altKey && e.buttons !== 1)return ;
+            if(!(e.altKey && _this.settings.pageScroll.includes("alt+mw")) && !(e.buttons == 1 && _this.settings.pageScroll.includes("mLeftKey+mw")))return ;
             let scrollY = $('.content').scrollLeft();
             if(e.deltaY>0){
                 scrollY-=50;
@@ -420,6 +421,15 @@ var app = new Vue({
                 chrome.storage.sync.set({
                     searchModels: this.searchData.models
                 });
+            },
+            deep: true
+        },
+        'settings':{
+            handler(newVal) {
+                chrome.storage.sync.set({
+                    settings: this.settings
+                });
+                jBar.setSettings(this.settings.jBar);
             },
             deep: true
         }
@@ -483,3 +493,5 @@ var aaa = {
 //修复空格快捷键的兼容问题（在简书编辑器）
 
 //站点搜索的默认搜索(即搜索词为空时)修改为检索最近一天的内容；修改 google 结果链接为新页面打开；
+//新增鼠标横向滚动方案（alt+滚轮，左键+滚轮）
+//对搜索词转码，解决搜索词带特殊符号引发的问题

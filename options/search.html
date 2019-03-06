@@ -140,7 +140,7 @@
         </Layout>
 
 
-        <Drawer title="Settings" v-model="drawer.show" width="550" :mask-closable="true" :styles="drawer.styles">
+        <Drawer title="Settings" v-model="drawer.show" width="550" :mask-closable="false" :styles="drawer.styles">
                 <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">版本信息</Divider>
                 <Row type="flex">
                         <i-col span="2"></i-col>
@@ -214,6 +214,28 @@
             <i-form :model="settingFormData">
                     <Row :gutter="32" type="flex" align="middle">
                         <i-col span="24">
+                                <form-item label="快捷搜索框(jBar)热键:">
+                                        <checkbox-group v-model="settings.jBar.hotkeys">
+                                            <Checkbox label="space">空格</Checkbox>
+                                            <Checkbox label="j">j</Checkbox>
+                                            <Checkbox label="ctrl+j">Ctrl+j</Checkbox>
+                                            <Checkbox label="tab">Tab</Checkbox>
+                                            <Checkbox label="esc">ESC</Checkbox>
+                                        </checkbox-group>
+                                    </form-item>
+                            </i-col>
+
+                        </Row>
+                    <Row :gutter="32" type="flex" align="middle">
+                        <i-col span="24">
+                                <form-item label="页面横向滚动方案:">
+                                        <checkbox-group v-model="settings.pageScroll">
+                                            <Checkbox label="alt+mw">Alt+滚轮</Checkbox>
+                                            <Checkbox label="mLeftKey+mw">鼠标左键+滚轮</Checkbox>
+                                            <Checkbox label="navKeys">左右方向键</Checkbox>
+                                            
+                                        </checkbox-group>
+                                    </form-item>
                             </i-col>
 
                         </Row>

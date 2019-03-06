@@ -95,7 +95,12 @@ chrome.runtime.onInstalled.addListener(details => {
             canEdit:true,
             canDelete:true
         }
-    ]};
+    ],
+    settings:{
+        jBar:{hotkeys:['space','tab','j','ctrl+j','esc']},
+        pageScroll:['navKeys','mLeftKey+mw','alt+mw']
+    }
+};
     if (details.reason === 'install') {
         // install
         //设置初始配置

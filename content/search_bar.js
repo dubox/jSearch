@@ -11,8 +11,15 @@ function jBar(){
 </div>
 </div>`;
 
-
 document.querySelector('body').appendChild(parseDom(jBarHtml)[0]);
+
+
+//加载设置
+let settings = {};
+chrome.storage.sync.get('settings', function (items) {
+  //console.log(items);
+  settings = items.settings.jBar;
+});
 
 jBarEffects();
 var jBar = document.querySelector('#jsearch-bar');
@@ -20,6 +27,8 @@ var jBar_input = document.querySelector('#jsearch-bar input');
 
 hotkeys('j,space,ctrl+j,esc,tab', function(event, handler) {
     
+  if(!checkKey(handler.key))return;
+
     //ecs 和 tab 只做退出操作
     if(handler.key == 'esc' || handler.key == 'tab'){
         if(jBar.classList.contains('jBar-show')){
@@ -28,7 +37,7 @@ hotkeys('j,space,ctrl+j,esc,tab', function(event, handler) {
         }else{return ;}
     }
 
-    if(handler.key == 'space'){
+    if(handler.key == 'space' && checkKey('space')){
         //当前焦点在搜索框 去搜索框无任何内容时 按空格可退出搜索
         if(jBar.classList.contains('jBar-show')){
             if(jBar_input.value == ''){
@@ -124,6 +133,14 @@ function jBarToggle(show){
 
   this.setKeyword = function(kw){
       jBar_input.value = kw;
+  }
+  this.setSettings = function(obj){
+    settings = obj;
+  }
+
+
+  function checkKey(keyItem){
+    return settings.hotkeys.includes(keyItem);
   }
   
 
