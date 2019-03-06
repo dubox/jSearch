@@ -382,14 +382,29 @@ var app = new Vue({
             if(!(e.altKey && _this.settings.pageScroll.includes("alt+mw")) && !(e.buttons == 1 && _this.settings.pageScroll.includes("mLeftKey+mw")))return ;
             let scrollY = $('.content').scrollLeft();
             if(e.deltaY>0){
-                scrollY-=50;
+                scrollY-=100;
                 $('.content').scrollLeft(scrollY);
             }
             else{
-                scrollY+=50;
+                scrollY+=100;
                 $('.content').scrollLeft(scrollY);
             }
             e.preventDefault();
+        });
+
+        //左右方向键 横向滚屏
+        hotkeys('left,right', function(event, handler){ 
+            if(!_this.settings.pageScroll.includes("navKeys"))return;
+            let scrollX = $('.content').scrollLeft();
+             if(handler.key == 'left'){
+                scrollX-=500;
+                $('.content').scrollLeft(scrollX);
+            }
+            else{
+                scrollX+=500;
+                $('.content').scrollLeft(scrollX);
+            }
+            event.preventDefault();
         });
 
         this.init();
@@ -495,3 +510,4 @@ var aaa = {
 //站点搜索的默认搜索(即搜索词为空时)修改为检索最近一天的内容；修改 google 结果链接为新页面打开；
 //新增鼠标横向滚动方案（alt+滚轮，左键+滚轮）
 //对搜索词转码，解决搜索词带特殊符号引发的问题
+//新增通用设置:支持 jBar 热键设置；页面横向滚动设置
