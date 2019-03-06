@@ -19,15 +19,27 @@
     <style>
 
 
+           
+            .content{
+                width: 100%;
+                height: 500px;
+                overflow: hidden;
+            }
+            .slider{
+                overflow-x: auto;
+                overflow-y: hidden;
+                display: flex;
+                height: 100%;
+                width: 100%;
+            }
             .col{
                 height: 100%;
                 width: 600px;
                 float: left;
                 padding: 0 0 0 5px;
-            }
-            .content{
-                width: 100%;
-                height: 500px;
+                flex-shrink: 0;
+                flex-grow:1;
+                transition: all .8s
             }
             .list-over{color:#c5c8ce;}
 
@@ -63,7 +75,15 @@
             }
             .ivu-form-item {
     margin-bottom: 14px;}
-
+            
+            .drawer-footer{
+                position: absolute;
+                bottom: 5px;
+                left: 0;
+                box-shadow: 0 0 1px rgba(0,0,0,0.25);
+                padding-top: 5px;
+                background: rgba(255,255,255,0.4);
+            }
 
 
     </style>
@@ -98,8 +118,8 @@
 
             </i-header>
 
-            <div class="content" v-bind:style="{height:clientHeight+'px',overflowX: 'scroll',overflowY: 'hidden'}">
-                <div class="slider" v-bind:style="{ height: '100%', width: sliderWidth + 'px' }">
+            <div class="content" v-bind:style="{height:clientHeight+'px'}">
+                <div class="slider">
                     <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' }" v-for="(item1, index1) in searchData.models" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
                         <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight" >
 
@@ -256,7 +276,7 @@
                         </Row>
         
                     </i-form>
-            <div class="demo-drawer-footer" style="position: absolute;bottom: 5px;">
+            <div class="drawer-footer" >
 
                 <Card style="width:50%;float: right;margin-right: 5px;" class="alipay">
                     <img src="../public/imgs/alipay.png" width="100%" class="slid-show">

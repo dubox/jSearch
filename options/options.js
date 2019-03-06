@@ -27,7 +27,7 @@ var app = new Vue({
             styles: {
                 height: 'calc(100% - 55px)',
                 overflow: 'auto',
-                paddingBottom: '70px',
+                paddingBottom: '90px',
                 position: 'static'
             },
             itemDraggable: true
@@ -529,3 +529,4 @@ var aaa = {
 //新增通用设置:支持 jBar 热键设置；页面横向滚动设置
 //新增横向滚屏方案：左右方向键
 //修复 google 结果展示问题
+//优化 Windows 滚动条样式
