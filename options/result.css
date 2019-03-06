@@ -228,6 +228,8 @@
 /*weixin css*/
 
 /*google css*/
+#rso .bNg8Rb{display: none;}
+
 .g {
     margin-top: 0;
     margin-bottom: 30px;
@@ -334,5 +336,58 @@
     margin-top: 1px;
     vertical-align: middle;
 }
+/*google视频*/
+#rso .mR2gOd {
+    display: block;
+    overflow-x: auto;
+    position: relative;
+    white-space: nowrap;
+    transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+}
+#rso .BFJZOc {
+    display: flex;
+}
+#rso .P94G9b {
+    padding: 4px;
+    width: 205px;
+    position: relative;
+    display: block;
+}
+.CNf3nf .PUDfGe {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 24px;
+    height: 24px;
+}
+.MAMEle {
+    overflow: hidden;
+    position: relative;
+}
+.OIL2le {
+    background-color: rgba(0,0,0,.12);
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+.k8B8Pc {
+    border-radius: 2px;
+    font-size: 12px;
+    padding: 2px 5px;
+    position: absolute;
+    bottom: 4px;
+    color: #fff;
+    font-weight: bold;
+    right: 4px;
+    background-color: rgba(0,0,0,.87);
+}
 
+
+.AX4s9b, .kno-ibrg,.DUU6i{display: none;}
 /*google css*/

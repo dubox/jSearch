@@ -81,7 +81,7 @@ var app = new Vue({
                                 }
                                 axios.get(`https://www.baidu.com/s?wd=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&pn=${_this.searchData.pageNums[index]*10}&gpc=${gpc}`).then( function (response) {
                                     //console.log(data);
-                                    let res_obj = $(response.data).find('#content_left');
+                                    let res_obj = $(response.data.replace(/src="\//g,'src="https://www.baidu.com/')).find('#content_left');
                                     res_obj.children().not('.c-container').remove();
                                     let res = res_obj.html();
                                     let text_for_check = $(res).text(); //将字符串再次转换为对象又转为字符串  会经过一次格式化 这样得到的字符串才是稳定的，才能用于比较
@@ -116,8 +116,8 @@ var app = new Vue({
                                 }
                                 axios.get(`https://www.google.com/search?q=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&start=${_this.searchData.pageNums[index]*10}&tbs=${tbs}`)
                                 .then(function (response) {
-                                    //console.log(response.data);
-                                    let res_obj = $(response.data.replace('src="/','src="https://www.google.com.hk/').replace('onload="','ss="')).find('.srg');
+                                    console.log(response.data.indexOf('href="/'));
+                                    let res_obj = $(response.data.replace(/src="\//g,'src="https://www.google.com/').replace(/href="\//g,'href="https://www.google.com/').replace(/href="https:\/\/www\.google\.com\/search\?q=/g,'href="https://www.google.com/search?o0=o&q=').replace('onload="','ss="')).find('#rso');
                                     let res = res_obj[0].outerHTML;
                                     let text_for_check = $(res).text();
                                     if ($(_this.searchData.results[index][_this.searchData.results[index].length - 1]).text() == text_for_check) {
