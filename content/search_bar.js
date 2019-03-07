@@ -131,12 +131,16 @@ function jBarToggle(show){
 
 
   function goSearch(){
+    //
     let kw = encodeURIComponent(jBar_input.value);
     if(runtime.isInExtension){
         location.href = chrome.extension.getURL('/options/search.html')+'?#'+kw;
         jBarToggle(0);
-    }else
-        window.open(`http://chrome.jsearch.site/?q=${kw}`);
+    }else{
+      jBar_input.blur();
+      window.open(`http://chrome.jsearch.site/?q=${kw}`);
+    }
+        
   }
 
 
