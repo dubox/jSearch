@@ -42,7 +42,7 @@
                 transition: all .8s
             }
             .list-over{color:#c5c8ce;}
-            .col .ivu-scroll-content{min-height: 100%;}
+            .col .ivu-scroll-content{min-height: 100%;}/*解决第一页高度不够无法翻页问题*/
 
             .alipay .slid-show{
                 transition: max-height 1s;
@@ -86,6 +86,20 @@
                 background: rgba(255,255,255,0.6);
             }
 
+            /* VUE过渡动画   可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.slide-list-enter-active {
+  transition: all 1s ease;
+}
+.slide-list-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-list-enter, .slide-list-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
 
     </style>
 </head>
@@ -120,8 +134,10 @@
             </i-header>
 
             <div class="content" v-bind:style="{height:clientHeight+'px'}">
-                <div class="slider">
-                    <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' }" v-for="(item1, index1) in searchData.models" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
+                
+                        <transition-group name="slide-list"  class="slider" tag="div">
+                    <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' }" v-for="(item1, index1) in searchData.models" :key="item1" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
+                            
                         <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight" distance-to-edge="15">
 
                             <Card dis-hover v-for="(item, index) in searchData.results[index1]" :key="index" v-if="item!=''"
@@ -155,9 +171,9 @@
                             </Card>
                             <Alert class="opacity-7" type="warning">No more ...</Alert>
                         </Scroll>
+                        
                     </div>
-
-                </div>
+                </transition-group>
 
 
             </div>
