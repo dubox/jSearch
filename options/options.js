@@ -391,7 +391,7 @@ var app = new Vue({
         window.addEventListener('mousewheel', function(e){
             if(!(e.altKey && _this.settings.pageScroll.includes("alt+mw")) && !(e.buttons == 1 && _this.settings.pageScroll.includes("mLeftKey+mw")))return ;
             let scrollY = $('.slider').scrollLeft();
-            if(e.deltaY>0){
+            if(e.deltaY<0){
                 scrollY-=100;
                 $('.slider').scrollLeft(scrollY);
             }
