@@ -332,7 +332,7 @@ var app = new Vue({
         checkUpdate(){
             var _this = this;
             _this.version.localVer = chrome.runtime.getManifest().version;
-            axios.get('http://gitee.jsearch.site/manifest.json').then(function(resp){
+            axios.get('http://gitee.jsearch.site/manifest.json?r='+Math.random()).then(function(resp){
                 //console.log(resp);
                 
                 _this.version.latestVer = resp.data.version;
