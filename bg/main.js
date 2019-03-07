@@ -97,7 +97,7 @@ chrome.runtime.onInstalled.addListener(details => {
         }
     ],
     settings:{
-        jBar:{hotkeys:['space','tab','j','ctrl+j','esc']},
+        jBar:{hotkeys:['space','tab','j','ctrl+j','esc'],onSelection:false},
         pageScroll:['navKeys','mLeftKey+mw','alt+mw'],
         resultListWidth:600
     }
@@ -125,11 +125,40 @@ chrome.runtime.onInstalled.addListener(details => {
                         items.searchModels.push(defaultSettings.searchModels[i]);
                     }
                 }
-                chrome.storage.sync.set(items);
+                //chrome.storage.sync.set(items);
 
             }else{
                 //设置初始配置
-                chrome.storage.sync.set(defaultSettings);
+                items.searchModels = defaultSettings.searchModels;
+            }
+            if(typeof items.settings != 'undefined'){
+                /*
+                for(let i in defaultSettings.settings){
+                    if(typeof items.settings[i] == 'undefined'){
+                        items.settings[i] = defaultSettings.settings[i];
+                        continue;
+                    }
+                    
+                }
+                */
+
+                function trans(from ,to){
+                    for(let i in from){
+                        if(typeof to[i] == 'undefined'){
+                            items.settings[i] = from[i];
+                            continue;
+                        }
+                        if(typeof from[i] == typeof {}){
+                            trans(from[i] ,to[i]);
+                        }
+                    }
+                }
+
+                trans(defaultSettings.settings ,items.settings);
+
+            }else{
+                //设置初始配置
+                items.settings = defaultSettings.settings;
             }
         });
 

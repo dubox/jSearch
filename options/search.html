@@ -81,7 +81,7 @@
                 position: absolute;
                 bottom: 5px;
                 left: 0;
-                box-shadow: 0 0 1px rgba(0,0,0,0.25);
+                box-shadow: 0 -1px 1px rgba(0,0,0,0.15);
                 padding-top: 5px;
                 background: rgba(255,255,255,0.6);
             }
@@ -181,7 +181,7 @@
         </Layout>
 
 
-        <Drawer title="Settings" v-model="drawer.show" width="550" :mask-closable="false" :styles="drawer.styles">
+        <Drawer title="Settings" v-model="drawer.show" width="550" :mask-closable="true" :styles="drawer.styles">
                 <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">版本信息</Divider>
                 <Row type="flex">
                         <i-col span="2"></i-col>
@@ -256,8 +256,8 @@
             <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">通用设置</Divider>
             <i-form :model="settingFormData">
                     <Row :gutter="32" type="flex" align="middle">
-                        <i-col span="24">
-                                <form-item label="快捷搜索框(jBar)热键:">
+                        <i-col span="17">
+                                <form-item label="快捷搜索框(jBar):">
                                         <checkbox-group v-model="settings.jBar.hotkeys">
                                             <Checkbox label="space">空格</Checkbox>
                                             <Checkbox label="j">j</Checkbox>
@@ -266,6 +266,11 @@
                                             <Checkbox label="esc">ESC</Checkbox>
                                         </checkbox-group>
                                     </form-item>
+                        </i-col>
+                                    <i-col span="6">     
+                                            <form-item label="划词搜索">
+                                            <i-switch v-model="settings.jBar.onSelection"  size="small"/> 
+                                        </form-item>
                             </i-col>
 
                         </Row>
@@ -286,10 +291,12 @@
                         <i-col span="4">列表宽度:</i-col>
                         <i-col span="4">
                                
-                                        <i-input v-model="settings.resultListWidth" number="true" placeholder="" />
+                                        <input-number :max="1000" :min="100" :step="50" v-model="settings.resultListWidth"></input-number>
                                         <input style="display:none;" />
                             </i-col>
-
+                            <i-col span="8">
+                                   
+                            </i-col>
                         </Row>
         
                     </i-form>

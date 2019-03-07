@@ -111,8 +111,10 @@ function jBarToggle(show){
     goSearch();
   });
 
-  /** 
+  /** 划词搜索*/
+
   document.addEventListener('mouseup',function(event){
+    if(!settings.onSelection)return;
     //console.log(event)
     let tagName = (event.target || event.srcElement).tagName;
     if(tagName.isContentEditable ||
@@ -125,7 +127,8 @@ function jBarToggle(show){
         jBarToggle(1);
     }
   });
-*/
+
+
 
   function goSearch(){
     let kw = encodeURIComponent(jBar_input.value);

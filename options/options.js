@@ -39,7 +39,7 @@ var app = new Vue({
             latestVer:'',
         },
         settings:{
-            jBar:{hotkeys:[]},
+            jBar:{hotkeys:[],onSelection:false},
             pageScroll:[],
             resultListWidth:600,
         }
@@ -531,3 +531,4 @@ var aaa = {
 //修复 google 结果展示问题
 //优化 Windows 滚动条样式
 //修复第一页内容高度不够时无法翻页问题；修改主体布局为 flex；
+//新增列表载入动画
