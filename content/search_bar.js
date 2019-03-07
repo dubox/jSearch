@@ -21,6 +21,12 @@ chrome.storage.sync.get('settings', function (items) {
   settings = items.settings.jBar;
 });
 
+
+//runtime
+var runtime = {};
+runtime.isInExtension = isInExtension();
+
+
 jBarEffects();
 var jBar = document.querySelector('#jsearch-bar');
 var jBar_input = document.querySelector('#jsearch-bar input');
@@ -123,7 +129,7 @@ function jBarToggle(show){
 
   function goSearch(){
     let kw = encodeURIComponent(jBar_input.value);
-    if(isInExtension()){
+    if(runtime.isInExtension){
         location.href = chrome.extension.getURL('/options/search.html')+'?#'+kw;
         jBarToggle(0);
     }else

@@ -45,8 +45,8 @@ var app = new Vue({
         }
     },
     computed: {
-        // 仅读取
-        sliderWidth: function () {
+        // 仅读取 已废弃
+        sliderWidth1: function () {
             let sliderWidth = 0;
             for(let i in this.searchData.results)
                 //if (!(this.searchData.results[i].length == 1 && this.searchData.results[i][0] == '') && this.searchData.results[i].length > 0)
@@ -116,7 +116,6 @@ var app = new Vue({
                                 }
                                 axios.get(`https://www.google.com/search?q=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&start=${_this.searchData.pageNums[index]*10}&tbs=${tbs}`)
                                 .then(function (response) {
-                                    console.log(response.data.indexOf('href="/'));
                                     let res_obj = $(response.data.replace(/src="\//g,'src="https://www.google.com/').replace(/href="\//g,'href="https://www.google.com/').replace(/href="https:\/\/www\.google\.com\/search\?q=/g,'href="https://www.google.com/search?o0=o&q=').replace('onload="','ss="')).find('#rso');
                                     let res = res_obj[0].outerHTML;
                                     let text_for_check = $(res).text();
@@ -388,16 +387,17 @@ var app = new Vue({
         }) => {
         })
 
+        //鼠标滚轮横向滚屏
         window.addEventListener('mousewheel', function(e){
             if(!(e.altKey && _this.settings.pageScroll.includes("alt+mw")) && !(e.buttons == 1 && _this.settings.pageScroll.includes("mLeftKey+mw")))return ;
-            let scrollY = $('.content').scrollLeft();
+            let scrollY = $('.slider').scrollLeft();
             if(e.deltaY>0){
                 scrollY-=100;
-                $('.content').scrollLeft(scrollY);
+                $('.slider').scrollLeft(scrollY);
             }
             else{
                 scrollY+=100;
-                $('.content').scrollLeft(scrollY);
+                $('.slider').scrollLeft(scrollY);
             }
             e.preventDefault();
         });
@@ -410,14 +410,14 @@ var app = new Vue({
             tagName == 'SELECT' ||
             tagName == 'TEXTAREA'){return;}
             if(!_this.settings.pageScroll.includes("navKeys"))return;
-            let scrollX = $('.content').scrollLeft();
+            let scrollX = $('.slider').scrollLeft();
              if(handler.key == 'left'){
                 scrollX-=_this.settings.resultListWidth;;
-                $('.content').scrollLeft(scrollX);
+                $('.slider').scrollLeft(scrollX);
             }
             else{
                 scrollX+=_this.settings.resultListWidth;;
-                $('.content').scrollLeft(scrollX);
+                $('.slider').scrollLeft(scrollX);
             }
             event.preventDefault();
         });

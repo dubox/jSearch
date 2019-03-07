@@ -42,6 +42,7 @@
                 transition: all .8s
             }
             .list-over{color:#c5c8ce;}
+            .col .ivu-scroll-content{min-height: 100%;}
 
             .alipay .slid-show{
                 transition: max-height 1s;
@@ -82,7 +83,7 @@
                 left: 0;
                 box-shadow: 0 0 1px rgba(0,0,0,0.25);
                 padding-top: 5px;
-                background: rgba(255,255,255,0.4);
+                background: rgba(255,255,255,0.6);
             }
 
 
@@ -121,7 +122,7 @@
             <div class="content" v-bind:style="{height:clientHeight+'px'}">
                 <div class="slider">
                     <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' }" v-for="(item1, index1) in searchData.models" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
-                        <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight" >
+                        <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight" distance-to-edge="15">
 
                             <Card dis-hover v-for="(item, index) in searchData.results[index1]" :key="index" v-if="item!=''"
                                 style="margin-bottom:5px;overflow: hidden;">
@@ -134,7 +135,7 @@
                             </Alert>
 
                         </Scroll>
-                        <Scroll v-if="item1.type=='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight">
+                        <Scroll v-if="item1.type=='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight" distance-to-edge="15">
 
                             <Card dis-hover style="margin-bottom:5px;">
                                 <div class="result c-container " v-for="(item, index) in searchData.results[index1]"
