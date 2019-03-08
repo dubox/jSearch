@@ -19,8 +19,8 @@
     <style>
 
 
-           
-            .content{
+
+        .content{
                 width: 100%;
                 height: 500px;
                 overflow: hidden;
@@ -123,22 +123,26 @@
 
                     <i-col span="1">
                         <i-button type="text" shape="circle" @click="drawer.show = true" style="background:none;box-shadow:none;">
-                                <Badge :text="version.notice"><Icon type="ios-cog-outline" :size='30' /></Badge>
+                            <Badge :text="version.notice">
+                                <Icon type="ios-cog-outline" :size='30' />
+                            </Badge>
                         </i-button>
                     </i-col>
                     <i-col span="1" style="text-align:center;"><a href="https://github.com/dubox/jSearch" target="_blank">
-                        <Icon type="logo-github" :size='30' />
+                            <Icon type="logo-github" :size='30' />
                         </a></i-col>
                 </Row>
 
             </i-header>
 
             <div class="content" v-bind:style="{height:clientHeight+'px'}">
-                
-                        <transition-group name="slide-list"  class="slider" tag="div">
-                    <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' }" v-for="(item1, index1) in searchData.models" :key="item1" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
-                            
-                        <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight" distance-to-edge="15">
+
+                <transition-group name="slide-list" class="slider" tag="div">
+                    <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' }" v-for="(item1, index1) in searchData.models"
+                        :key="item1" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
+
+                        <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight"
+                            distance-to-edge="15">
 
                             <Card dis-hover v-for="(item, index) in searchData.results[index1]" :key="index" v-if="item!=''"
                                 style="margin-bottom:5px;overflow: hidden;">
@@ -151,7 +155,8 @@
                             </Alert>
 
                         </Scroll>
-                        <Scroll v-if="item1.type=='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight" distance-to-edge="15">
+                        <Scroll v-if="item1.type=='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight"
+                            distance-to-edge="15">
 
                             <Card dis-hover style="margin-bottom:5px;">
                                 <div class="result c-container " v-for="(item, index) in searchData.results[index1]"
@@ -171,7 +176,7 @@
                             </Card>
                             <Alert class="opacity-7" type="warning">No more ...</Alert>
                         </Scroll>
-                        
+
                     </div>
                 </transition-group>
 
@@ -182,18 +187,18 @@
 
 
         <Drawer title="Settings" v-model="drawer.show" width="550" :mask-closable="true" :styles="drawer.styles">
-                <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">版本信息</Divider>
-                <Row type="flex">
-                        <i-col span="2"></i-col>
-                        <i-col span="22">
-                            <span>当前版本：v{{version.localVer}}</span>
-                            <span style="color:coral;" v-if="version.localVer==version.latestVer">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;已是最新版</span>
-                            <span style="color:coral;" v-if="version.notice=='new'">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;发现新版本：<a href="https://github.com/dubox/jSearch/releases" target="_blank">v{{version.latestVer}}</a></span>
-                        </i-col>
-                </Row>
-                <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">配置站点</Divider>
+            <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">版本信息</Divider>
+            <Row type="flex">
+                <i-col span="2"></i-col>
+                <i-col span="22">
+                    <span>当前版本：v{{version.localVer}}</span>
+                    <span style="color:coral;" v-if="version.localVer==version.latestVer">
+                        &nbsp;&nbsp;&nbsp;&nbsp;已是最新版</span>
+                    <span style="color:coral;" v-if="version.notice=='new'">
+                        &nbsp;&nbsp;&nbsp;&nbsp;发现新版本：<a href="https://github.com/dubox/jSearch/releases" target="_blank">v{{version.latestVer}}</a></span>
+                </i-col>
+            </Row>
+            <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">配置站点</Divider>
             <i-form :model="searchData.models">
 
                 <Row :gutter="32" type="flex" align="middle" v-for="(item, index) in searchData.models" v-dragging="{ item: item, list: searchData.models, group: 'models'}"
@@ -203,6 +208,7 @@
                             <i-select v-model="item.type" placeholder="搜索引擎" :disabled="!item.canEdit">
                                 <i-option value="baidu">百度</i-option>
                                 <i-option value="google">谷歌</i-option>
+                                <i-option value="bing">bing国际版</i-option>
                                 <i-option v-if="item.type == 'bookmarks'" value="bookmarks">书签&浏览历史</i-option>
                                 <i-option v-if="item.type == 'weixin' && item.symbol=='1'" value="weixin">公众号</i-option>
                                 <i-option v-if="item.type == 'weixin' && item.symbol=='2'" value="weixin">公众号文章</i-option>
@@ -225,7 +231,7 @@
                 </Row>
 
             </i-form>
-           
+
             <i-form :model="settingFormData">
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="6">
@@ -233,13 +239,14 @@
                             <i-select v-model="settingFormData.type" placeholder="please choose the type">
                                 <i-option value="baidu">百度</i-option>
                                 <i-option value="google">谷歌</i-option>
+                                <i-option value="bing">bing国际版</i-option>
                             </i-select>
                         </form-item>
                     </i-col>
                     <i-col span="14">
                         <form-item>
                             <i-input v-model="settingFormData.scope" placeholder="输入想要搜索的网站域名或一个Url" />
-                            
+
                         </form-item>
                         <input style="display:none;" />
                     </i-col>
@@ -255,52 +262,52 @@
             </i-form>
             <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">通用设置</Divider>
             <i-form :model="settingFormData">
-                    <Row :gutter="32" type="flex" align="middle">
-                        <i-col span="17">
-                                <form-item label="快捷搜索框(jBar):">
-                                        <checkbox-group v-model="settings.jBar.hotkeys">
-                                            <Checkbox label="space">空格</Checkbox>
-                                            <Checkbox label="j">j</Checkbox>
-                                            <Checkbox label="ctrl+j">Ctrl+j</Checkbox>
-                                            <Checkbox label="tab">Tab</Checkbox>
-                                            <Checkbox label="esc">ESC</Checkbox>
-                                        </checkbox-group>
-                                    </form-item>
-                        </i-col>
-                                    <i-col span="6">     
-                                            <form-item label="划词搜索">
-                                            <i-switch v-model="settings.jBar.onSelection"  size="small"/> 
-                                        </form-item>
-                            </i-col>
+                <Row :gutter="32" type="flex" align="middle">
+                    <i-col span="17">
+                        <form-item label="快捷搜索框(jBar):">
+                            <checkbox-group v-model="settings.jBar.hotkeys">
+                                <Checkbox label="space">空格</Checkbox>
+                                <Checkbox label="j">j</Checkbox>
+                                <Checkbox label="ctrl+j">Ctrl+j</Checkbox>
+                                <Checkbox label="tab">Tab</Checkbox>
+                                <Checkbox label="esc">ESC</Checkbox>
+                            </checkbox-group>
+                        </form-item>
+                    </i-col>
+                    <i-col span="6">
+                        <form-item label="划词搜索">
+                            <i-switch v-model="settings.jBar.onSelection" size="small" />
+                        </form-item>
+                    </i-col>
 
-                        </Row>
-                    <Row :gutter="32" type="flex" align="middle">
-                        <i-col span="24">
-                                <form-item label="页面横向滚动方案:">
-                                        <checkbox-group v-model="settings.pageScroll">
-                                            <Checkbox label="alt+mw">Alt+滚轮</Checkbox>
-                                            <Checkbox label="mLeftKey+mw">鼠标左键+滚轮</Checkbox>
-                                            <Checkbox label="navKeys">左右方向键</Checkbox>
-                                            
-                                        </checkbox-group>
-                                    </form-item>
-                            </i-col>
+                </Row>
+                <Row :gutter="32" type="flex" align="middle">
+                    <i-col span="24">
+                        <form-item label="页面横向滚动方案:">
+                            <checkbox-group v-model="settings.pageScroll">
+                                <Checkbox label="alt+mw">Alt+滚轮</Checkbox>
+                                <Checkbox label="mLeftKey+mw">鼠标左键+滚轮</Checkbox>
+                                <Checkbox label="navKeys">左右方向键</Checkbox>
 
-                        </Row>
-                    <Row :gutter="32" type="flex" align="middle">
-                        <i-col span="4">列表宽度:</i-col>
-                        <i-col span="4">
-                               
-                                        <input-number :max="1000" :min="100" :step="50" v-model="settings.resultListWidth"></input-number>
-                                        <input style="display:none;" />
-                            </i-col>
-                            <i-col span="8">
-                                   
-                            </i-col>
-                        </Row>
-        
-                    </i-form>
-            <div class="drawer-footer" >
+                            </checkbox-group>
+                        </form-item>
+                    </i-col>
+
+                </Row>
+                <Row :gutter="32" type="flex" align="middle">
+                    <i-col span="4">列表宽度:</i-col>
+                    <i-col span="4">
+
+                        <input-number :max="1000" :min="100" :step="50" v-model="settings.resultListWidth"></input-number>
+                        <input style="display:none;" />
+                    </i-col>
+                    <i-col span="8">
+
+                    </i-col>
+                </Row>
+
+            </i-form>
+            <div class="drawer-footer">
 
                 <Card style="width:50%;float: right;margin-right: 5px;" class="alipay">
                     <img src="../public/imgs/alipay.png" width="100%" class="slid-show">

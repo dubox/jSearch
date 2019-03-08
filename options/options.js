@@ -2,7 +2,7 @@ Vue.use(VueDND);
 var app = new Vue({
     el: '#app',
     data: {
-        isInit:false,   //是否完成初始化
+        isInit: false, //是否完成初始化
         //sliderWidth: 0,
         searchInputValue: '',
         searchData: {
@@ -11,7 +11,7 @@ var app = new Vue({
             results: [], //搜索结果
             pageNums: [] //搜索结果
         },
-        clientHeight:500,
+        clientHeight: 500,
 
         settingFormData: {
             type: 'baidu',
@@ -33,27 +33,30 @@ var app = new Vue({
             itemDraggable: true
 
         },
-        version:{
-            notice:'',
-            localVer:'',
-            latestVer:'',
+        version: {
+            notice: '',
+            localVer: '',
+            latestVer: '',
         },
-        settings:{
-            jBar:{hotkeys:[],onSelection:false},
-            pageScroll:[],
-            resultListWidth:600,
+        settings: {
+            jBar: {
+                hotkeys: [],
+                onSelection: false
+            },
+            pageScroll: [],
+            resultListWidth: 600,
         }
     },
     computed: {
         // 仅读取 已废弃
         sliderWidth1: function () {
             let sliderWidth = 0;
-            for(let i in this.searchData.results)
+            for (let i in this.searchData.results)
                 //if (!(this.searchData.results[i].length == 1 && this.searchData.results[i][0] == '') && this.searchData.results[i].length > 0)
                 if (this.searchData.results[i].length > 0 && this.searchData.results[i][0] != '')
                     sliderWidth += this.settings.resultListWidth;
 
-          return sliderWidth;
+            return sliderWidth;
         },
     },
     methods: {
@@ -74,16 +77,16 @@ var app = new Vue({
                                     return false;
                                 }
                                 let gpc = '';
-                                if(_this.searchData.keyword == ''){
+                                if (_this.searchData.keyword == '') {
                                     //当搜索词为空时 搜索最近一天的内容，主要针对 site 站点
-                                    let now = parseInt((new Date()).getTime()/1000);
-                                     gpc = encodeURIComponent(`stf=${now-86400},${now}|stftype=1`);
+                                    let now = parseInt((new Date()).getTime() / 1000);
+                                    gpc = encodeURIComponent(`stf=${now-86400},${now}|stftype=1`);
                                 }
-                                axios.get(`https://www.baidu.com/s?wd=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&pn=${_this.searchData.pageNums[index]*10}&gpc=${gpc}`).then( function (response) {
+                                axios.get(`https://www.baidu.com/s?wd=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&pn=${_this.searchData.pageNums[index]*10}&gpc=${gpc}`).then(function (response) {
                                     //console.log(data);
-                                    let res_obj = $(response.data.replace(/src="\//g,'src="https://www.baidu.com/')).find('#content_left');
+                                    let res_obj = $(response.data.replace(/src="\//g, 'src="https://www.baidu.com/')).find('#content_left');
                                     res_obj.children().not('.c-container').remove();
-                                    let res = res_obj.html();
+                                    let res = res_obj[0].outerHTML;
                                     let text_for_check = $(res).text(); //将字符串再次转换为对象又转为字符串  会经过一次格式化 这样得到的字符串才是稳定的，才能用于比较
                                     //console.log(res);
                                     //console.log($(_this.searchData.results[index][_this.searchData.results[index].length-1]).text());
@@ -103,20 +106,59 @@ var app = new Vue({
                                 });
                                 break;
                             }
-                            case 'google':
+                        case 'google':
                             {
                                 if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
                                     resolve();
                                     return false;
                                 }
                                 let tbs = '';
-                                if(_this.searchData.keyword == ''){
+                                if (_this.searchData.keyword == '') {
                                     //当搜索词为空时 搜索最近一天的内容，主要针对 site 站点
                                     tbs = 'qdr:d';
                                 }
                                 axios.get(`https://www.google.com/search?q=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&start=${_this.searchData.pageNums[index]*10}&tbs=${tbs}`)
                                 .then(function (response) {
-                                    let res_obj = $(response.data.replace(/src="\//g,'src="https://www.google.com/').replace(/href="\//g,'href="https://www.google.com/').replace(/href="https:\/\/www\.google\.com\/search\?q=/g,'href="https://www.google.com/search?o0=o&q=').replace('onload="','ss="')).find('#rso');
+                                    let res_obj = $(response.data.replace(/src="\//g, 'src="https://www.google.com/').replace(/href="\//g, 'href="https://www.google.com/').replace(/href="https:\/\/www\.google\.com\/search\?q=/g, 'href="https://www.google.com/search?o0=o&q=').replace('onload="', 'ss="')).find('#rso');
+                                    let res = res_obj[0].outerHTML;
+                                    let text_for_check = $(res).text();
+                                    if ($(_this.searchData.results[index][_this.searchData.results[index].length - 1]).text() == text_for_check) {
+                                        _this.searchData.results[index].push('');
+                                    } else if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
+
+                                    } else {
+                                        _this.searchData.results[index].push(res);
+                                        _this.searchData.pageNums[index]++;
+                                    }
+                                    resolve();
+                                }).catch(function (error) {
+                                    console.log(error);
+                                    resolve();
+                                });
+                                break;
+                            }
+                        case 'bing':
+                            {
+                                if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
+                                    resolve();
+                                    return false;
+                                }
+                                let filters = '';
+                                if (_this.searchData.keyword == '') {
+                                    //当搜索词为空时 搜索最近一天的内容，主要针对 site 站点
+                                    filters = 'ex1:"ez1"';
+                                }
+                                axios.get(`https://cn.bing.com/search?q=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&first=${_this.searchData.pageNums[index]*10+1}&filters=${filters}`)
+                                .then(function (response) {
+                                    let res_obj = $(response.data.replace(/src="\//g, 'src="https://cn.bing.com/')).find('#b_results');
+                                    res_obj.children(`:gt(${res_obj.children().length-4})`).remove();
+                                    res_obj.find('img').each(function () {
+                                        let src= $(this).attr('data-src-hq');
+                                        if(!src)return;
+                                        if(src.indexOf('/')===0)
+                                        src = 'https://cn.bing.com'+src;
+                                        $(this).attr('src', src);
+                                    });
                                     let res = res_obj[0].outerHTML;
                                     let text_for_check = $(res).text();
                                     if ($(_this.searchData.results[index][_this.searchData.results[index].length - 1]).text() == text_for_check) {
@@ -235,7 +277,7 @@ var app = new Vue({
                                 });
                                 break;
                             }
-                        
+
                         default:
                             null;
                     }
@@ -246,7 +288,7 @@ var app = new Vue({
             this.settingFormData.scope = this.settingFormData.scope.trim().replace(/^(http[s]?:\/\/)|(\/)$/, function (match) {
                 return '';
             });
-            if (this.settingFormData.scope.indexOf('/') > -1 && this.settingFormData.type != 'google')
+            if (this.settingFormData.scope.indexOf('/') > -1 && this.settingFormData.type == 'baidu')
                 this.settingFormData.symbol = 'inurl:';
             else
                 this.settingFormData.symbol = 'site:';
@@ -289,7 +331,7 @@ var app = new Vue({
             chrome.storage.sync.getBytesInUse('searchModels', function (size) {
                 console.log(size);
             });
-            
+
 
             _this.checkUpdate();
 
@@ -299,7 +341,7 @@ var app = new Vue({
             //_this.doSearch();
         },
         doSearch() {
-            console.log('doSearch:'+this.searchData.keyword);
+            console.log('doSearch:' + this.searchData.keyword);
             this.sliderWidth = 0;
             for (let i in this.searchData.models) {
 
@@ -310,11 +352,11 @@ var app = new Vue({
                     continue;
                 }
                 var _this = this;
-                if(this.searchData.models[i].type=='weixin' && this.searchData.models[i].symbol==1){
-                    setTimeout(function(){ //延迟执行微信公众号搜索，试图解决因被服务器察觉而需要输入验证码的情况
+                if (this.searchData.models[i].type == 'weixin' && this.searchData.models[i].symbol == 1) {
+                    setTimeout(function () { //延迟执行微信公众号搜索，试图解决因被服务器察觉而需要输入验证码的情况
                         _this.handleReachBottom(i)();
-                    },2000);
-                }else{
+                    }, 2000);
+                } else {
                     this.handleReachBottom(i)();
                 }
 
@@ -329,15 +371,15 @@ var app = new Vue({
             this.searchInputValue = this.searchData.keyword;
             jBar.setKeyword(this.searchInputValue);
         },
-        checkUpdate(){
+        checkUpdate() {
             var _this = this;
             _this.version.localVer = chrome.runtime.getManifest().version;
-            axios.get('http://gitee.jsearch.site/manifest.json?r='+Math.random()).then(function(resp){
+            axios.get('http://gitee.jsearch.site/manifest.json?r=' + Math.random()).then(function (resp) {
                 //console.log(resp);
-                
+
                 _this.version.latestVer = resp.data.version;
-                if(_this.version.localVer != _this.version.latestVer){
-                    console.log('new version:'+_this.version.latestVer)
+                if (_this.version.localVer != _this.version.latestVer) {
+                    console.log('new version:' + _this.version.latestVer)
                     _this.version.notice = 'new';
                 }
             });
@@ -384,39 +426,38 @@ var app = new Vue({
         //拖拽排序
         this.$dragging.$on('dragged', ({
             value
-        }) => {
-        })
+        }) => {})
 
         //鼠标滚轮横向滚屏
-        window.addEventListener('mousewheel', function(e){
-            if(!(e.altKey && _this.settings.pageScroll.includes("alt+mw")) && !(e.buttons == 1 && _this.settings.pageScroll.includes("mLeftKey+mw")))return ;
+        window.addEventListener('mousewheel', function (e) {
+            if (!(e.altKey && _this.settings.pageScroll.includes("alt+mw")) && !(e.buttons == 1 && _this.settings.pageScroll.includes("mLeftKey+mw"))) return;
             let scrollY = $('.slider').scrollLeft();
-            if(e.deltaY<0){
-                scrollY-=100;
+            if (e.deltaY < 0) {
+                scrollY -= 100;
                 $('.slider').scrollLeft(scrollY);
-            }
-            else{
-                scrollY+=100;
+            } else {
+                scrollY += 100;
                 $('.slider').scrollLeft(scrollY);
             }
             e.preventDefault();
         });
 
         //左右方向键 横向滚屏
-        hotkeys('left,right', function(event, handler){ 
+        hotkeys('left,right', function (event, handler) {
             let tagName = (event.target || event.srcElement).tagName;
-            if(tagName.isContentEditable ||
-            tagName == 'INPUT' ||
-            tagName == 'SELECT' ||
-            tagName == 'TEXTAREA'){return;}
-            if(!_this.settings.pageScroll.includes("navKeys"))return;
-            let scrollX = $('.slider').scrollLeft();
-             if(handler.key == 'left'){
-                scrollX-=_this.settings.resultListWidth;;
-                $('.slider').scrollLeft(scrollX);
+            if (tagName.isContentEditable ||
+                tagName == 'INPUT' ||
+                tagName == 'SELECT' ||
+                tagName == 'TEXTAREA') {
+                return;
             }
-            else{
-                scrollX+=_this.settings.resultListWidth;;
+            if (!_this.settings.pageScroll.includes("navKeys")) return;
+            let scrollX = $('.slider').scrollLeft();
+            if (handler.key == 'left') {
+                scrollX -= _this.settings.resultListWidth;;
+                $('.slider').scrollLeft(scrollX);
+            } else {
+                scrollX += _this.settings.resultListWidth;;
                 $('.slider').scrollLeft(scrollX);
             }
             event.preventDefault();
@@ -454,7 +495,7 @@ var app = new Vue({
             },
             deep: true
         },
-        'settings':{
+        'settings': {
             handler(newVal) {
                 chrome.storage.sync.set({
                     settings: this.settings
@@ -463,7 +504,7 @@ var app = new Vue({
             },
             deep: true
         },
-        
+
 
     },
     directives: {

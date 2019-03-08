@@ -1,4 +1,4 @@
-function jBar(){
+function jBar() {
 
   let jBarHtml = `<div id="jsearch-bar">
 <div class="jbar-input">
@@ -11,80 +11,84 @@ function jBar(){
 </div>
 </div>`;
 
-document.querySelector('body').appendChild(parseDom(jBarHtml)[0]);
+  document.querySelector('body').appendChild(parseDom(jBarHtml)[0]);
 
 
-//加载设置
-let settings = {};
-chrome.storage.sync.get('settings', function (items) {
-  //console.log(items);
-  settings = items.settings.jBar;
-});
+  //加载设置
+  let settings = {};
+  chrome.storage.sync.get('settings', function (items) {
+    //console.log(items);
+    settings = items.settings.jBar;
+  });
 
 
-//runtime
-var runtime = {};
-runtime.isInExtension = isInExtension();
+  //runtime
+  var runtime = {};
+  runtime.isInExtension = isInExtension();
 
 
-jBarEffects();
-var jBar = document.querySelector('#jsearch-bar');
-var jBar_input = document.querySelector('#jsearch-bar input');
+  jBarEffects();
+  var jBar = document.querySelector('#jsearch-bar');
+  var jBar_input = document.querySelector('#jsearch-bar input');
 
-hotkeys('j,space,ctrl+j,esc,tab', function(event, handler) {
-    
-  if(!checkKey(handler.key))return;
+  hotkeys('j,space,ctrl+j,esc,tab', function (event, handler) {
+
+    if (!checkKey(handler.key)) return;
 
     //ecs 和 tab 只做退出操作
-    if(handler.key == 'esc' || handler.key == 'tab'){
-        if(jBar.classList.contains('jBar-show')){
+    if (handler.key == 'esc' || handler.key == 'tab') {
+      if (jBar.classList.contains('jBar-show')) {
         jBarToggle(0);
         return false;
-        }else{return ;}
+      } else {
+        return;
+      }
     }
 
-    if(handler.key == 'space' && checkKey('space')){
-        //当前焦点在搜索框 去搜索框无任何内容时 按空格可退出搜索
-        if(jBar.classList.contains('jBar-show')){
-            if(jBar_input.value == ''){
-            jBarToggle(0);
-            return false;
-            }else{return ;}
+    if (handler.key == 'space' && checkKey('space')) {
+      //当前焦点在搜索框 去搜索框无任何内容时 按空格可退出搜索
+      if (jBar.classList.contains('jBar-show')) {
+        if (jBar_input.value == '') {
+          jBarToggle(0);
+          return false;
+        } else {
+          return;
         }
+      }
     }
 
     //识别当前是否在可编辑区域，在可编辑区域 只能由 ctrl+j 唤醒编辑框
     let tagName = (event.target || event.srcElement).tagName;
-    if(tagName.isContentEditable ||
-    tagName == 'INPUT' ||
-    tagName == 'SELECT' ||
-    tagName == 'TEXTAREA'){
-        if(handler.key == 'ctrl+j'){
-            jBarToggle();
-        }
-        return ;
+    if (tagName.isContentEditable ||
+      tagName == 'INPUT' ||
+      tagName == 'SELECT' ||
+      tagName == 'TEXTAREA') {
+      if (handler.key == 'ctrl+j') {
+        jBarToggle();
+      }
+      return;
     }
 
     jBarToggle();
     return false;
-});
+  });
 
-function jBarToggle(show){
+  function jBarToggle(show) {
     show = show || 2;
 
-    if((jBar.classList.contains('jBar-show') && show == 2) || show == 0){
-        jBar_input.blur();
-    }else{
-    
-        jBar_input.focus();
+    if ((jBar.classList.contains('jBar-show') && show == 2) || show == 0) {
+      jBar_input.blur();
+    } else {
+
+      jBar_input.focus();
     }
-}
+  }
 
 
-/**
- * 不过滤可编辑元素
- */
-  hotkeys.filter = function(event) {
+  /**
+   * 不过滤可编辑元素
+   */
+  hotkeys.filter = function (event) {
     return true;
   }
 
@@ -92,69 +96,71 @@ function jBarToggle(show){
 
 
 
-  jBar_input.addEventListener('blur',function(){
+  jBar_input.addEventListener('blur', function () {
     window.getSelection().empty();
     jBar.classList.remove('jBar-show');
   });
 
-  jBar_input.addEventListener('focus',function(){
+  jBar_input.addEventListener('focus', function () {
     this.select();
     jBar.classList.add('jBar-show');
   });
 
-  hotkeys('enter', function(){ 
-      if(jBar.classList.contains('jBar-show'))
-        goSearch();
+  hotkeys('enter', function () {
+    if (jBar.classList.contains('jBar-show'))
+      goSearch();
   });
-  
-  document.querySelector('#jsearch-bar #jbar-logo').addEventListener('mousedown',function(){
+
+  document.querySelector('#jsearch-bar #jbar-logo').addEventListener('mousedown', function () {
     goSearch();
   });
 
   /** 划词搜索*/
 
-  document.addEventListener('mouseup',function(event){
-    if(!settings.onSelection)return;
+  document.addEventListener('mouseup', function (event) {
+    if (!settings.onSelection) return;
     //console.log(event)
     let tagName = (event.target || event.srcElement).tagName;
-    if(tagName.isContentEditable ||
-        tagName == 'INPUT' ||
-        tagName == 'SELECT' ||
-        tagName == 'TEXTAREA'){return;}
-    let sel_text = window.getSelection().toString(); 
-    if(!/\n/.test(sel_text) && sel_text.length>0 && sel_text.length<30){
-        jBar_input.value = sel_text;
-        jBarToggle(1);
+    if (tagName.isContentEditable ||
+      tagName == 'INPUT' ||
+      tagName == 'SELECT' ||
+      tagName == 'TEXTAREA') {
+      return;
+    }
+    let sel_text = window.getSelection().toString();
+    if (!/\n/.test(sel_text) && sel_text.length > 0 && sel_text.length < 30) {
+      jBar_input.value = sel_text;
+      jBarToggle(1);
     }
   });
 
 
 
-  function goSearch(){
+  function goSearch() {
     //
     let kw = encodeURIComponent(jBar_input.value);
-    if(runtime.isInExtension){
-        location.href = chrome.extension.getURL('/options/search.html')+'?#'+kw;
-        jBarToggle(0);
-    }else{
+    if (runtime.isInExtension) {
+      location.href = chrome.extension.getURL('/options/search.html') + '?#' + kw;
+      jBarToggle(0);
+    } else {
       jBar_input.blur();
       window.open(`http://chrome.jsearch.site/?q=${kw}`);
     }
-        
+
   }
 
 
-  this.setKeyword = function(kw){
-      jBar_input.value = kw;
+  this.setKeyword = function (kw) {
+    jBar_input.value = kw;
   }
-  this.setSettings = function(obj){
+  this.setSettings = function (obj) {
     settings = obj;
   }
 
 
-  function checkKey(keyItem){
+  function checkKey(keyItem) {
     return settings.hotkeys.includes(keyItem);
   }
-  
+
 
 }
