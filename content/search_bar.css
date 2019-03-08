@@ -34,6 +34,10 @@
     caret-color:#0092ff;
     box-sizing: border-box;
   }
+  #jsearch-bar input::selection{
+    background:rgb(219, 232, 255);
+    color: rgb(32, 32, 32);
+  }
   
   #jsearch-bar {
     display: -webkit-box;

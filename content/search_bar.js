@@ -79,7 +79,10 @@ function jBar() {
     if ((jBar.classList.contains('jBar-show') && show == 2) || show == 0) {
       jBar_input.blur();
     } else {
-
+      let sel_text = window.getSelection().toString();
+      if (!/\n/.test(sel_text) && sel_text.length > 0 && sel_text.length < 30) {
+        jBar_input.value = sel_text;
+      }
       jBar_input.focus();
     }
   }
@@ -116,7 +119,6 @@ function jBar() {
   });
 
   /** 划词搜索*/
-
   document.addEventListener('mouseup', function (event) {
     if (!settings.onSelection) return;
     //console.log(event)
@@ -129,7 +131,7 @@ function jBar() {
     }
     let sel_text = window.getSelection().toString();
     if (!/\n/.test(sel_text) && sel_text.length > 0 && sel_text.length < 30) {
-      jBar_input.value = sel_text;
+      //jBar_input.value = sel_text;
       jBarToggle(1);
     }
   });

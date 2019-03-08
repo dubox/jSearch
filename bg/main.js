@@ -127,7 +127,7 @@ chrome.runtime.onInstalled.addListener(details => {
     if (details.reason === 'update') {
         // 更新事件
         //alert('update');
-        chrome.storage.sync.get('searchModels', function (items) {
+        chrome.storage.sync.get(null, function (items) {
             if (typeof items.searchModels != 'undefined') {
                 //合并配置
                 for (let i in defaultSettings.searchModels) {
@@ -162,7 +162,7 @@ chrome.runtime.onInstalled.addListener(details => {
                 function trans(from, to) {
                     for (let i in from) {
                         if (typeof to[i] == 'undefined') {
-                            items.settings[i] = from[i];
+                            to[i] = from[i];
                             continue;
                         }
                         if (typeof from[i] == typeof {}) {
@@ -170,9 +170,8 @@ chrome.runtime.onInstalled.addListener(details => {
                         }
                     }
                 }
-
                 trans(defaultSettings.settings, items.settings);
-
+                
             } else {
                 //设置初始配置
                 items.settings = defaultSettings.settings;
