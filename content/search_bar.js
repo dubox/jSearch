@@ -115,7 +115,10 @@ function jBar() {
   });
 
   document.querySelector('#jsearch-bar #jbar-logo').addEventListener('mousedown', function () {
-    goSearch();
+    if (runtime.isInExtension)
+      app.drawer.show = true;
+    else
+      goSearch();
   });
 
   /** 划词搜索*/

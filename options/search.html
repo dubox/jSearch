@@ -18,12 +18,46 @@
     <script type="text/javascript" src="../public/iview.min.js"></script>
     <style>
 
-
+        html,body{
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
 
         .content{
                 width: 100%;
                 height: 500px;
                 overflow: hidden;
+                position: fixed;
+                background-color: rgba(255, 255, 255, 0.6);
+            }
+            .content::before{
+                content: ' just Search it';
+                text-align: center;
+                width: 100%;
+                line-height: 100%;
+                display: block;
+                top: 67%;
+                font-size: 53px;
+                font-family: fantasy,monospace;
+                position: fixed;
+                color: black;
+                filter: blur(2px);
+            }
+            
+            .layout::before{
+                background: url('/public/jsearch-logo.svg') no-repeat center 100px;
+                
+                background-size: auto 50%;
+                width: 100%;
+                height: 100%;
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 0; /*z-index 设为 -1时 父元素必须绝对定位，只在这框架里有此问题，不知是 vue 的锅还是 iview 的；*/
+                filter: blur(10px);
             }
             .slider{
                 overflow-x: auto;
@@ -36,14 +70,16 @@
                 height: 100%;
                 width: 600px;
                 float: left;
-                padding: 0 0 0 5px;
+                padding: 0 2px 0 2px;
                 flex-shrink: 0;
                 flex-grow:1;
                 transition: all .8s
             }
             .list-over{color:#c5c8ce;}
             .col .ivu-scroll-content{min-height: 100%;}/*解决第一页高度不够无法翻页问题*/
-
+            .ivu-card{
+                background-color: rgba(255, 255, 255, 0.9);
+            }
             .alipay .slid-show{
                 transition: max-height 1s;
                 max-height:0px;
@@ -70,7 +106,7 @@
             .down{top:0;}
             .top_area{
                 width: 100%;
-                height: 30px;
+                height: 20px;
                 position: fixed;
                 z-index: 900;
             }
@@ -108,7 +144,7 @@
 
     <div id="app">
 
-        <Layout>
+        <Layout class="layout">
             <div class="top_area"></div>
             <i-header class="header_bar">
                 <Row type="flex" align="middle" class="opacity-7">

@@ -4,6 +4,29 @@
 
 </head>
 <body>
+<style>
+        .demo1{
+            width: 500px;
+            height: 300px;
+            line-height: 50px;
+            text-align: center;
+        }
+        .demo1:before{
+            background: url(http://csssecrets.io/images/tiger.jpg) no-repeat;
+            background-size: cover;
+            width: 500px;
+            height: 300px;
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;/*-1 可以当背景*/
+            -webkit-filter: blur(3px);
+            filter: blur(3px);
+        }</style>
+        <div class="demo1">背景图半透明，文字不透明<br />方法：背景图+ filter：blur</div>
+
+
 <div id="jsearch-bar">
     <div class="jbar-input">
     <input type="text" placeholder="jSearch" />
