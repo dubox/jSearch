@@ -135,14 +135,16 @@
   transform: translateX(10px);
   opacity: 0;
 }
-
+[v-cloak]{
+        display : none;
+}
 
     </style>
 </head>
 
 <body>
 
-    <div id="app">
+    <div id="app" v-cloak>
 
         <Layout class="layout">
             <div class="top_area"></div>

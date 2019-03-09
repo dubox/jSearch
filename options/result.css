@@ -121,7 +121,7 @@ div.op-img-address-divide-high {
 .op_express_delivery_container {
     display: none;
 }
-
+.op_stockweakdemand_info ul{display: flex;}
 /*baidu css*/
 
 /*weixin css*/
@@ -492,7 +492,26 @@ div.op-img-address-divide-high {
     -webkit-box-orient: vertical;
     white-space: normal;
 }
-
+.OiIFo {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: rgba(0,0,0,.62);
+}
+.oPhL2e {
+    display: inline-block;
+}
+.qFiidc {
+    font-size: 12px;
+    color: rgba(0,0,0,.62);
+}
+#knowledge-finance-wholepage__entity-summary .cQv6re,#knowledge-finance-wholepage__entity-summary .ULCHyb{display: none;}
+#knowledge-finance-wholepage__entity-summary .ZSM8k {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 400;
+    vertical-align: top;
+    width: 50%;
+}
 /*google css*/
 
 /*bing*/
@@ -851,4 +870,24 @@ div.op-img-address-divide-high {
     display: inline;
 }
 #b_results .b_deep ul{width: 46%;}
+#b_results .fin_topHeader h2 {
+    flex: 1 1 auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 1.3em;
+}
+#b_results .actionmenu{display: none;}
+#b_results .b_focusTextMedium {
+    font-size: 40px;
+}
+#b_results #financeAnswer span.b_posText, .fin_card_thresh span.b_posText, span.b_posText, div.b_posText {
+    fill: #006d21;
+    color: #006d21;
+}
+#b_results #StockNews{display: none;}
+#b_results .fin_graph{display: none;}
+#b_results .fin_dtrow{display: flex;}
+#b_results .b_vlist2col{display: flex;}
+#b_results .b_externalSearch{display: none;}
 /*bing*/
