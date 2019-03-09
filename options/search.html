@@ -332,13 +332,14 @@
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="4">列表宽度:</i-col>
-                    <i-col span="4">
+                    <i-col span="5">
 
                         <input-number :max="1000" :min="100" :step="50" v-model="settings.resultListWidth"></input-number>
                         <input style="display:none;" />
                     </i-col>
-                    <i-col span="8">
-
+                    <i-col span="7">
+                        顶部搜索条：
+                            <i-switch v-model="settings.showHeadBar" size="small" />
                     </i-col>
                 </Row>
 

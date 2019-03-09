@@ -116,7 +116,8 @@ chrome.runtime.onInstalled.addListener(details => {
                 onSelection: false
             },
             pageScroll: ['navKeys', 'mLeftKey+mw', 'alt+mw'],
-            resultListWidth: 600
+            resultListWidth: 600,
+            showHeadBar:true,
         }
     };
     if (details.reason === 'install') {

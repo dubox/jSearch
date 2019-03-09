@@ -45,6 +45,7 @@ var app = new Vue({
             },
             pageScroll: [],
             resultListWidth: 600,
+            showHeadBar:true,
         }
     },
     computed: {
@@ -406,6 +407,7 @@ var app = new Vue({
 
         //顶部感应区，触发显示 header-bar
         document.querySelector('.top_area').addEventListener('mouseenter', function () {
+            if(!_this.settings.showHeadBar)return;
             let h_bar = document.querySelector('.header_bar');
             h_bar.classList.add('down');
             //h_bar.focus();
@@ -418,9 +420,12 @@ var app = new Vue({
             h_bar.classList.remove('down');
         });
         document.querySelector('.content').addEventListener('click', function () {
-            document.querySelector('.header_bar input').blur();
             let h_bar = document.querySelector('.header_bar');
+            if(h_bar.classList.contains('down')){
+            document.querySelector('.header_bar input').blur();
+            
             h_bar.classList.remove('down');
+            }
         });
 
         //拖拽排序
