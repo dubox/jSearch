@@ -82,7 +82,7 @@ function jBar() {
       jBar_input.blur();
     } else {
 
-      loadSettings();//更新设置
+      //loadSettings();//更新设置
       let sel_text = window.getSelection().toString();
       if (!/\n/.test(sel_text) && sel_text.length > 0 && sel_text.length < 30) {
         jBar_input.value = sel_text;

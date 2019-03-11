@@ -53,6 +53,12 @@
         }
     ],
     "options_page": "options/search.html",
+
+    "browser_action": {
+     
+      "default_title": "jSearch(聚搜)",      
+      "default_popup": "action/popup.html"       
+    },
     
     "web_accessible_resources": [
       ],

@@ -1,0 +1,33 @@
+<html>
+    <head>
+            <meta charset="utf-8">
+<style>
+body{width: 256px;}
+.menu{width: 100%;display: flex;}
+.menu div{
+    flex-grow: 1;
+    height: 30px;
+    line-height: 40px;
+    text-align: center;
+}
+a{
+    color: #2d8cf0;
+    font-size: 14px;
+    background: 0 0;
+    text-decoration: none;
+    outline: 0;
+    cursor: pointer;
+}
+    </style>
+<script src="../public/qrcode.min.js"></script>
+</head>
+<body>
+   
+    <div id="qr"></div>
+    <div class="menu">
+        <div><a href="#" id="goJ">打开 jSearch</a></div>
+        <div><a href="http://gitee.jsearch.site/" target="_blank">jSearch 主页</a></div>
+    </div>
+    <script src="popup.js"></script>
+    </body>
+    </html>
