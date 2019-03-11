@@ -38,3 +38,14 @@ function isInExtension(){
       return true;
       return false;
 }
+
+
+
+function sendToBg(msgObj ,cb){
+    let type = Object.keys(msgObj)[0];
+    chrome.runtime.sendMessage({dataType:type,data:msgObj[type]}, function(response) {
+       if(cb)cb(response);
+    });
+}
+
+

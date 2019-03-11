@@ -317,6 +317,11 @@
                             <i-switch v-model="settings.jBar.onSelection" size="small" />
                         </form-item>
                     </i-col>
+                    <i-col span="12">
+                        <form-item label="在已有jSearch标签页中打开">
+                            <i-switch v-model="settings.jBar.inExist" size="small" />
+                        </form-item>
+                    </i-col>
 
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
@@ -373,6 +378,7 @@
     <script type="text/javascript" src="../content/search_bar.js"></script>
     <script type="text/javascript" src="../content/content.js"></script>
     <script type="text/javascript" src="options.js"></script>
+   
 </body>
 
 </html>

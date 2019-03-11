@@ -16,11 +16,13 @@ function jBar() {
 
   //加载设置
   let settings = {};
-  chrome.storage.sync.get('settings', function (items) {
-    //console.log(items);
-    settings = items.settings.jBar;
-  });
-
+  function loadSettings(){
+    chrome.storage.sync.get('settings', function (items) {
+      //console.log(items);
+      settings = items.settings.jBar;
+    });
+  }
+  loadSettings();
 
   //runtime
   var runtime = {};
@@ -79,6 +81,8 @@ function jBar() {
     if ((jBar.classList.contains('jBar-show') && show == 2) || show == 0) {
       jBar_input.blur();
     } else {
+
+      loadSettings();//更新设置
       let sel_text = window.getSelection().toString();
       if (!/\n/.test(sel_text) && sel_text.length > 0 && sel_text.length < 30) {
         jBar_input.value = sel_text;
@@ -149,7 +153,8 @@ function jBar() {
       jBarToggle(0);
     } else {
       jBar_input.blur();
-      window.open(`http://chrome.jsearch.site/?q=${kw}`);
+      sendToBg({goSearch:{inExist:settings.inExist,kw:kw}});
+      //window.open(`http://chrome.jsearch.site/?q=${kw}`);
     }
 
   }

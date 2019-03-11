@@ -60,5 +60,5 @@
 
       "omnibox": { "keyword" : "j" },
 
-      "content_security_policy": "script-src 'self' 'unsafe-eval' ;default-src 'self' 'unsafe-inline' 'unsafe-eval'  https://*/ chrome://*; connect-src 'self' 'unsafe-inline' 'unsafe-eval'  data: chrome://* https://*/  http://* ;img-src 'self' data: chrome://* chrome-resource://* 'unsafe-inline' 'unsafe-eval' http://* https://*; object-src 'self' ;style-src 'self' 'unsafe-inline' 'unsafe-eval';font-src 'self' 'unsafe-inline' 'unsafe-eval'"
+      "content_security_policy": "script-src 'self' 'unsafe-eval' https://hm.baidu.com/;default-src 'self' 'unsafe-inline' 'unsafe-eval'  https://*/ chrome://*; connect-src 'self' 'unsafe-inline' 'unsafe-eval'  data: chrome://* https://*/  http://* ;img-src 'self' data: chrome://* chrome-resource://* 'unsafe-inline' 'unsafe-eval' http://* https://*; object-src 'self' ;style-src 'self' 'unsafe-inline' 'unsafe-eval';font-src 'self' 'unsafe-inline' 'unsafe-eval'"
   }

@@ -41,7 +41,8 @@ var app = new Vue({
         settings: {
             jBar: {
                 hotkeys: [],
-                onSelection: false
+                onSelection: false,
+                inExist:true,   //在已有 jSearch 标签页打开
             },
             pageScroll: [],
             resultListWidth: 600,
@@ -546,6 +547,17 @@ function getDate(timestamp) {
 function timeConvert(timestamp) {
     return getDate(timestamp);
 }
+
+
+var _hmt = _hmt || [];
+
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?62b10d8a9bf8d2c93efada559272f187";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+/**/
 
 var aaa = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',

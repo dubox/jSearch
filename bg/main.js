@@ -26,6 +26,48 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 
 
+// 监听来自content-script的消息
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+    sendResponse('ok');
+	console.log('收到来自content-script的消息：');
+    console.log(request);
+    if(request.dataType == 'goSearch'){
+        let kw = request.data.kw;
+        let inExist = request.data.inExist;
+        findJTab(function(tabJ ,tabCurr){
+            console.log(tabJ);
+            if(inExist && tabJ){
+                chrome.tabs.update(tabJ.id, {url:chrome.extension.getURL('/options/search.html') + '?#' + kw,active:true});
+            }else{
+                chrome.tabs.create({
+                    url:chrome.extension.getURL('/options/search.html') + '?#' + kw,
+                    index:tabCurr.index+1
+                });
+            }
+            
+        });
+    }
+    
+});
+
+
+function findJTab(cb){
+    let searchUrl = chrome.extension.getURL('../options/search.html');
+    chrome.tabs.getAllInWindow(function(tabs){
+        let tabJ = tabCurr = -1;
+        for(let i in tabs){
+            if(tabJ == -1 && tabs[i].url.indexOf(searchUrl) > -1){
+                tabJ = i;
+            }
+            if(tabs[i].active){
+                tabCurr = i;
+            }
+            if(tabJ != -1 && tabCurr != -1)break;
+        }
+        cb(tabJ>-1?tabs[tabJ]:null ,tabs[tabCurr]);
+    })
+}
+
 
 function GetQueryString(url, name) {
     let reg = new RegExp(`(\\?|&)${name}=([^&]*)(&|$)`);
@@ -113,6 +155,7 @@ chrome.runtime.onInstalled.addListener(details => {
         settings: {
             jBar: {
                 hotkeys: ['space', 'tab', 'j', 'ctrl+j', 'esc'],
+                inExist:true,   //在已有 jSearch 标签页打开
                 onSelection: false
             },
             pageScroll: ['navKeys', 'mLeftKey+mw', 'alt+mw'],
