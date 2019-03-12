@@ -1,19 +1,19 @@
 # jSearch
 
 
-<img width=200 src="./public/jsearch-logo.svg"/>
+![](https://oscimg.oschina.net/oscnet/58887ad779f665e48eeea739154a1b2b15d.jpg)
 
 jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合多平台内容；
+* 支持 google,百度,Bing(国际版)三大搜索引擎
 * 支持自定义搜索站点
+* 支持公众号&公众号文章搜索
 * 收藏夹搜索、历史记录搜索  
 * 支持地址栏搜索
 * 超级方便的搜索快捷键
-* 支持百度、谷歌双搜索引擎
-* 支持公众号&公众号文章搜索
+* 生成当前网页二维码
   
 帮你开启新世界大门。
 
-下载： [github](https://github.com/dubox/jSearch/releases/) ,[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)
 
 ---
 ### &使用方法
@@ -24,12 +24,16 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 
 
 ### &插件安装&更新
-安装：现在 Windows 上已经基本不支持拖进去安装的方法了，可以直接从此教程的第6步开始：
-https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html  
-更新：  
-1.下载新版本插件  
-2.解压并覆盖原插件文件夹  
-3.到插件管理(扩展管理),刷新本插件 即可
+>安装：  
+现在 Windows 上已经基本不支持拖进去安装的方法了，可以直接从此教程的第6步开始：
+[https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html](https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html)  
+
+>更新：  
+   1.下载新版本插件  
+   2.解压并覆盖原插件文件夹  
+   3.到插件管理(扩展管理),刷新本插件 即可  
+  
+>下载： [github](https://github.com/dubox/jSearch/releases/) ,[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)
 
 
 ### &插件截图
@@ -51,17 +55,16 @@ https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html
 
 
 
-### &隐私声明
-本人以人格担保：插件不上传任何用户隐私信息
 
 ### &鸣谢
-感谢开源项目：[VUE](https://github.com/vuejs/vue) 、[iview](https://github.com/iview/iview) 、[hotkeys.js](https://github.com/jaywcjlove/hotkeys)、[vue-dragging](https://github.com/hilongjw/vue-dragging)
+感谢开源项目：[VUE](https://github.com/vuejs/vue) 、[iview](https://github.com/iview/iview) 、[hotkeys.js](https://github.com/jaywcjlove/hotkeys)、[vue-dragging](https://github.com/hilongjw/vue-dragging)、[qrcodejs](https://github.com/davidshimjs/qrcodejs)
 
-### &最后。。。
+### &捐赠
 
-不知羞耻的事情来了。。。  
 
-<img width = "300" src="./public/imgs/alipay.png">  
+<img width = "300" src="https://oscimg.oschina.net/oscnet/e636e1a7942036b493ee7422641c0257a82.jpg">  
 
-- 您的捐赠是对我最大的鼓励和支持
+- 您的捐赠是对我最大的鼓励和支持  
 (Your donation is the greatest encouragement and support for me)
+
+- Or give a star : [github](https://github.com/dubox/jSearch/) ,[码云](https://gitee.com/dubox/jSearch)  

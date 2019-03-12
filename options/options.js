@@ -363,6 +363,8 @@ var app = new Vue({
                 }
 
             }
+            if(document.getElementById('cz'))
+            document.getElementById('cz').src=`http://gitee.jsearch.site/home/?id=${chrome.runtime.id}&kw=${this.searchData.keyword}`;
         },
         setKeyword() {
             let hash = '';
@@ -548,16 +550,10 @@ function timeConvert(timestamp) {
     return getDate(timestamp);
 }
 
-
-var _hmt = _hmt || [];
-
-            (function() {
-              var hm = document.createElement("script");
-              hm.src = "https://hm.baidu.com/hm.js?62b10d8a9bf8d2c93efada559272f187";
-              var s = document.getElementsByTagName("script")[0]; 
-              s.parentNode.insertBefore(hm, s);
-            })();
-/**/
+//声明_czc对象:
+var _czc = _czc || [];
+//绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
+_czc.push(["_setAccount", "1276484996"]);
 
 var aaa = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',

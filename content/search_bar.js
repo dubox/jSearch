@@ -153,8 +153,11 @@ function jBar() {
       jBarToggle(0);
     } else {
       jBar_input.blur();
-      sendToBg({goSearch:{inExist:settings.inExist,kw:kw}});
-      //window.open(`http://chrome.jsearch.site/?q=${kw}`);
+      sendToBg({goSearch:{inExist:settings.inExist,kw:kw}},function(res){
+        if(!res)
+          window.open(`http://chrome.jsearch.site/?q=${kw}`);
+      });
+      //
     }
 
   }

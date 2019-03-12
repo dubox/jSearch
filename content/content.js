@@ -43,9 +43,13 @@ function isInExtension(){
 
 function sendToBg(msgObj ,cb){
     let type = Object.keys(msgObj)[0];
-    chrome.runtime.sendMessage({dataType:type,data:msgObj[type]}, function(response) {
-       if(cb)cb(response);
-    });
+    try{
+        chrome.runtime.sendMessage({dataType:type,data:msgObj[type]}, function(response) {
+        if(cb)cb(response);
+        });
+    }catch(e){
+        cb(false);
+    }
 }
 
 
