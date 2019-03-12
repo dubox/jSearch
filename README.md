@@ -12,8 +12,9 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 * 超级方便的搜索快捷键
 * 生成当前网页二维码
   
-帮你开启新世界大门。
+帮你开启新世界大门。  
 
+<a class="github-button" href="https://github.com/dubox/jSearch" data-size="large" data-show-count="true" aria-label="Star dubox/jSearch on GitHub">Github</a>  [![star](https://gitee.com/dubox/jSearch/badge/star.svg?theme=gray)](https://gitee.com/dubox/jSearch/stargazers)
 
 ---
 ### &使用方法
@@ -33,26 +34,33 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
    2.解压并覆盖原插件文件夹  
    3.到插件管理(扩展管理),刷新本插件 即可  
   
->下载： [github](https://github.com/dubox/jSearch/releases/) ,[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)
+>下载： [github](https://github.com/dubox/jSearch/releases/) ,[gitee](https://gitee.com/dubox/jSearch/releases),[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)
 
 
 ### &插件截图
 
-![](https://oscimg.oschina.net/oscnet/d68dd624b7a412a1973d4199299e9e8f657.jpg)
-△ 多组快捷键极速呼出快捷搜索Bar， just Search it! 
+![](https://oscimg.oschina.net/oscnet/31bc7e6cd27a2f71955666c432aa51370f3.jpg)  
+△ 可以在地址栏直接输入关键词进行搜索  
 
-![](https://oscimg.oschina.net/oscnet/6b65ce0ca639cc304fe05177236078cc83c.jpg)
-△ 聚合式结果展示页
+![](https://oscimg.oschina.net/oscnet/4c7d6a961795894b69d38f78f9b1e512a1a.jpg)  
+△ 多组快捷键极速呼出快捷搜索Bar， just Search it!  (在插件内部，点击右侧logo可以打开设置面板)
 
-![](https://oscimg.oschina.net/oscnet/26743cbf5109aa972b0519011c02eb1f121.jpg)
-△ 视觉：无多余干扰项，沉浸式；最大屏幕利用；保持各搜索引擎原始风格，避免视觉疲劳；
+![](https://oscimg.oschina.net/oscnet/0d20fd8605d15fbe8b698686cd83b66e752.jpg)  
+△ 聚合式结果展示页；无多余干扰项，沉浸式；最大屏幕利用；保持各搜索引擎原始风格，避免视觉疲劳；  
 
-![](https://oscimg.oschina.net/oscnet/7c20c97872bd252704d06eadc4b0863da77.jpg)  
-△ 可自定义搜索站点，支持百度和 google 双引擎，支持拖拽排序
 
 ![](https://oscimg.oschina.net/oscnet/e0fd0f60491d6497dbb8d6f01523dda296b.jpg)
-△ 新增 google 搜索引擎、公众号&公众号文章搜索
+△ 支持微信公众号&公众号文章搜索
 
+
+![](https://oscimg.oschina.net/oscnet/957e70ce7a89bcd9030a41d9dfc03f154ba.jpg)  
+△ 可自定义搜索站点，支持百度、google和 Bing(国际版) 三大引擎，支持拖拽排序；  
+
+![](https://oscimg.oschina.net/oscnet/d4385215f6fb99c3cd2473aede5a5f8274d.jpg)  
+△ 丰富的个性化设置；
+
+![](https://oscimg.oschina.net/oscnet/a0065a9798427ef1b4574d0f676c81d95a1.jpg)  
+△ 一个额外的功能：点击地址栏右侧的本插件图标，可以生成当前所在页面的地址二维码
 
 
 
