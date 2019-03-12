@@ -17,14 +17,8 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 <a class="github-button" href="https://github.com/dubox/jSearch" data-size="large" data-show-count="true" aria-label="Star dubox/jSearch on GitHub">Github</a>  [![star](https://gitee.com/dubox/jSearch/badge/star.svg?theme=gray)](https://gitee.com/dubox/jSearch/stargazers)
 
 ---
-### &使用方法
-> a.直接在地址栏输入要搜索的内容，敲回车即可（需将浏览器默认搜索引擎设置为 google 或百度）。
 
-> b.使用快捷键呼出快捷搜索框(jBar)，进行快捷搜索  
-> 快捷键支持：呼出：Ctrl+j、space(在可编辑区域无效)、j(在可编辑区域无效) ，    收起：Ctrl+j、tab、esc、space(只在搜索框没有内容时有效)
-
-
-### &插件安装&更新
+### &安装&更新
 >安装：  
 现在 Windows 上已经基本不支持拖进去安装的方法了，可以直接从此教程的第6步开始：
 [https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html](https://jingyan.baidu.com/article/e5c39bf5cc39cc39d76033cd.html)  
@@ -35,6 +29,13 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
    3.到插件管理(扩展管理),刷新本插件 即可  
   
 >下载： [github](https://github.com/dubox/jSearch/releases/) ,[gitee](https://gitee.com/dubox/jSearch/releases),[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)
+
+### &使用方法
+> a.直接在地址栏输入要搜索的内容，敲回车即可（需将浏览器默认搜索引擎设置为 google 或百度）。
+
+> b.使用快捷键呼出快捷搜索框(jBar)，进行快捷搜索  
+> 快捷键支持：呼出：Ctrl+j、space(在可编辑区域无效)、j(在可编辑区域无效) ，    收起：Ctrl+j、tab、esc、space(只在搜索框没有内容时有效)
+
 
 
 ### &插件截图
