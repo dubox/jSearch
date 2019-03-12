@@ -60,11 +60,7 @@ function jBar() {
     }
 
     //识别当前是否在可编辑区域，在可编辑区域 只能由 ctrl+j 唤醒编辑框
-    let tagName = (event.target || event.srcElement).tagName;
-    if (tagName.isContentEditable ||
-      tagName == 'INPUT' ||
-      tagName == 'SELECT' ||
-      tagName == 'TEXTAREA') {
+    if (checkEditable(event.target || event.srcElement)) {
       if (handler.key == 'ctrl+j') {
         jBarToggle();
       }
@@ -129,11 +125,7 @@ function jBar() {
   document.addEventListener('mouseup', function (event) {
     if (!settings.onSelection) return;
     //console.log(event)
-    let tagName = (event.target || event.srcElement).tagName;
-    if (tagName.isContentEditable ||
-      tagName == 'INPUT' ||
-      tagName == 'SELECT' ||
-      tagName == 'TEXTAREA') {
+    if (checkEditable(event.target || event.srcElement)) {
       return;
     }
     let sel_text = window.getSelection().toString();

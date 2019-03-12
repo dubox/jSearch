@@ -52,4 +52,17 @@ function sendToBg(msgObj ,cb){
     }
 }
 
+//检查元素是否是可编辑区域
+function checkEditable(targetEl){
+    let tagName = targetEl.tagName;
+    if (targetEl.isContentEditable ||
+      tagName == 'INPUT' ||
+      tagName == 'SELECT' ||
+      tagName == 'TEXTAREA') {
+      
+      return true;
+    }
+    return false;
+}
+
 
