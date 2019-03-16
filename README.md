@@ -12,7 +12,9 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 * 超级方便的搜索快捷键
 * 生成当前网页二维码
   
-帮你开启新世界大门。  
+帮你开启新世界大门。   
+
+(查看[更新日志](https://github.com/dubox/jSearch/releases/)有助于您了解更详细的功能细节)
 
 <a class="github-button" href="https://github.com/dubox/jSearch" data-size="large" data-show-count="true" aria-label="Star dubox/jSearch on GitHub">Github</a>  [![star](https://gitee.com/dubox/jSearch/badge/star.svg?theme=gray)](https://gitee.com/dubox/jSearch/stargazers)
 
