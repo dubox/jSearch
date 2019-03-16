@@ -30,7 +30,7 @@
                 height: 500px;
                 overflow: hidden;
                 position: fixed;
-                background-color: rgba(255, 255, 255, 0.6);
+                background-color: rgba(255, 255, 255, 0.8);
             }
             .content::before{
                 content: ' just Search it';
@@ -42,7 +42,7 @@
                 font-size: 53px;
                 font-family: fantasy,monospace;
                 position: fixed;
-                color: black;
+                color: rgb(92, 92, 92);
                 filter: blur(2px);
             }
             
@@ -78,7 +78,7 @@
             .list-over{color:#c5c8ce;}
             .col .ivu-scroll-content{min-height: 100%;}/*解决第一页高度不够无法翻页问题*/
             .ivu-card{
-                background-color: rgba(255, 255, 255, 0.9);
+                background-color: rgba(255, 255, 255, 1);
             }
             .alipay .slid-show{
                 transition: max-height 1s;
@@ -139,6 +139,46 @@
         display : none;
 }
 
+body .ivu-icon{
+    font-family: Ionicons !important;
+}
+
+/*字体覆盖*/
+.col *{
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif !important;
+    color:rgb(136, 136, 136);
+    line-height:24px !important;
+}
+.col a,.col cite{
+    font-size: 12px !important;
+    color: rgb(187, 187, 187)  !important;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif !important;
+    font-style: normal;
+}
+.col h2,.col h3,.col h3>a,.col h2>a,.col h2 strong ,.txt-box>.tit>a{
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: rgb(51, 51, 51)  !important;
+    margin-bottom: 6px;
+}
+/*关键词*/
+.green .c-container em, .green .g em, .green  li.b_algo p strong, .green li.b_algo h2 strong, .green .news-list2 em, .green .news-list em{
+    color: #00a06a !important;
+}
+.red .c-container em, .red .g em, .red  li.b_algo p strong, .red li.b_algo h2 strong, .red .news-list2 em, .red .news-list em{
+    color: #ec665a !important;
+}
+.blue .c-container em, .blue .g em, .blue  li.b_algo p strong, .blue li.b_algo h2 strong, .blue .news-list2 em, .blue .news-list em{
+    color: #3d86e4 !important;
+}
+.black .c-container em, .black .g em, .black  li.b_algo p strong, .black li.b_algo h2 strong, .black .news-list2 em, .black .news-list em{
+    color: rgb(51, 51, 51) !important;
+}
+/*统一风格*/
+.c-container ,.g ,.b_algo{
+    border-bottom: 1px solid #f2f2f2 !important;
+    padding: 16px 0 !important;
+}
     </style>
 </head>
 
@@ -173,7 +213,7 @@
 
             </i-header>
 
-            <div class="content" v-bind:style="{height:clientHeight+'px'}">
+            <div :class="'content '+ settings.kwColor" v-bind:style="{height:clientHeight+'px'}">
 
                 <transition-group name="slide-list" class="slider" tag="div">
                     <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' }" v-for="(item1, index1) in searchData.models"
@@ -349,7 +389,18 @@
                             <i-switch v-model="settings.showHeadBar" size="small" />
                     </i-col>
                 </Row>
-
+                <Row :gutter="32" type="flex" align="middle">
+                    <i-col span="24">
+                            <form-item label="搜索词颜色:">
+                        <radio-group v-model="settings.kwColor">
+                            <Radio label="red" ></Radio>
+                            <Radio label="green"></Radio>
+                            <Radio label="blue"></Radio>
+                            <Radio label="black"></Radio>
+                        </radio-group>
+                    </form-item>
+                    </i-col>
+                </Row>
             </i-form>
             <div class="drawer-footer">
 

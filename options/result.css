@@ -14,11 +14,11 @@ li {
 
 .result,
 .c-container {
-    margin-bottom: 14px;
     border-collapse: collapse;
     line-height: 1.54;
     word-break: break-word;
 }
+.c-container>.m{font-size: 12px;}
 
 .c-abstract {
     word-break: break-all;
@@ -62,8 +62,11 @@ li {
 }
 
 .c-row {
-    display: flex;
+    
     overflow-x: auto;
+}
+.c-border .c-row {
+    display: flex;
 }
 
 .op_jingyan_list_showmore,
@@ -104,9 +107,7 @@ li {
     _position: relative;
 }
 
-a.op-img-address-divide-high {}
-
-div.op-img-address-divide-high {
+div.op-img-address-divide-high,div.op-img-star-divide-high {
     height: 160px;
     display: flex;
     overflow-x: auto;
@@ -164,7 +165,6 @@ div.op-img-address-divide-high {
     position: absolute;
     right: 0;
     top: 24px;
-    z-index: 1;
 }
 
 .news-list2 li dt {
@@ -200,6 +200,7 @@ div.op-img-address-divide-high {
     text-align: center;
     line-height: 32px;
     display: none;
+    z-index: 1;
 }
 
 .news-list2 li .ew-pop:hover .pop {
@@ -218,10 +219,23 @@ div.op-img-address-divide-high {
 
 .news-list2 li .ew-pop .pop .shot-img {
     position: absolute;
-    top: 70px;
+    top: 62px;
     left: 47px;
 }
-
+.news-list2 li .img-box img {
+    border-radius: 30px;
+    width: 58px;
+    height: auto;
+    margin-top: 0px;
+}
+.news-list2 li>dl:first-of-type{
+    margin-top: 8px;
+}
+.news-list2 li>dl>dd>a{
+    padding-right: 98px;
+    display: block;
+    line-height: 16px !important;
+}
 /*******************************/
 .news-list em {
     color: #00a06a;
@@ -248,7 +262,7 @@ div.op-img-address-divide-high {
     overflow: hidden;
     /* white-space: nowrap;*/
     text-overflow: ellipsis;
-    word-wrap: normal;
+    word-wrap: break-word;
 }
 
 .news-list a {
@@ -291,7 +305,7 @@ div.op-img-address-divide-high {
     color: #888;
     height: 48px;
     overflow: hidden;
-    padding-top: 6px;
+    /*padding-top: 6px;*/
 }
 
 .news-list .img-box {
@@ -303,6 +317,7 @@ div.op-img-address-divide-high {
     overflow: hidden;
 }
 
+
 /*weixin css*/
 
 /*google css*/
@@ -312,7 +327,6 @@ div.op-img-address-divide-high {
 
 .g {
     margin-top: 0;
-    margin-bottom: 30px;
     font-family: arial, sans-serif;
     font-size: small;
     line-height: 1.54;
@@ -321,7 +335,6 @@ div.op-img-address-divide-high {
 .g em {
     color: #dd4b39;
     font-style: normal;
-    font-weight: normal;
 }
 
 .rc {
@@ -625,6 +638,9 @@ div.op-img-address-divide-high {
 
 #b_results .b_deep p {
     height: 36px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 #b_results>li:after,

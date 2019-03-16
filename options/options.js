@@ -47,6 +47,7 @@ var app = new Vue({
             pageScroll: [],
             resultListWidth: 600,
             showHeadBar:true,
+            kwColor:'green',
         }
     },
     computed: {
@@ -118,10 +119,27 @@ var app = new Vue({
                                 if (_this.searchData.keyword == '') {
                                     //当搜索词为空时 搜索最近一天的内容，主要针对 site 站点
                                     tbs = 'qdr:d';
+                                    var kw_reg = false;
+                                }else{
+                                    //关键词提取正则
+                                    var kw_reg = _this.searchData.keyword.replace(/[-[\]{}()*+?.,\\^$|#]/g, '\\$&').replace(/\s+/g, '|');
                                 }
                                 axios.get(`https://www.google.com/search?q=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&start=${_this.searchData.pageNums[index]*10}&tbs=${tbs}`)
                                 .then(function (response) {
                                     let res_obj = $(response.data.replace(/src="\//g, 'src="https://www.google.com/').replace(/href="\//g, 'href="https://www.google.com/').replace(/href="https:\/\/www\.google\.com\/search\?q=/g, 'href="https://www.google.com/search?o0=o&q=').replace('onload="', 'ss="')).find('#rso');
+                                    //处理部分链接没有加载的问题
+                                    res_obj.find('a').each(function () {
+                                        let src= $(this).attr('data-url');
+                                        if(!src)return;
+                                        if(src.indexOf('/')===0)
+                                        src = 'https://www.google.com'+src;
+                                        $(this).attr('href', src);
+                                    });
+                                    //识别标题中的关键词
+                                    res_obj.find('.g .rc>.r>a>h3').each(function(){
+                                        $(this).html( $(this).html().replace(new RegExp('(' + kw_reg + ')', 'ig'), '<em>$&</em>') );
+                                    });
+
                                     let res = res_obj[0].outerHTML;
                                     let text_for_check = $(res).text();
                                     if ($(_this.searchData.results[index][_this.searchData.results[index].length - 1]).text() == text_for_check) {
@@ -149,6 +167,10 @@ var app = new Vue({
                                 if (_this.searchData.keyword == '') {
                                     //当搜索词为空时 搜索最近一天的内容，主要针对 site 站点
                                     filters = 'ex1:"ez1"';
+                                    var kw_reg = false;
+                                }else{
+                                    //关键词提取正则
+                                    var kw_reg = _this.searchData.keyword.replace(/[-[\]{}()*+?.,\\^$|#]/g, '\\$&').replace(/\s+/g, '|');
                                 }
                                 axios.get(`https://cn.bing.com/search?q=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&first=${_this.searchData.pageNums[index]*10+1}&filters=${filters}`)
                                 .then(function (response) {
@@ -160,6 +182,10 @@ var app = new Vue({
                                         if(src.indexOf('/')===0)
                                         src = 'https://cn.bing.com'+src;
                                         $(this).attr('src', src);
+                                    });
+                                    //识别标题中的关键词
+                                    res_obj.find('.b_algo>h2>a').each(function(){
+                                        $(this).html( $(this).html().replace(new RegExp('(' + kw_reg + ')', 'ig'), '<strong>$&</strong>') );
                                     });
                                     let res = res_obj[0].outerHTML;
                                     let text_for_check = $(res).text();
@@ -244,7 +270,7 @@ var app = new Vue({
                                     }
                                 }).then(function (response) {
                                     //console.log(response);
-                                    let data = response.data.replace(/onerror/g, 'ss').replace(/src="\/\//g, 'src="http://').replace(/\/new\/pc\/images\/ico_ewm\.png/g, 'https://weixin.sogou.com/new/pc/images/ico_ewm.png').replace(/onload="resizeImage\(.*\)"/g, 'height="105"').replace(/<script>document\.write\(timeConvert\('(.*)'\)\)<\/script>/g, function (match, item1) {
+                                    let data = response.data.replace(/onerror/g, 'ss').replace(/src="\/\//g, 'src="http://').replace(/src="\//g, 'src="https://weixin.sogou.com/').replace(/onload="resizeImage\(.*\)"/g, 'height="105"').replace(/<script>document\.write\(timeConvert\('(.*)'\)\)<\/script>/g, function (match, item1) {
                                         return getDate(parseInt(item1) * 1000);
                                     });
                                     let res_obj = $(data).find('.news-box>ul');
@@ -364,7 +390,7 @@ var app = new Vue({
 
             }
             if(document.getElementById('cz'))
-            document.getElementById('cz').src=`http://gitee.jsearch.site/home/?id=${chrome.runtime.id}&kw=${this.searchData.keyword}`;
+            document.getElementById('cz').src=`http://www.jsearch.site/home/?id=${chrome.runtime.id}&kw=${this.searchData.keyword}`;
         },
         setKeyword() {
             let hash = '';
@@ -378,7 +404,7 @@ var app = new Vue({
         checkUpdate() {
             var _this = this;
             _this.version.localVer = chrome.runtime.getManifest().version;
-            axios.get('http://gitee.jsearch.site/manifest.json?r=' + Math.random()).then(function (resp) {
+            axios.get('http://www.jsearch.site/app.json?r=' + Math.random()).then(function (resp) {
                 //console.log(resp);
 
                 _this.version.latestVer = resp.data.version;
@@ -386,7 +412,26 @@ var app = new Vue({
                     console.log('new version:' + _this.version.latestVer)
                     _this.version.notice = 'new';
                 }
+                _this.broadcast(resp.data.broadcast);
+
             });
+        },
+        broadcast(msg){
+            var _this = this;
+            chrome.storage.local.get(['broadcast'], function(local) {
+                console.log('broadcast: ' + local.broadcast);
+                if(local.broadcast != msg){
+                    let _msg = msg.split('|');
+                    _this.$Notice.open({
+                        title: _msg[0],
+                        desc: _msg[1],
+                        duration:parseInt(_msg[2])
+                    });
+                    chrome.storage.local.set({broadcast: msg});
+                }
+            });
+
+            
         }
     },
     beforeMounted() {

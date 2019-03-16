@@ -12,3 +12,5 @@
     document.getElementById('goJ').onclick = function(){
         window.open(chrome.extension.getURL('/options/search.html'));
     }
+
+    document.getElementById('cz').src=`http://www.jsearch.site/home/?p=popup&id=${chrome.runtime.id}`;
