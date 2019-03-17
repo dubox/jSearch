@@ -411,6 +411,7 @@ var app = new Vue({
                 if (_this.version.localVer != _this.version.latestVer) {
                     console.log('new version:' + _this.version.latestVer)
                     _this.version.notice = 'new';
+                    _this.showMsg(`新版本提醒|发现新版本:<a href="https://github.com/dubox/jSearch/releases">v${_this.version.latestVer}</a> ,赶紧更新吧！！！|5`);
                 }
                 _this.broadcast(resp.data.broadcast);
 
@@ -419,19 +420,20 @@ var app = new Vue({
         broadcast(msg){
             var _this = this;
             chrome.storage.local.get(['broadcast'], function(local) {
-                console.log('broadcast: ' + local.broadcast);
+                //console.log('broadcast: ' + local.broadcast);
                 if(local.broadcast != msg){
-                    let _msg = msg.split('|');
-                    _this.$Notice.open({
-                        title: _msg[0],
-                        desc: _msg[1],
-                        duration:parseInt(_msg[2])
-                    });
+                    _this.showMsg(msg);
                     chrome.storage.local.set({broadcast: msg});
                 }
             });
-
-            
+        },
+        showMsg(msg){
+            let _msg = msg.split('|');
+            this.$Notice.open({
+                title: _msg[0],
+                desc: _msg[1],
+                duration:parseInt(_msg[2]?_msg[2]:0)
+            });
         }
     },
     beforeMounted() {
