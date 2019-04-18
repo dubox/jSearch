@@ -1,23 +1,32 @@
+var RunTime = {
+    searchInAddress : true
+};
+
 chrome.webRequest.onBeforeRequest.addListener(
     function (details) {
         //console.log(chrome.extension.getURL('../options/search.html')+'?#'+GetQueryString(details.url,'wd'))
         //console.log(details);
-        if (1 && details.type == "main_frame" && typeof details.initiator == 'undefined') {
-            if (/^http[s]?:\/\/([^.]+\.)?google\..+/.test(details.url))
-                return {
-                    redirectUrl: chrome.extension.getURL('../options/search.html') + '?#' + GetQueryString(details.url, 'q').replace(/\+/g, ' ')
-                };
-            else if (GetQueryString(details.url, 'wd') != '')
-                return {
-                    redirectUrl: chrome.extension.getURL('../options/search.html') + '?#' + GetQueryString(details.url, 'wd')
-                };
-        }
 
-        if (details.type == "main_frame" && details.url.indexOf('://chrome.jsearch.site') > -1)
-            return {
-                redirectUrl: chrome.extension.getURL('../options/search.html') + '?#' + GetQueryString(details.url, 'q')
-            };
-        //console.log('aaa');
+        if(RunTime.searchInAddress){
+
+            if (1 && details.type == "main_frame" && typeof details.initiator == 'undefined') {
+                if (/^http[s]?:\/\/([^.]+\.)?google\..+/.test(details.url))
+                    return {
+                        redirectUrl: chrome.extension.getURL('../options/search.html') + '?#' + GetQueryString(details.url, 'q').replace(/\+/g, ' ')
+                    };
+                else if (GetQueryString(details.url, 'wd') != '')
+                    return {
+                        redirectUrl: chrome.extension.getURL('../options/search.html') + '?#' + GetQueryString(details.url, 'wd')
+                    };
+            }
+
+            if (details.type == "main_frame" && details.url.indexOf('://chrome.jsearch.site') > -1)
+                return {
+                    redirectUrl: chrome.extension.getURL('../options/search.html') + '?#' + GetQueryString(details.url, 'q')
+                };
+            //console.log('aaa');
+
+        }
     }, //
     {
         urls: ["*://www.baidu.com/*", "*://*/search?q=*", "*://chrome.jsearch.site/*"]
@@ -46,7 +55,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             }
             
         });
+    }else if(request.dataType == 'setting'){
+        RunTime = request.data;
+        //trans(request.data ,RunTime);
+        //console.log('RunTime:',RunTime);
     }
+
     
 });
 
@@ -74,6 +88,19 @@ function GetQueryString(url, name) {
     let r = url.match(reg); //search,查询？后面的参数，并匹配正则
     if (r != null) return r[2];
     return '';
+}
+
+
+function trans(from, to) {
+    for (let i in from) {
+        if (typeof to[i] == 'undefined') {
+            to[i] = from[i];
+            continue;
+        }
+        if (typeof from[i] == typeof {}) {
+            trans(from[i], to[i]);
+        }
+    }
 }
 
 
@@ -158,11 +185,15 @@ chrome.runtime.onInstalled.addListener(details => {
                 inExist:true,   //在已有 jSearch 标签页打开
                 onSelection: false
             },
+            BG:{
+                searchInAddress : true
+            },
             pageScroll: ['navKeys', 'mLeftKey+mw', 'alt+mw'],
             resultListWidth: 600,
             showHeadBar:true,
             autoHideHeadBar:true,
             kwColor:'green',
+            
         }
     };
     if (details.reason === 'install') {
@@ -195,28 +226,11 @@ chrome.runtime.onInstalled.addListener(details => {
                 items.searchModels = defaultSettings.searchModels;
             }
             if (typeof items.settings != 'undefined') {
-                /*
-                for(let i in defaultSettings.settings){
-                    if(typeof items.settings[i] == 'undefined'){
-                        items.settings[i] = defaultSettings.settings[i];
-                        continue;
-                    }
-                    
-                }
-                */
-
-                function trans(from, to) {
-                    for (let i in from) {
-                        if (typeof to[i] == 'undefined') {
-                            to[i] = from[i];
-                            continue;
-                        }
-                        if (typeof from[i] == typeof {}) {
-                            trans(from[i], to[i]);
-                        }
-                    }
-                }
+               
                 trans(defaultSettings.settings, items.settings);
+
+                //加载后台配置
+                RunTime = items.settings.BG;
                 
             } else {
                 //设置初始配置

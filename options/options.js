@@ -44,11 +44,15 @@ var app = new Vue({
                 onSelection: false,
                 inExist:true,   //在已有 jSearch 标签页打开
             },
+            BG:{
+                searchInAddress : true
+            },
             pageScroll: [],
             resultListWidth: 600,
             showHeadBar:true,
             autoHideHeadBar:true,
             kwColor:'green',
+            
         }
     },
     computed: {
@@ -435,7 +439,8 @@ var app = new Vue({
                 desc: _msg[1],
                 duration:parseInt(_msg[2]?_msg[2]:0)
             });
-        }
+        },
+        
     },
     beforeMounted() {
 
@@ -558,6 +563,7 @@ var app = new Vue({
                     settings: this.settings
                 });
                 jBar.setSettings(this.settings.jBar);
+                sendToBg({'setting':this.settings.BG},function(re){console.log(re);});
             },
             deep: true
         },

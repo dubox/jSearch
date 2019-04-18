@@ -40,7 +40,11 @@ function isInExtension(){
 }
 
 
-
+/**
+ * @param {*} msgObj : {dataType:data}
+ * @param {*} cb 
+ * 
+ */
 function sendToBg(msgObj ,cb){
     let type = Object.keys(msgObj)[0];
     try{

@@ -366,12 +366,18 @@ body .ivu-icon{
                             <i-switch v-model="settings.jBar.onSelection" size="small" />
                         </form-item>
                     </i-col>
+                </Row>
+                <Row :gutter="32" type="flex" align="middle">
                     <i-col span="12">
                         <form-item label="在已有jSearch标签页中打开">
                             <i-switch v-model="settings.jBar.inExist" size="small" />
                         </form-item>
                     </i-col>
-
+                    <i-col span="6">
+                        <form-item label="地址栏搜索">
+                            <i-switch v-model="settings.BG.searchInAddress" size="small" />
+                        </form-item>
+                    </i-col>
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="24">
