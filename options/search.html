@@ -110,6 +110,15 @@
                 position: fixed;
                 z-index: 900;
             }
+            .top_area2{
+                height: 0px;
+            }
+            .top_area3{
+                width: 100%;
+                height: 20px;
+                height: 64px;
+                z-index: -1;
+            }
             .ivu-form-item {
     margin-bottom: 14px;}
             
@@ -187,8 +196,8 @@ body .ivu-icon{
     <div id="app" v-cloak>
 
         <Layout class="layout">
-            <div class="top_area"></div>
-            <i-header class="header_bar">
+            <div id="top_area" :class="'top_area '+ (settings.showHeadBar&&!settings.autoHideHeadBar?'top_area2':'')"></div>
+            <i-header id="header_bar" :class="'header_bar '+ (settings.showHeadBar&&!settings.autoHideHeadBar?'down':'')">
                 <Row type="flex" align="middle" class="opacity-7">
                     <i-col span="12"><span style="font-size:24px;font-weight:bold;color: #2d8cf0;">jSearch<span style="font-size:14px;">&nbsp;聚搜</span></span>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>just Search it!</strong></i-col>
@@ -214,14 +223,14 @@ body .ivu-icon{
             </i-header>
 
             <div :class="'content '+ settings.kwColor" v-bind:style="{height:clientHeight+'px'}">
-
+                
                 <transition-group name="slide-list" class="slider" tag="div">
                     <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' }" v-for="(item1, index1) in searchData.models"
                         :key="item1" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
 
                         <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight"
                             distance-to-edge="15">
-
+                            <div class=" top_area3" v-if="settings.showHeadBar&&!settings.autoHideHeadBar"></div>
                             <Card dis-hover v-for="(item, index) in searchData.results[index1]" :key="index" v-if="item!=''"
                                 style="margin-bottom:5px;overflow: hidden;">
 
@@ -235,7 +244,7 @@ body .ivu-icon{
                         </Scroll>
                         <Scroll v-if="item1.type=='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight"
                             distance-to-edge="15">
-
+                            <div class=" top_area3" v-if="settings.showHeadBar&&!settings.autoHideHeadBar"></div>
                             <Card dis-hover style="margin-bottom:5px;">
                                 <div class="result c-container " v-for="(item, index) in searchData.results[index1]"
                                     :key="index">
@@ -378,16 +387,26 @@ body .ivu-icon{
 
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
-                    <i-col span="4">列表宽度:</i-col>
+                    <i-col span="5">列表宽度:</i-col>
                     <i-col span="5">
 
                         <input-number :max="1000" :min="100" :step="50" v-model="settings.resultListWidth"></input-number>
                         <input style="display:none;" />
                     </i-col>
-                    <i-col span="7">
-                        顶部搜索条：
+                    
+                </Row>
+                <Row :gutter="32" type="flex" align="middle">
+                        <i-col span="5">顶部搜索条：</i-col>
+                    <i-col span="4">
+                        开关
                             <i-switch v-model="settings.showHeadBar" size="small" />
+                            
                     </i-col>
+                    <i-col span="7">
+                            自动隐藏
+                            <i-switch v-model="settings.autoHideHeadBar" size="small" />
+                        </i-col>
+                    
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="24">
@@ -431,3 +450,4 @@ body .ivu-icon{
 </body>
 
 </html>
+

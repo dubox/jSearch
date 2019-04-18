@@ -31,7 +31,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     sendResponse('ok');
 	console.log('收到来自content-script的消息：');
     console.log(request);
-    if(request.dataType == 'goSearch'){
+    if(request.dataType == 'goSearch'){ //实现 jBar 在新标签页或已有标签页打开搜索
         let kw = request.data.kw;
         let inExist = request.data.inExist;
         findJTab(function(tabJ ,tabCurr){
@@ -161,6 +161,7 @@ chrome.runtime.onInstalled.addListener(details => {
             pageScroll: ['navKeys', 'mLeftKey+mw', 'alt+mw'],
             resultListWidth: 600,
             showHeadBar:true,
+            autoHideHeadBar:true,
             kwColor:'green',
         }
     };

@@ -47,6 +47,7 @@ var app = new Vue({
             pageScroll: [],
             resultListWidth: 600,
             showHeadBar:true,
+            autoHideHeadBar:true,
             kwColor:'green',
         }
     },
@@ -270,7 +271,7 @@ var app = new Vue({
                                     }
                                 }).then(function (response) {
                                     //console.log(response);
-                                    let data = response.data.replace(/onerror/g, 'ss').replace(/src="\/\//g, 'src="http://').replace(/src="\//g, 'src="https://weixin.sogou.com/').replace(/onload="resizeImage\(.*\)"/g, 'height="105"').replace(/<script>document\.write\(timeConvert\('(.*)'\)\)<\/script>/g, function (match, item1) {
+                                    let data = response.data.replace(/onerror/g, 'ss').replace(/src="\/\//g, 'src="http://').replace(/src="\//g, 'src="https://weixin.sogou.com/').replace(/href="\//g, 'href="https://weixin.sogou.com/').replace(/onload="resizeImage\(.*\)"/g, 'height="105"').replace(/<script>document\.write\(timeConvert\('(.*)'\)\)<\/script>/g, function (match, item1) {
                                         return getDate(parseInt(item1) * 1000);
                                     });
                                     let res_obj = $(data).find('.news-box>ul');
@@ -456,15 +457,16 @@ var app = new Vue({
         })
 
         //顶部感应区，触发显示 header-bar
-        document.querySelector('.top_area').addEventListener('mouseenter', function () {
-            if(!_this.settings.showHeadBar)return;
+        document.querySelector('#top_area').addEventListener('mouseenter', function () {
+            if(!_this.settings.showHeadBar || !_this.settings.autoHideHeadBar)return;
             let h_bar = document.querySelector('.header_bar');
             h_bar.classList.add('down');
             //h_bar.focus();
             document.querySelector('.header_bar input').focus();
             document.querySelector('.header_bar input').select();
         });
-        document.querySelector('.header_bar').addEventListener('mouseleave', function () {
+        document.querySelector('#header_bar').addEventListener('mouseleave', function () {
+            if(!_this.settings.showHeadBar || !_this.settings.autoHideHeadBar)return;
             document.querySelector('.header_bar input').blur();
             let h_bar = document.querySelector('.header_bar');
             h_bar.classList.remove('down');
