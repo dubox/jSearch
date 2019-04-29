@@ -2,7 +2,9 @@
     <head>
             <meta charset="utf-8">
 <style>
-body{width: 256px;}
+body{width: 256px;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif !important;
+}
 .menu{width: 100%;display: flex;}
 .menu div{
     flex-grow: 1;
@@ -18,12 +20,27 @@ a{
     outline: 0;
     cursor: pointer;
 }
+#share{
+    width: 100%;
+    height: 30px;
+    background-color: #c4dbf3;
+    line-height: 30px;
+    text-align: center;
+    margin: 5px auto;
+    font-size: 14px;
+    color:  #666;
+    cursor: pointer;
+}
     </style>
 <script src="../public/qrcode.min.js"></script>
 </head>
 <body>
    
     <div id="qr"></div>
+    <div id="share">分享到PC
+        <div style="height: 1;width: 1;overflow: hidden;opacity: 0;">
+        <textarea id="share_con" ></textarea></div>
+    </div>
     <div class="menu">
         <div><a href="#" id="goJ">打开 jSearch</a></div>
         <div><a href="http://www.jsearch.site/home/?from=popup" target="_blank">jSearch 主页</a></div>
