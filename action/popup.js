@@ -15,7 +15,7 @@ var pageInfo = {};
 
 
     document.getElementById('share').onclick = function(){
-        document.getElementById('share_con').value = pageInfo.title+"\n"+pageInfo.url;
+        document.getElementById('share_con').value = pageInfo.title+"\n"+pageInfo.url+"\n____________________\n  from「 jSearch 」"; //®©㊣
         document.getElementById('share_con').select();
         document.execCommand('copy');
         this.innerHTML='分享到PC(复制成功)';
