@@ -193,6 +193,7 @@ chrome.runtime.onInstalled.addListener(details => {
             showHeadBar:true,
             autoHideHeadBar:true,
             kwColor:'green',
+            orderByTime:true,   //按结果加载时间排序，先加载出来的结果排在前面
             
         }
     };

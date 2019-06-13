@@ -9,6 +9,7 @@ var app = new Vue({
             keyword: null,
             models: [], //搜索域配置
             results: [], //搜索结果
+            resultsIndex: {}, //搜索结果实际排序对应
             pageNums: [] //搜索结果
         },
         clientHeight: 500,
@@ -22,6 +23,7 @@ var app = new Vue({
             canDelete: true
         },
 
+        //右侧边栏样式
         drawer: {
             show: false,
             styles: {
@@ -52,6 +54,7 @@ var app = new Vue({
             showHeadBar:true,
             autoHideHeadBar:true,
             kwColor:'green',
+            orderByTime:true,   //按结果加载时间排序，先加载出来的结果排在前面
             
         }
     },
@@ -66,6 +69,7 @@ var app = new Vue({
 
             return sliderWidth;
         },
+
     },
     methods: {
 
@@ -107,13 +111,15 @@ var app = new Vue({
                                         _this.searchData.results[index].push(res);
                                         _this.searchData.pageNums[index]++;
                                     }
+
+                                    //_this.resultsIndex(index);
                                     resolve();
                                 }).catch(function (error) {
                                     console.log(error);
                                     resolve();
                                 });
                                 break;
-                            }
+                            }return;
                         case 'google':
                             {
                                 if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
@@ -155,6 +161,7 @@ var app = new Vue({
                                         _this.searchData.results[index].push(res);
                                         _this.searchData.pageNums[index]++;
                                     }
+                                    //_this.resultsIndex(index);
                                     resolve();
                                 }).catch(function (error) {
                                     console.log(error);
@@ -202,6 +209,7 @@ var app = new Vue({
                                         _this.searchData.results[index].push(res);
                                         _this.searchData.pageNums[index]++;
                                     }
+                                    //_this.resultsIndex(index);
                                     resolve();
                                 }).catch(function (error) {
                                     console.log(error);
@@ -253,6 +261,8 @@ var app = new Vue({
                                         res[i].tag = 'history'
                                     } //console.log(res)
                                     _this.searchData.results[index] = _this.searchData.results[index].concat(res);
+                                    
+                                    //_this.resultsIndex(index);
                                     resolve();
                                 });
                                 //}
@@ -302,6 +312,7 @@ var app = new Vue({
                                         _this.searchData.results[index].push(res);
                                         //_this.searchData.pageNums[index]++;
                                     }
+                                    //_this.resultsIndex(index);
                                     resolve();
                                 })
                                 .catch(function (error) {
@@ -317,6 +328,24 @@ var app = new Vue({
                 });
             }
         },
+
+
+        /**
+         * 计算并获取 searchData.resultsIndex
+         * @param {*} index 搜索模型的 index
+         */
+        resultsIndex:function(index){
+            
+            if(typeof this.searchData.resultsIndex[index] == 'undefined'){
+                this.searchData.resultsIndex[index] = Object.keys(this.searchData.resultsIndex).length;
+            }
+
+            if(!this.settings.orderByTime)return index;
+            
+            return this.searchData.resultsIndex[index];
+        
+        },
+
         settingAddSearchScope: function () {
             this.settingFormData.scope = this.settingFormData.scope.trim().replace(/^(http[s]?:\/\/)|(\/)$/, function (match) {
                 return '';
@@ -376,6 +405,7 @@ var app = new Vue({
         doSearch() {
             console.log('doSearch:' + this.searchData.keyword);
             this.sliderWidth = 0;
+            this.searchData.resultsIndex = {};
             for (let i in this.searchData.models) {
 
                 //this.searchData.results[i] = [];
@@ -585,10 +615,6 @@ var app = new Vue({
         */
     }
 });
-
-
-
-
 
 
 

@@ -73,8 +73,22 @@
                 padding: 0 2px 0 2px;
                 flex-shrink: 0;
                 flex-grow:1;
-                transition: all .8s
+                transition: all .8s;
+                position: relative;
             }
+            .model_logo{
+                position: absolute;
+                z-index: 9999999999;
+                right: 3px;
+                top: 50px;
+                box-shadow: -1px 0px 5px #e8e8e8;
+                height: 28px;
+                width: 28px;
+                padding: 2px;
+                opacity: 0.4;
+                background-color: #e8e8e8;
+            }
+            .col:hover .model_logo{opacity: 0.8;}
             .list-over{color:#c5c8ce;}
             .col .ivu-scroll-content{min-height: 100%;}/*解决第一页高度不够无法翻页问题*/
             .ivu-card{
@@ -225,12 +239,13 @@ body .ivu-icon{
             <div :class="'content '+ settings.kwColor" v-bind:style="{height:clientHeight+'px'}">
                 
                 <transition-group name="slide-list" class="slider" tag="div">
-                    <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' }" v-for="(item1, index1) in searchData.models"
-                        :key="item1" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
-
+                    <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' ,order:resultsIndex(index1)}" v-for="(item1, index1) in searchData.models"
+                        :key="index1" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
+                        <div class="model_logo" v-if="item1.type!='bookmarks'" ><a :href="'http://'+item1.scope"><img width="24px" :src="'chrome://favicon/http://'+item1.scope" /></a></div>
                         <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight"
                             distance-to-edge="15">
                             <div class=" top_area3" v-if="settings.showHeadBar&&!settings.autoHideHeadBar"></div>
+                            
                             <Card dis-hover v-for="(item, index) in searchData.results[index1]" :key="index" v-if="item!=''"
                                 style="margin-bottom:5px;overflow: hidden;">
 
@@ -426,6 +441,17 @@ body .ivu-icon{
                     </form-item>
                     </i-col>
                 </Row>
+               
+                <Row :gutter="32" type="flex" align="middle">
+                    <i-col span="5">搜索结果自然排序：</i-col>
+                <i-col span="3">
+                        <i-switch v-model="settings.orderByTime" size="small" />
+                        
+                </i-col>
+                
+                
+            </Row>
+                
             </i-form>
             <div class="drawer-footer">
 
