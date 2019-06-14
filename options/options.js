@@ -56,7 +56,8 @@ var app = new Vue({
             kwColor:'green',
             orderByTime:true,   //按结果加载时间排序，先加载出来的结果排在前面
             
-        }
+        },
+        searchHistory:[]    //搜索历史
     },
     computed: {
         // 仅读取 已废弃
@@ -341,7 +342,7 @@ var app = new Vue({
             }
 
             if(!this.settings.orderByTime)return index;
-            
+
             return this.searchData.resultsIndex[index];
         
         },
@@ -380,6 +381,7 @@ var app = new Vue({
 
         init: function () {
             var _this = this;
+
             //加载站点配置
             chrome.storage.sync.get('searchModels', function (items) {
                 //console.log(items);
@@ -402,6 +404,7 @@ var app = new Vue({
             //_this.isInit = true;
             //_this.doSearch();
         },
+
         doSearch() {
             console.log('doSearch:' + this.searchData.keyword);
             this.sliderWidth = 0;
@@ -424,6 +427,9 @@ var app = new Vue({
                 }
 
             }
+
+            this.history(this.searchData.keyword);
+
             if(document.getElementById('cz'))
             document.getElementById('cz').src=`http://www.jsearch.site/home/?id=${chrome.runtime.id}&kw=${this.searchData.keyword}`;
         },
@@ -436,6 +442,29 @@ var app = new Vue({
             this.searchInputValue = this.searchData.keyword;
             jBar.setKeyword(this.searchInputValue);
         },
+
+
+        history:function(keyword){
+            var _this = this;
+            if(!keyword){
+                return _this.searchHistory;
+            }
+            chrome.storage.sync.get('searchHistory', function (items) {
+                _this.searchHistory = items.searchHistory || [];
+                if(_this.searchHistory[0] != keyword){
+                    _this.searchHistory.unshift(keyword);
+                    if(_this.searchHistory.length > 50){   //只保留最近50个搜索历史
+                        _this.searchHistory.pop();
+                    }
+                }else{return;}
+                
+                chrome.storage.sync.set({
+                    'searchHistory': _this.searchHistory
+                });
+            });
+            
+        },
+
         checkUpdate() {
             var _this = this;
             _this.version.localVer = chrome.runtime.getManifest().version;

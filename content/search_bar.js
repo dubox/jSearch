@@ -14,7 +14,7 @@ function jBar() {
   document.querySelector('body').appendChild(parseDom(jBarHtml)[0]);
 
 
-  //加载设置
+  //******** 加载设置 *************
   let settings = {};
   function loadSettings(){
     chrome.storage.sync.get('settings', function (items) {
@@ -24,9 +24,13 @@ function jBar() {
   }
   loadSettings();
 
-  //runtime
+  //************* runtime **************
   var runtime = {};
   runtime.isInExtension = isInExtension();
+  chrome.storage.sync.get('searchHistory', function (items) {
+    runtime.history = items.searchHistory;
+  });
+  runtime.historyIndex = -1;
 
 
   jBarEffects();
@@ -48,7 +52,7 @@ function jBar() {
     }
 
     if (handler.key == 'space' && checkKey('space')) {
-      //当前焦点在搜索框 去搜索框无任何内容时 按空格可退出搜索
+      //当前焦点在搜索框 且搜索框无任何内容时 按空格可退出搜索
       if (jBar.classList.contains('jBar-show')) {
         if (jBar_input.value == '') {
           jBarToggle(0);
@@ -134,6 +138,29 @@ function jBar() {
       jBarToggle(1);
     }
   });
+
+
+  //搜索历史
+  hotkeys('up,down', function (event, handler) {
+    if (jBar.classList.contains('jBar-show')){
+      if (handler.key == 'up'){
+          jBar_input.value = getHistory(1);
+      }else if(handler.key == 'down'){
+        jBar_input.value = getHistory(-1);
+      }
+    }
+      
+  });
+
+
+  function getHistory(num){
+      let index = runtime.historyIndex + num;
+      if(index < 0)index = runtime.history.length-1;
+      if(index >= runtime.history.length)index = 0;
+      console.log(index);
+      runtime.historyIndex = index;
+      return runtime.history[index];
+  }
 
 
 
