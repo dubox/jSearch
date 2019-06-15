@@ -45,6 +45,7 @@ var app = new Vue({
                 hotkeys: [],
                 onSelection: false,
                 inExist:true,   //在已有 jSearch 标签页打开
+                history:true
             },
             BG:{
                 searchInAddress : true

@@ -86,6 +86,8 @@ function jBar() {
       let sel_text = window.getSelection().toString();
       if (!/\n/.test(sel_text) && sel_text.length > 0 && sel_text.length < 30) {
         jBar_input.value = sel_text;
+      }else{
+        jBar_input.value = getHistory();
       }
       jBar_input.focus();
     }
@@ -140,7 +142,7 @@ function jBar() {
   });
 
 
-  //搜索历史
+  //搜索历史——方向键选择
   hotkeys('up,down', function (event, handler) {
     if (jBar.classList.contains('jBar-show')){
       if (handler.key == 'up'){
@@ -152,14 +154,28 @@ function jBar() {
       
   });
 
+  //搜索历史——鼠标滚轮选择
+  window.addEventListener('mousewheel', function (e) {
+    if (!jBar.classList.contains('jBar-show')) return;
+    if (e.deltaY < 0) {
+      jBar_input.value = getHistory(-1);
+    } else {
+      jBar_input.value = getHistory(1);
+    }
+    e.preventDefault();
+});
+
 
   function getHistory(num){
-      let index = runtime.historyIndex + num;
-      if(index < 0)index = runtime.history.length-1;
-      if(index >= runtime.history.length)index = 0;
-      console.log(index);
+    if(!settings.history)return '';
+    let index = 0;
+    if(num){
+      index = runtime.historyIndex + num;
+      if(index < 0) index = runtime.history.length-1;
+      if(index >= runtime.history.length) index = 0;
+    }
       runtime.historyIndex = index;
-      return runtime.history[index];
+      return runtime.history[index] || '';
   }
 
 

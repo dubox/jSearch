@@ -183,7 +183,8 @@ chrome.runtime.onInstalled.addListener(details => {
             jBar: {
                 hotkeys: ['space', 'tab', 'j', 'ctrl+j', 'esc'],
                 inExist:true,   //在已有 jSearch 标签页打开
-                onSelection: false
+                onSelection: false,
+                history:true
             },
             BG:{
                 searchInAddress : true

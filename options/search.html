@@ -85,10 +85,10 @@
                 height: 28px;
                 width: 28px;
                 padding: 2px;
-                opacity: 0.4;
+                opacity: 0.6;
                 background-color: #e8e8e8;
             }
-            .col:hover .model_logo{opacity: 0.8;
+            .col:hover .model_logo{opacity: 1;
                 box-shadow: -1px 0px 5px #e0e0e0;
             }
             .list-over{color:#c5c8ce;}
@@ -137,6 +137,9 @@
             }
             .ivu-form-item {
     margin-bottom: 14px;}
+    .setting_form  .ivu-form-item {
+    margin-bottom: 0px ;}
+            .setting_form > .ivu-row-flex{min-height: 32px;}
             
             .drawer-footer{
                 position: absolute;
@@ -243,7 +246,7 @@ body .ivu-icon{
                 <transition-group name="slide-list" class="slider" tag="div">
                     <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' ,order:resultsIndex(index1)}" v-for="(item1, index1) in searchData.models"
                         :key="index1" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
-                        <div class="model_logo" v-if="item1.type!='bookmarks'" ><a :href="'http://'+item1.scope"><img width="24px" :src="'chrome://favicon/http://'+item1.scope" /></a></div>
+                        <div class="model_logo" v-if="item1.type!='bookmarks'" v-bind:style="{top:(settings.showHeadBar&&!settings.autoHideHeadBar?114:50)+'px'}" ><a :href="'http://'+item1.scope"><img width="24px" :src="'chrome://favicon/http://'+item1.scope" /></a></div>
                         <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight"
                             distance-to-edge="15">
                             <div class=" top_area3" v-if="settings.showHeadBar&&!settings.autoHideHeadBar"></div>
@@ -365,10 +368,10 @@ body .ivu-icon{
 
             </i-form>
             <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">通用设置</Divider>
-            <i-form :model="settingFormData">
+            <i-form :model="settingFormData" class="setting_form">
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="17">
-                        <form-item label="快捷搜索框(jBar):">
+                        <form-item label="快捷搜索框(jBar)：">
                             <checkbox-group v-model="settings.jBar.hotkeys">
                                 <Checkbox label="space">空格</Checkbox>
                                 <Checkbox label="j">j</Checkbox>
@@ -379,26 +382,26 @@ body .ivu-icon{
                         </form-item>
                     </i-col>
                     <i-col span="6">
-                        <form-item label="划词搜索">
+                        <form-item label="划词搜索：">
                             <i-switch v-model="settings.jBar.onSelection" size="small" />
                         </form-item>
                     </i-col>
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
-                    <i-col span="12">
-                        <form-item label="在已有jSearch标签页中打开">
+                    <i-col span="11">
+                        <form-item label="在已有jSearch标签页中打开：">
                             <i-switch v-model="settings.jBar.inExist" size="small" />
                         </form-item>
                     </i-col>
-                    <i-col span="6">
-                        <form-item label="地址栏搜索">
+                    <i-col span="7">
+                        <form-item label="地址栏搜索：">
                             <i-switch v-model="settings.BG.searchInAddress" size="small" />
                         </form-item>
                     </i-col>
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="24">
-                        <form-item label="页面横向滚动方案:">
+                        <form-item label="页面横向滚动方案：">
                             <checkbox-group v-model="settings.pageScroll">
                                 <Checkbox label="alt+mw">Alt+滚轮</Checkbox>
                                 <Checkbox label="mLeftKey+mw">鼠标左键+滚轮</Checkbox>
@@ -410,8 +413,7 @@ body .ivu-icon{
 
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
-                    <i-col span="5">列表宽度:</i-col>
-                    <i-col span="5">
+                    <i-col span="8">列表宽度：
 
                         <input-number :max="1000" :min="100" :step="50" v-model="settings.resultListWidth"></input-number>
                         <input style="display:none;" />
@@ -433,21 +435,24 @@ body .ivu-icon{
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="24">
-                            <form-item label="搜索词颜色:">
+                            搜索词颜色:
                         <radio-group v-model="settings.kwColor">
                             <Radio label="red" ></Radio>
                             <Radio label="green"></Radio>
                             <Radio label="blue"></Radio>
                             <Radio label="black"></Radio>
                         </radio-group>
-                    </form-item>
+                    
                     </i-col>
                 </Row>
                
                 <Row :gutter="32" type="flex" align="middle">
-                    <i-col span="5">搜索结果自然排序：</i-col>
-                <i-col span="3">
+                    <i-col span="10">搜索结果自然排序：
                         <i-switch v-model="settings.orderByTime" size="small" />
+                        
+                </i-col>
+                <i-col span="8">搜索历史：
+                        <i-switch v-model="settings.jBar.history" size="small" />
                         
                 </i-col>
                 
