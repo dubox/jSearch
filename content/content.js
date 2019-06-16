@@ -1,5 +1,4 @@
 
-var jBar = new jBar();
 //injectCustomJs('/content/search_bar.js');
 //injectCustomJs("/content/search_bar_func.js");
 
@@ -70,3 +69,52 @@ function checkEditable(targetEl){
 }
 
 
+/**
+ * 监听BG来的消息
+ */
+function MessageListener(){
+
+    this.cbs = {};
+    var _this = this;
+    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+        //sendResponse('ok');
+        //console.log(request);
+        _this.cbs[request.dataType](request.data);
+
+    });
+}
+MessageListener.prototype.add = function(dataType,cb){
+    this.cbs[dataType] = cb;
+}
+
+
+var MessageListener = new MessageListener();
+var jBar = new jBar();
+
+
+
+
+
+
+/*
+
+var port = chrome.runtime.connect({name: "default"});//通道名称
+port.postMessage({joke: "Knock knock"});//发送消息
+port.onMessage.addListener(function(msg) {//监听消息
+  
+});
+
+
+chrome.runtime.onConnect.addListener(function(port) {
+    console.assert(port.name == "yisheng");
+    port.onMessage.addListener(function(msg) {
+      if (msg.joke == "Knock knock")
+        port.postMessage({question: "Who's there?"});
+      else if (msg.answer == "Madame")
+        port.postMessage({question: "Madame who?"});
+      else if (msg.answer == "Madame... Bovary")
+        port.postMessage({question: "I don't get it."});
+    });
+  });
+
+*/

@@ -15,22 +15,28 @@ function jBar() {
 
 
   //******** 加载设置 *************
-  let settings = {};
-  function loadSettings(){
-    chrome.storage.sync.get('settings', function (items) {
-      //console.log(items);
+  var settings = {};
+  chrome.storage.sync.get('settings', function (items) {
       settings = items.settings.jBar;
-    });
-  }
-  loadSettings();
+  });
+ //更新设置
+  MessageListener.add('settings', function (_settings) {
+    settings = _settings.jBar;
+  });
 
   //************* runtime **************
   var runtime = {};
   runtime.isInExtension = isInExtension();
-  chrome.storage.sync.get('searchHistory', function (items) {
+
+  chrome.storage.sync.get('searchHistory', function (items) { //加载搜索历史
     runtime.history = items.searchHistory;
   });
   runtime.historyIndex = -1;
+  MessageListener.add('searchHistory', function (searchHistory) {  //更新搜索历史
+    runtime.history = searchHistory;
+  });
+
+  
 
 
   jBarEffects();
@@ -82,7 +88,6 @@ function jBar() {
       jBar_input.blur();
     } else {
 
-      //loadSettings();//更新设置
       let sel_text = window.getSelection().toString();
       if (!/\n/.test(sel_text) && sel_text.length > 0 && sel_text.length < 30) {
         jBar_input.value = sel_text;
@@ -90,6 +95,7 @@ function jBar() {
         jBar_input.value = getHistory();
       }
       jBar_input.focus();
+     
     }
   }
 

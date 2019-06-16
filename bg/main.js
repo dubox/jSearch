@@ -35,16 +35,14 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 
 
-// 监听来自content-script的消息
+// 监听来自content-script的消息 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     sendResponse('ok');
-	console.log('收到来自content-script的消息：');
-    console.log(request);
     if(request.dataType == 'goSearch'){ //实现 jBar 在新标签页或已有标签页打开搜索
         let kw = request.data.kw;
         let inExist = request.data.inExist;
         findJTab(function(tabJ ,tabCurr){
-            console.log(tabJ);
+            //console.log(tabJ);
             if(inExist && tabJ){
                 chrome.tabs.update(tabJ.id, {url:chrome.extension.getURL('/options/search.html') + '?#' + kw,active:true});
             }else{
@@ -55,14 +53,44 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             }
             
         });
-    }else if(request.dataType == 'setting'){
-        RunTime = request.data;
-        //trans(request.data ,RunTime);
-        //console.log('RunTime:',RunTime);
     }
-
     
 });
+
+//监听 storage变化
+chrome.storage.sync.onChanged.addListener(function(changes){
+    
+    //console.log(changes);
+
+    //广播搜索历史到各个页面
+    if(changes.searchHistory){
+        broadcast({dataType:'searchHistory',data:changes.searchHistory.newValue});
+    }
+
+    //更新后台运行时设置数据
+    if(changes.settings){
+        RunTime = changes.settings.newValue.BG;
+        broadcast({dataType:'settings',data:changes.settings.newValue});
+    }
+});
+
+/**
+ * 向标签页广播消息
+ * @param {*} data 
+ */
+function broadcast(data){
+    chrome.tabs.getAllInWindow(function(tabs){
+        for(let i in tabs){
+            chrome.tabs.sendMessage(
+                tabs[i].id, 
+                data, 
+                function(response) {
+                        //console.log(response);
+            });
+        }
+        
+    })
+}
 
 
 function findJTab(cb){
@@ -81,6 +109,8 @@ function findJTab(cb){
         cb(tabJ>-1?tabs[tabJ]:null ,tabs[tabCurr]);
     })
 }
+
+
 
 
 function GetQueryString(url, name) {
@@ -102,6 +132,7 @@ function trans(from, to) {
         }
     }
 }
+
 
 
 chrome.runtime.onInstalled.addListener(details => {

@@ -622,8 +622,8 @@ var app = new Vue({
                 chrome.storage.sync.set({
                     settings: this.settings
                 });
-                jBar.setSettings(this.settings.jBar);
-                sendToBg({'setting':this.settings.BG},function(re){console.log(re);});
+                //jBar.setSettings(this.settings.jBar);
+                //sendToBg({'setting':this.settings.BG},function(re){console.log(re);});
             },
             deep: true
         },
