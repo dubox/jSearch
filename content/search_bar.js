@@ -169,7 +169,7 @@ function jBar() {
       jBar_input.value = getHistory(1);
     }
     e.preventDefault();
-});
+},{ passive: false });
 
 
   function getHistory(num){
