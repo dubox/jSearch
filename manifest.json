@@ -4,8 +4,8 @@
     "name": "jSearch",
     "short_name": "聚搜",
     "description": "jSearch(聚搜)是一款专注内容的搜索扩展，一次搜索聚合多平台内容;",
-    "version": "1.2.1",
-    "update_url": "http://www.jsearch.site",
+    "version": "1.2.2",
+    "update_url": "http://upext.chrome.360.cn/intf.php?method=ExtUpdate.query",
     "icons": {
       "16": "public/icons/icon128.png",
       "48": "public/icons/icon128.png",

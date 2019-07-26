@@ -58,19 +58,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 });
 
 //监听 storage变化
-chrome.storage.sync.onChanged.addListener(function(changes){
+chrome.storage.onChanged.addListener(function(changes ,type){
     
-    //console.log(changes);
+    //console.log(type,changes);
+    if(type == 'sync'){
 
-    //广播搜索历史到各个页面
-    if(changes.searchHistory){
-        broadcast({dataType:'searchHistory',data:changes.searchHistory.newValue});
-    }
+        //广播搜索历史到各个页面
+        if(changes.searchHistory){
+            broadcast({dataType:'searchHistory',data:changes.searchHistory.newValue});
+        }
 
-    //更新后台运行时设置数据
-    if(changes.settings){
-        RunTime = changes.settings.newValue.BG;
-        broadcast({dataType:'settings',data:changes.settings.newValue});
+        //更新后台 运行时数据
+        if(changes.settings){
+            RunTime = changes.settings.newValue.BG;
+            broadcast({dataType:'settings',data:changes.settings.newValue});
+        }
     }
 });
 
@@ -81,12 +83,20 @@ chrome.storage.sync.onChanged.addListener(function(changes){
 function broadcast(data){
     chrome.tabs.getAllInWindow(function(tabs){
         for(let i in tabs){
-            chrome.tabs.sendMessage(
-                tabs[i].id, 
-                data, 
-                function(response) {
-                        //console.log(response);
-            });
+            if(tabs[i].url.indexOf('chrome://')===0)continue;
+            
+                chrome.tabs.sendMessage(
+                    tabs[i].id, 
+                    data
+                    /** 这个回调会导致连接失败时 runtime.lastError 会报错；
+                     * 目前导致连接失败的原因有：1.以chrome://开头的tab 是连不上的；2.在插件刷新之前就打开的tab页
+                    , 
+                    function(response) {
+                            //console.log(response);
+                            return true;
+                } */
+                );
+            
         }
         
     })
@@ -274,5 +284,7 @@ chrome.runtime.onInstalled.addListener(details => {
         });
 
     }
+
+    chrome.runtime.openOptionsPage();
 
 });

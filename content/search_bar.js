@@ -177,7 +177,7 @@ function jBar() {
     let index = 0;
     if(num){
       index = runtime.historyIndex + num;
-      if(index < 0) index = runtime.history.length-1;
+      if(index < 0) index = 0;//runtime.history.length-1;
       if(index >= runtime.history.length) index = 0;
     }
       runtime.historyIndex = index;

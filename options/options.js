@@ -432,7 +432,7 @@ var app = new Vue({
             this.history(this.searchData.keyword);
 
             if(document.getElementById('cz'))
-            document.getElementById('cz').src=`http://www.jsearch.site/home/?id=${chrome.runtime.id}&kw=${this.searchData.keyword}`;
+            document.getElementById('cz').src=`http://www.jsearch.site/home/?id=${chrome.runtime.id}`;
         },
         setKeyword() {
             let hash = '';
@@ -665,6 +665,13 @@ function timeConvert(timestamp) {
 var _czc = _czc || [];
 //绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
 _czc.push(["_setAccount", "1276484996"]);
+
+
+
+/**test */
+
+
+
 
 var aaa = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',

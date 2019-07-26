@@ -77,9 +77,9 @@ function MessageListener(){
     this.cbs = {};
     var _this = this;
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-        //sendResponse('ok');
-        //console.log(request);
-        _this.cbs[request.dataType](request.data);
+        sendResponse('ok');
+        if(typeof _this.cbs[request.dataType] == 'function')
+            _this.cbs[request.dataType](request.data);
 
     });
 }
