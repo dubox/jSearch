@@ -386,6 +386,9 @@ var app = new Vue({
             //加载站点配置
             chrome.storage.sync.get('searchModels', function (items) {
                 //console.log(items);
+                for(let i in items.searchModels)
+                    if(!items.searchModels[i])
+                    delete items.searchModels[i];
                 _this.searchData.models = items.searchModels;
             });
             //加载通用设置
@@ -537,6 +540,7 @@ var app = new Vue({
             h_bar.classList.remove('down');
         });
         document.querySelector('.content').addEventListener('click', function () {
+            if(!_this.settings.showHeadBar || !_this.settings.autoHideHeadBar)return;
             let h_bar = document.querySelector('.header_bar');
             if(h_bar.classList.contains('down')){
             document.querySelector('.header_bar input').blur();
@@ -598,10 +602,17 @@ var app = new Vue({
         'searchData.models': {
             handler(newVal) {
                 for (let i in newVal) {
+                    
                     if (this.searchData.models[i].canEdit) {
                         this.searchData.models[i].scope = newVal[i].scope.trim().replace(/^(http[s]?:\/\/)|(\/)$/, function (match) {
                             return '';
                         });
+
+                        if(this.searchData.models[i].scope == ''){
+                            this.searchData.models.splice(i,1);
+                            continue;
+                        }
+
                         if (this.searchData.models[i].scope.indexOf('/') > -1)
                             this.searchData.models[i].symbol = 'inurl:';
                         else

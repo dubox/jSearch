@@ -104,7 +104,7 @@ function broadcast(data){
 
 
 function findJTab(cb){
-    let searchUrl = chrome.extension.getURL('../options/search.html');
+    let searchUrl = chrome.extension.getURL('');
     chrome.tabs.getAllInWindow(function(tabs){
         let tabJ = tabCurr = -1;
         for(let i in tabs){
