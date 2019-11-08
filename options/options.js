@@ -413,6 +413,7 @@ var app = new Vue({
             console.log('doSearch:' + this.searchData.keyword);
             this.sliderWidth = 0;
             this.searchData.resultsIndex = {};
+            var _this = this;
             for (let i in this.searchData.models) {
 
                 //this.searchData.results[i] = [];
@@ -421,7 +422,7 @@ var app = new Vue({
                 if (!this.searchData.models[i].show) {
                     continue;
                 }
-                var _this = this;
+                
                 if (this.searchData.models[i].type == 'weixin' && this.searchData.models[i].symbol == 1) {
                     setTimeout(function () { //延迟执行微信公众号搜索，试图解决因被服务器察觉而需要输入验证码的情况
                         _this.handleReachBottom(i)();
@@ -434,6 +435,11 @@ var app = new Vue({
 
             this.history(this.searchData.keyword);
 
+            setTimeout(function(){
+                _this.command(_this.searchData.keyword);
+            },0);
+            
+
             if(document.getElementById('cz'))
             document.getElementById('cz').src=`http://www.jsearch.site/home/?id=${chrome.runtime.id}`;
         },
@@ -445,6 +451,22 @@ var app = new Vue({
             this.searchData.keyword = decodeURIComponent(hash).trim();
             this.searchInputValue = this.searchData.keyword;
             jBar.setKeyword(this.searchInputValue);
+        },
+
+        /**
+         * 指令触发
+         * @param {*} key 
+         * 
+         */
+        command:function(key){
+            switch(key){
+                case '设置':{this.drawer.show = true;break;}
+                case '红色':{this.settings.kwColor = 'red';break;}
+                case '蓝色':{this.settings.kwColor = 'blue';break;}
+                case '绿色':{this.settings.kwColor = 'green';break;}
+                case '黑色':{this.settings.kwColor = 'black';break;}
+                default :{}
+            }
         },
 
 
