@@ -96,20 +96,7 @@
             .ivu-card{
                 background-color: rgba(255, 255, 255, 1);
             }
-            .alipay .slid-show{
-                transition: max-height 1s;
-                max-height:0px;
-                display: block;
-                overflow: hidden;
-            }
-
-            .alipay:hover .slid-show{
-                max-height: 250px;
-            }
-            @-webkit-keyframes alipay{
-                from {height: 0px;}
-                to{height: 100px;}
-            }
+            
             .header_bar{
                 background-color: rgba(255,255,255,0.8);    
                 box-shadow: 0 0 1px rgba(0,0,0,0.25);
@@ -143,12 +130,28 @@
             
             .drawer-footer{
                 position: absolute;
+                width: 100%;
                 bottom: 5px;
                 left: 0;
-                box-shadow: 0 -1px 1px rgba(0,0,0,0.15);
+                /*box-shadow: 0 -1px 1px rgba(0,0,0,0.15);*/
                 padding-top: 5px;
                 background: rgba(255,255,255,0.6);
             }
+            .alipay .slid-show{
+                transition: max-height 1s;
+                max-height:0px;
+                display: block;
+                overflow: hidden;
+            }
+
+            .alipay:hover .slid-show{
+                max-height: 300px;
+            }
+            @-webkit-keyframes alipay{
+                from {height: 0px;}
+                to{height: 100px;}
+            }
+           
 
             /* VUE过渡动画   可以设置不同的进入和离开动画 */
 /* 设置持续时间和动画函数 */
@@ -462,13 +465,14 @@ body .ivu-icon{
             </i-form>
             <div class="drawer-footer">
 
-                <Card style="width:50%;float: right;margin-right: 5px;" class="alipay">
-                    <img src="../public/imgs/alipay.png" width="100%" class="slid-show">
-                    <div style="text-align:center" class="slid-show">
-                        <h5>您的捐赠是对我最大的鼓励和支持</h5>
-                        <h5>Your donation is the greatest encouragement and support for me.</h5>
+                <Card style="float: right;margin-right: 5px;" class="alipay">
+                    <img src="../public/imgs/wechat.png" width="" style="margin: 0 auto;" class="slid-show">
+                    <div style="text-align:center;width: 100%;" class="slid-show">
+                        
+                        <h5 style="display: none;">您的捐赠是对我最大的鼓励和支持</h5>
+                        <h5 style="display: none;">Your donation is the greatest encouragement and support for me.</h5>
 
-                        <Divider dashed style="margin:5px 0;"></Divider>
+                        <Divider dashed style="margin:5px 0;width: 100%;"></Divider>
                     </div>
                     <div style="text-align:center">
                         <h5>如果有任何问题或建议可反馈至：<a href="https://github.com/dubox/jSearch/issues" target="_blank">issues@jSearch</a></h5>

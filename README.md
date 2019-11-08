@@ -30,7 +30,9 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
    2.解压并覆盖原插件文件夹  
    3.到插件管理(扩展管理),刷新本插件 即可  
   
->下载： [github](https://github.com/dubox/jSearch/releases/) ,[gitee](https://gitee.com/dubox/jSearch/releases),[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)
+>下载： [github](https://github.com/dubox/jSearch/releases/) ,[gitee](https://gitee.com/dubox/jSearch/releases),[百度网盘](https://pan.baidu.com/s/1YBRrgKpc6BGRRZ18IbixiA)  
+
+（ 360浏览器，可直接在[应用市场](https://ext.se.360.cn/webstore/search/jsearch)安装；360极速，在[扩展中心](https://ext.chrome.360.cn/webstore/search/jsearch) ）
 
 ### &使用方法
 > a.直接在地址栏输入要搜索的内容，敲回车即可（需将浏览器默认搜索引擎设置为 google 或百度）。
@@ -70,12 +72,10 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 ### &鸣谢
 感谢开源项目：[VUE](https://github.com/vuejs/vue) 、[iview](https://github.com/iview/iview) 、[hotkeys.js](https://github.com/jaywcjlove/hotkeys)、[vue-dragging](https://github.com/hilongjw/vue-dragging)、[qrcodejs](https://github.com/davidshimjs/qrcodejs)
 
-### &捐赠
+### &关注
 
 
-<img width = "300" src="https://oscimg.oschina.net/oscnet/e636e1a7942036b493ee7422641c0257a82.jpg">  
+<img width = "400" src="http://www.jsearch.site/public/imgs/wechat.png">  
 
-- 您的捐赠是对我最大的鼓励和支持  
-(Your donation is the greatest encouragement and support for me)
 
-- Or give a star : [github](https://github.com/dubox/jSearch/) ,[码云](https://gitee.com/dubox/jSearch)  
+- And give a star : [github](https://github.com/dubox/jSearch/) ,[码云](https://gitee.com/dubox/jSearch)  

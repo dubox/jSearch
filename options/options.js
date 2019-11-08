@@ -479,7 +479,7 @@ var app = new Vue({
                 if (_this.version.localVer != _this.version.latestVer) {
                     console.log('new version:' + _this.version.latestVer)
                     _this.version.notice = 'new';
-                    _this.showMsg(`新版本提醒|发现新版本:<a href="https://github.com/dubox/jSearch/releases">v${_this.version.latestVer}</a> ,赶紧更新吧！！！|5`);
+                    _this.showMsg(`新版本提醒|发现新版本:<a href="https://github.com/dubox/jSearch/releases">v${_this.version.latestVer}</a> ,赶紧更新吧！！！|0`);
                 }
                 _this.broadcast(resp.data.broadcast);
 
