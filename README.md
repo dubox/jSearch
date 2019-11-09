@@ -75,7 +75,7 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 ### &关注
 
 
-<img width = "400" src="http://www.jsearch.site/public/imgs/wechat.png">  
+<img width = "400" src="https://www.jsearch.site/public/imgs/wechat.png">  
 
 
 - And give a star : [github](https://github.com/dubox/jSearch/) ,[码云](https://gitee.com/dubox/jSearch)  
