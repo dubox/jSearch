@@ -249,7 +249,7 @@ body .ivu-icon{
                 <transition-group name="slide-list" class="slider" tag="div">
                     <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' ,order:resultsIndex(index1)}" v-for="(item1, index1) in searchData.models"
                         :key="index1" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
-                        <div class="model_logo" v-if="item1.type!='bookmarks'" v-bind:style="{top:(settings.showHeadBar&&!settings.autoHideHeadBar?114:50)+'px'}" ><a :href="'http://'+item1.scope"><img width="24px" :src="'chrome://favicon/http://'+item1.scope" /></a></div>
+                        <div class="model_logo" v-if="item1.type!='bookmarks'" v-bind:style="{top:(settings.showHeadBar&&!settings.autoHideHeadBar?114:50)+'px'}" ><a :href="'http://'+item1.scope"><img width="24px" :src="'chrome://favicon/http://'+item1.scope" v-real-img="'http://'+(item1.scope+'/').replace(/\/.*$/,'/favicon.ico')" /></a></div>
                         <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight"
                             distance-to-edge="15">
                             <div class=" top_area3" v-if="settings.showHeadBar&&!settings.autoHideHeadBar"></div>
