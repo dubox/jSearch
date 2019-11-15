@@ -1,5 +1,6 @@
 var RunTime = {
-    searchInAddress : true
+    settings:{searchInAddress : true},
+    wxUrls:null //
 };
 
 chrome.webRequest.onBeforeRequest.addListener(
@@ -7,7 +8,9 @@ chrome.webRequest.onBeforeRequest.addListener(
         //console.log(chrome.extension.getURL('../options/search.html')+'?#'+GetQueryString(details.url,'wd'))
         //console.log(details);
 
-        if(RunTime.searchInAddress){
+       
+
+        if(RunTime.settings.searchInAddress){
 
             if (1 && details.type == "main_frame" && typeof details.initiator == 'undefined') {
                 if (/^http[s]?:\/\/([^.]+\.)?google\..+/.test(details.url))
@@ -25,13 +28,64 @@ chrome.webRequest.onBeforeRequest.addListener(
                     redirectUrl: chrome.extension.getURL('../options/search.html') + '?#' + GetQueryString(details.url, 'q')
                 };
             //console.log('aaa');
-
         }
+
+         //处理微信搜索屏蔽问题
+         if(details.initiator.indexOf('chrome-extension://')===0){
+            if(!/^(https:\/\/weixin\.sogou\.com\/link.*)(https:\/\/weixin\.sogou\.com\/weixin.*)$/.test(details.url))return;
+            RunTime.wxUrls = details.url.match(/^(https:\/\/weixin\.sogou\.com\/link.*)(https:\/\/weixin\.sogou\.com\/weixin.*)$/);
+            if(!RunTime.wxUrls || RunTime.wxUrls.length<3)return;
+            return {
+                redirectUrl: RunTime.wxUrls[1]
+            };
+        }
+
+        
+
     }, //
     {
-        urls: ["*://www.baidu.com/*", "*://*/search?q=*", "*://chrome.jsearch.site/*"]
+        urls: ["*://www.baidu.com/*", "*://*/search?q=*", "*://chrome.jsearch.site/*","*://weixin.sogou.com/link?*"]
     }, //
     ["blocking"]);
+//https://weixin.sogou.com/weixin?type=2&query=swoole
+
+chrome.webRequest.onBeforeSendHeaders.addListener(
+    function(details) {
+        //console.log(details);
+        if(details.initiator.indexOf('chrome-extension://')!==0)return ;
+
+
+        if(RunTime.wxUrls && RunTime.wxUrls.length >= 3){
+            var Referer = 0,SecFetchUser = 0,SecFetchSite = 0;
+            for (var i = 0; i < details.requestHeaders.length; ++i) {
+
+                if (details.requestHeaders[i].name === 'Referer') {
+                Referer = 1;
+                details.requestHeaders[i].value = RunTime.wxUrls[2];
+                }
+                if (details.requestHeaders[i].name === 'Sec-Fetch-User') {
+                    SecFetchUser = 1;
+                    details.requestHeaders[i].value = "?1";
+                }
+                
+                if (details.requestHeaders[i].name === 'Sec-Fetch-Site') {
+                    SecFetchSite = 1;
+                    details.requestHeaders[i].value = "same-origin";
+                }
+            }
+            if(!Referer)
+            details.requestHeaders.push({'name':'Referer','value':RunTime.wxUrls[2]}); 
+            if(!SecFetchUser)
+            details.requestHeaders.push({'name':'Sec-Fetch-User','value':'?1'}); 
+            if(!SecFetchSite)
+            details.requestHeaders.push({'name':'Sec-Fetch-Site','value':'same-origin'}); 
+
+            //console.log(details);
+            return {requestHeaders: details.requestHeaders};
+        }
+    },
+        {urls: ["*://weixin.sogou.com/link?*"]},
+        ["blocking","extraHeaders", "requestHeaders"]);
 
 
 
@@ -70,7 +124,7 @@ chrome.storage.onChanged.addListener(function(changes ,type){
 
         //更新后台 运行时数据
         if(changes.settings){
-            RunTime = changes.settings.newValue.BG;
+            RunTime.settings = changes.settings.newValue.BG;
             broadcast({dataType:'settings',data:changes.settings.newValue});
         }
     }
@@ -130,7 +184,11 @@ function GetQueryString(url, name) {
     return '';
 }
 
-
+/**
+ * 递归地将from中to没有的元素copy过去
+ * @param {} from 
+ * @param {*} to 
+ */
 function trans(from, to) {
     for (let i in from) {
         if (typeof to[i] == 'undefined') {
@@ -273,7 +331,7 @@ chrome.runtime.onInstalled.addListener(details => {
                 trans(defaultSettings.settings, items.settings);
 
                 //加载后台配置
-                RunTime = items.settings.BG;
+                RunTime.settings = items.settings.BG;
                 
             } else {
                 //设置初始配置

@@ -312,7 +312,7 @@ body .ivu-icon{
             <i-form :model="searchData.models">
 
                 <Row :gutter="32" type="flex" align="middle" v-for="(item, index) in searchData.models" v-dragging="{ item: item, list: searchData.models, group: 'models'}"
-                    :key="index" :draggable="drawer.itemDraggable">
+                    :key="index" :draggable="drawer.itemDraggable" title="拖动站点可以排序">
                     <i-col span="6">
                         <form-item>
                             <i-select v-model="item.type" placeholder="搜索引擎" :disabled="!item.canEdit">
@@ -493,4 +493,3 @@ body .ivu-icon{
 </body>
 
 </html>
-

@@ -309,7 +309,7 @@ var app = new Vue({
                                     return false;
                                 }
 
-                                axios.get(`https://weixin.sogou.com/weixin?query=${encodeURIComponent(_this.searchData.keyword)}&type=${_this.searchData.models[index].symbol}&page=${++_this.searchData.pageNums[index]}&_sug_type_=&s_from=input&_sug_=n&ie=utf8`, {
+                                axios.get(`https://weixin.sogou.com/weixin?type=${_this.searchData.models[index].symbol}&query=${encodeURIComponent(_this.searchData.keyword)}&page=${++_this.searchData.pageNums[index]}`, {//&_sug_type_=&s_from=input&_sug_=n&ie=utf8
                                     headers: {
                                         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                                         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
@@ -322,8 +322,23 @@ var app = new Vue({
                                     let data = response.data.replace(/onerror/g, 'ss').replace(/src="\/\//g, 'src="http://').replace(/src="\//g, 'src="https://weixin.sogou.com/').replace(/href="\//g, 'href="https://weixin.sogou.com/').replace(/onload="resizeImage\(.*\)"/g, 'height="105"').replace(/<script>document\.write\(timeConvert\('(.*)'\)\)<\/script>/g, function (match, item1) {
                                         return getDate(parseInt(item1) * 1000);
                                     });
-                                    let res_obj = $(data).find('.news-box>ul');
+                                    let res_obj = $(data).find('.news-box>ul');console.log($(data).find('.news-box>ul'));
                                     res_obj.find('.pop').css('display', '');
+
+                                    //处理链接解决微信屏蔽
+                                    if(_this.searchData.keyword){
+                                        res_obj.find('h3 a').each(function(){
+                                            let k = parseInt(Math.random()*99);
+                                            let href = $(this).attr('href');
+                                            $(this).attr('href',href+`&k=${k}&h=${href[56+k-1]}`+`https://weixin.sogou.com/weixin?type=${_this.searchData.models[index].symbol}&query=${encodeURIComponent(_this.searchData.keyword)}&page=${_this.searchData.pageNums[index]}`);
+                                        });
+                                        res_obj.find('.tit a').each(function(){
+                                            let k = parseInt(Math.random()*99);
+                                            let href = $(this).attr('href');
+                                            $(this).attr('href',href+`&k=${k}&h=${href[56+k-1]}`+`https://weixin.sogou.com/weixin?type=${_this.searchData.models[index].symbol}&query=${encodeURIComponent(_this.searchData.keyword)}&page=${_this.searchData.pageNums[index]}`);
+                                        });
+                                    }
+
                                     if (res_obj.length < 1) {
                                         if ($(data).find('#seccodeForm').length > 0) {
                                             _this.searchData.results[index].push(`您需要进行验证后才能继续使用：<a href="https://weixin.sogou.com/weixin" target="_blank">去验证</a>`);
@@ -455,13 +470,9 @@ var app = new Vue({
                     continue;
                 }
                 
-                if (this.searchData.models[i].type == 'weixin' && this.searchData.models[i].symbol == 1) {
-                    setTimeout(function () { //延迟执行微信公众号搜索，试图解决因被服务器察觉而需要输入验证码的情况
-                        _this.handleReachBottom(i)();
-                    }, 2000);
-                } else {
-                    this.handleReachBottom(i)();
-                }
+                
+                this.handleReachBottom(i)();
+                
 
             }
 
