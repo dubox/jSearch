@@ -51,7 +51,7 @@ function sendToBg(msgObj ,cb){
         if(cb)cb(response);
         });
     }catch(e){
-        cb(false);
+        if(cb)cb(false);
     }
 }
 
@@ -92,6 +92,12 @@ var MessageListener = new MessageListener();
 var jBar = new jBar();
 
 
+//快捷键开启或关闭地址栏搜索
+hotkeys('shift+d', function (event, handler) {
+    sendToBg({searchInAddress:1});
+      return false;
+  console.log(handler);
+  });
 
 
 

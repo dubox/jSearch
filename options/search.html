@@ -4,18 +4,18 @@
 <head>
     <meta charset="utf-8">
     <title>jSearch</title>
-    <meta baseurl="http://">
+    <meta baseurl="https://">
     <base target="_blank">
-    <link rel="stylesheet" type="text/css" href="../public/iview.css">
+    <link rel="stylesheet" type="text/css" href="../public/iview.3.5.3.css">
     <link rel="stylesheet" type="text/css" href="../content/search_bar.css">
     <link rel="stylesheet" type="text/css" href="./result.css">
     <script src="../public/platform.js"></script>
     <script src="../public/jquery-3.3.1.min.js"></script>
     <script src="../public/axios.min.js"></script>
     <script type="text/javascript" src="../public/vue-dragging.js"></script>
-    <script type="text/javascript" src="../public/vue.min.js"></script>
+    <script type="text/javascript" src="../public/vue.2.6.10.min.js"></script>
     <!--iview 3.2.2-->
-    <script type="text/javascript" src="../public/iview.min.js"></script>
+    <script type="text/javascript" src="../public/iview.3.5.3.min.js"></script>
     <style>
 
         html,body{
@@ -186,11 +186,15 @@ body .ivu-icon{
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif !important;
     font-style: normal;
 }
-.col h2,.col h3,.col h3>a,.col h2>a,.col h2 strong ,.txt-box>.tit>a{
+.col h2,.col h3,.col h3>span,.col h3>a,.col h2>a,.col h2 strong ,.txt-box>.tit>a{
     font-size: 18px !important;
     font-weight: 700 !important;
     color: rgb(51, 51, 51)  !important;
     margin-bottom: 6px;
+}
+.col h2 a:visited,.col h3 a:visited,.col a:visited>h3>span,.col h3>a:visited,.col h2>a:visited ,.txt-box>.tit>a:visited{
+   
+    color: rgb(145, 145, 145)  !important;
 }
 /*关键词*/
 .green .c-container em, .green .g em, .green  li.b_algo p strong, .green li.b_algo h2 strong, .green .news-list2 em, .green .news-list em{
@@ -221,12 +225,19 @@ body .ivu-icon{
             <div id="top_area" :class="'top_area '+ (settings.showHeadBar&&!settings.autoHideHeadBar?'top_area2':'')"></div>
             <i-header id="header_bar" :class="'header_bar '+ (settings.showHeadBar&&!settings.autoHideHeadBar?'down':'')">
                 <Row type="flex" align="middle" class="opacity-7">
-                    <i-col span="12"><span style="font-size:24px;font-weight:bold;color: #2d8cf0;">jSearch<span style="font-size:14px;">&nbsp;聚搜</span></span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>just Search it!</strong></i-col>
-                    <i-col span="9">
+                    <i-col span="4" style="position: relative;"><span style="font-size:24px;font-weight:bold;color: #2d8cf0;">jSearch<span style="font-size:14px;">&nbsp;聚搜</span></span><strong style="
+                        position: absolute;
+                        top: 19px;
+                        left: 40px;
+                    ">just Search it!</strong></i-col>
+                    <i-col span="4">
                         <form v-bind:action="'#'+searchInputValue" target="_top">
                             <i-input search placeholder="Enter something..." v-model="searchInputValue" @on-search="searchInputSubmit"></i-input>
                         </form>
+                    </i-col>
+                    <i-col span="1"> </i-col>
+                    <i-col span="12"> 
+                        <Tag  color="primary" checkable v-for="(value, key, index) in settings.tags" :name="key" :checked="value" @on-change="checkTag" >{{key}}</Tag>
                     </i-col>
                     <i-col span="1"> </i-col>
 
@@ -249,7 +260,7 @@ body .ivu-icon{
                 <transition-group name="slide-list" class="slider" tag="div">
                     <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' ,order:resultsIndex(index1)}" v-for="(item1, index1) in searchData.models"
                         :key="index1" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
-                        <div class="model_logo" v-if="item1.type!='bookmarks'" v-bind:style="{top:(settings.showHeadBar&&!settings.autoHideHeadBar?114:50)+'px'}" ><a :href="'http://'+item1.scope"><img width="24px" :src="'chrome://favicon/http://'+item1.scope" v-real-img="'http://'+(item1.scope+'/').replace(/\/.*$/,'/favicon.ico')" /></a></div>
+                        <div class="model_logo" v-if="item1.type!='bookmarks'" v-bind:style="{top:(settings.showHeadBar&&!settings.autoHideHeadBar?114:50)+'px'}" ><a :href="'http://'+item1.scope"><img width="24px" :src="'chrome://favicon/http://'+item1.scope" v-real-img="'https://'+(item1.scope+'/').replace(/\/.*$/,'/favicon.ico')" /></a></div>
                         <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight"
                             distance-to-edge="15">
                             <div class=" top_area3" v-if="settings.showHeadBar&&!settings.autoHideHeadBar"></div>
@@ -311,9 +322,9 @@ body .ivu-icon{
             <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">配置站点</Divider>
             <i-form :model="searchData.models">
 
-                <Row :gutter="32" type="flex" align="middle" v-for="(item, index) in searchData.models" v-dragging="{ item: item, list: searchData.models, group: 'models'}"
+                <Row :gutter="10" type="flex" align="middle" v-for="(item, index) in searchData.models" v-dragging="{ item: item, list: searchData.models, group: 'models'}"
                     :key="index" :draggable="drawer.itemDraggable" title="拖动站点可以排序">
-                    <i-col span="6">
+                    <i-col span="4">
                         <form-item>
                             <i-select v-model="item.type" placeholder="搜索引擎" :disabled="!item.canEdit">
                                 <i-option value="baidu">百度</i-option>
@@ -326,13 +337,20 @@ body .ivu-icon{
                             </i-select>
                         </form-item>
                     </i-col>
-                    <i-col span="14">
+                    <i-col span="4">
+                        <form-item>
+                            <i-select v-model="item.tag" placeholder="分组">
+                                <i-option  v-for="(value, key, index) in settings.tags" :value="key">{{key}}</i-option>
+                            </i-select>
+                        </form-item>
+                    </i-col>
+                    <i-col span="13">
                         <form-item>
                             <i-input :value="item.scope" @on-blur="if($event.target.composing)return;item.scope =$event.target.value;drawer.itemDraggable = true;"
                                 placeholder="输入想要搜索的网站域名或一个Url" :disabled="!item.canEdit" autocomplete="on" @on-focus="drawer.itemDraggable = false;" />
                         </form-item>
                     </i-col>
-                    <i-col span="4">
+                    <i-col span="3">
                         <form-item>
                             <i-switch v-model="item.show" />
                         </form-item>
@@ -343,8 +361,8 @@ body .ivu-icon{
             </i-form>
 
             <i-form :model="settingFormData">
-                <Row :gutter="32" type="flex" align="middle">
-                    <i-col span="6">
+                <Row :gutter="10" type="flex" align="middle">
+                    <i-col span="4">
                         <form-item>
                             <i-select v-model="settingFormData.type" placeholder="please choose the type">
                                 <i-option value="baidu">百度</i-option>
@@ -353,14 +371,21 @@ body .ivu-icon{
                             </i-select>
                         </form-item>
                     </i-col>
-                    <i-col span="14">
+                    <i-col span="4">
+                        <form-item>
+                            <i-select v-model="settingFormData.tag" placeholder="分组" >
+                                <i-option  v-for="(value, key, index) in settings.tags" :value="key">{{key}}</i-option>
+                            </i-select>
+                        </form-item>
+                    </i-col>
+                    <i-col span="13">
                         <form-item>
                             <i-input v-model="settingFormData.scope" placeholder="输入想要搜索的网站域名或一个Url" />
 
                         </form-item>
                         <input style="display:none;" />
                     </i-col>
-                    <i-col span="4">
+                    <i-col span="3">
                         <form-item>
                             <i-button type="primary" @click="settingAddSearchScope">Add</i-button>
 
@@ -370,6 +395,15 @@ body .ivu-icon{
                 </Row>
 
             </i-form>
+            <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">站点分组</Divider>
+            <Row :gutter="32" type="flex" align="middle">
+                <i-col span="24">
+                    <i-input search placeholder="添加分组"  @on-search="addTag" style="width: 200px;" enter-button="Add"></i-input>
+                    <br/>
+                    <Tag  closable v-for="(value, key, index) in settings.tags" :name="key"  @on-close="removeTag">{{key}}</Tag>
+                </i-col>
+            </Row>
+
             <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">通用设置</Divider>
             <i-form :model="settingFormData" class="setting_form">
                 <Row :gutter="32" type="flex" align="middle">
@@ -384,6 +418,17 @@ body .ivu-icon{
                             </checkbox-group>
                         </form-item>
                     </i-col>
+                    
+                </Row>
+                <Row :gutter="32" type="flex" align="middle">
+                        <i-col span="7" style="padding-right: 0px;">
+                                <form-item label="地址栏搜索：">
+                                    <i-switch v-model="settings.BG.searchInAddress" size="small" style="margin-left: 20px;" />
+                                </form-item>
+                               
+                            </i-col>
+                            <i-col span="4" style="padding-left: 0px;">or &nbsp;&nbsp;<strong> Shift+D </strong></i-col>
+                    
                     <i-col span="6">
                         <form-item label="划词搜索：">
                             <i-switch v-model="settings.jBar.onSelection" size="small" />
@@ -391,16 +436,12 @@ body .ivu-icon{
                     </i-col>
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
-                    <i-col span="11">
-                        <form-item label="在已有jSearch标签页中打开：">
-                            <i-switch v-model="settings.jBar.inExist" size="small" />
-                        </form-item>
-                    </i-col>
-                    <i-col span="7">
-                        <form-item label="地址栏搜索：">
-                            <i-switch v-model="settings.BG.searchInAddress" size="small" />
-                        </form-item>
-                    </i-col>
+                        <i-col span="11">
+                                <form-item label="在已有jSearch标签页中打开：">
+                                    <i-switch v-model="settings.jBar.inExist" size="small" />
+                                </form-item>
+                            </i-col>
+                   
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="24">

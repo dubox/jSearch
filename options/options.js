@@ -52,7 +52,8 @@ var app = new Vue({
             scope: '',
             show: true,
             canEdit: true,
-            canDelete: true
+            canDelete: true,
+            tag:''
         },
 
         //右侧边栏样式
@@ -88,9 +89,11 @@ var app = new Vue({
             autoHideHeadBar:true,
             kwColor:'green',
             orderByTime:true,   //按结果加载时间排序，先加载出来的结果排在前面
+            tags:{},
             
         },
-        searchHistory:[]    //搜索历史
+        searchHistory:[],    //搜索历史
+        runTime:{}
     },
     computed: {
         // 仅读取 已废弃
@@ -130,7 +133,7 @@ var app = new Vue({
                                 }
                                 axios.get(`https://www.baidu.com/s?wd=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&pn=${_this.searchData.pageNums[index]*10}&gpc=${gpc}`).then(function (response) {
                                     //console.log(data);
-                                    let res_obj = $(response.data.replace(/src="\//g, 'src="https://www.baidu.com/')).find('#content_left');
+                                    let res_obj = $(response.data.replace(/src="\//g, 'src="https://www.baidu.com/').replace(/src="http:\/\//g, 'src="https://')).find('#content_left');
                                     res_obj.children().not('.c-container').remove();
                                     let res = res_obj[0].outerHTML;
                                     let text_for_check = $(res).text(); //将字符串再次转换为对象又转为字符串  会经过一次格式化 这样得到的字符串才是稳定的，才能用于比较
@@ -319,10 +322,10 @@ var app = new Vue({
                                     }
                                 }).then(function (response) {
                                     //console.log(response);
-                                    let data = response.data.replace(/onerror/g, 'ss').replace(/src="\/\//g, 'src="http://').replace(/src="\//g, 'src="https://weixin.sogou.com/').replace(/href="\//g, 'href="https://weixin.sogou.com/').replace(/onload="resizeImage\(.*\)"/g, 'height="105"').replace(/<script>document\.write\(timeConvert\('(.*)'\)\)<\/script>/g, function (match, item1) {
+                                    let data = response.data.replace(/onerror/g, 'ss').replace(/src="\/\//g, 'src="https://').replace(/src="http:\/\//g, 'src="https://').replace(/src="\//g, 'src="https://weixin.sogou.com/').replace(/href="\//g, 'href="https://weixin.sogou.com/').replace(/onload="resizeImage\(.*\)"/g, 'height="105"').replace(/<script>document\.write\(timeConvert\('(.*)'\)\)<\/script>/g, function (match, item1) {
                                         return getDate(parseInt(item1) * 1000);
                                     });
-                                    let res_obj = $(data).find('.news-box>ul');console.log($(data).find('.news-box>ul'));
+                                    let res_obj = $(data).find('.news-box>ul');
                                     res_obj.find('.pop').css('display', '');
 
                                     //处理链接解决微信屏蔽
@@ -409,10 +412,62 @@ var app = new Vue({
                 type: 'baidu',
                 symbol: '',
                 scope: '',
+                tag: '',
                 show: true,
                 canEdit: true,
                 canDelete: true
             };
+        },
+        addTag:function(value){
+            //this.settings.tags[value] = false;
+            this.$set(this.settings.tags,value,false);
+        },
+        removeTag:function(event, name){
+            this.$delete(this.settings.tags,name);
+        },
+        //切换标签选中状态
+        checkTag:function(checked, name){console.log(name,checked);
+            this.$set(this.settings.tags,name,checked);
+            this.tagSearch(name);
+            /**
+             * Todo
+             * 标签切换实现增量搜索  增量排序前置
+             * 标签快捷键 搜索前 搜索后
+             * 右键反选
+             */
+        },
+
+        
+        /**
+         * 单选和反选
+         * @param {*} index 标签索引
+         * @param {*} flag  true 单选，false 反选
+         */
+        oneTag:function(index,flag){
+            var  tags = this.settings.tags;
+            var k = 0;
+            
+            var name = '';
+            for(let i in tags){
+                if(index == k){
+                    name = i;
+                    if(typeof flag != 'boolean')flag = !tags[i];
+                    break;
+                }
+                k++;
+            }
+            for(let i in tags){console.log('=='+i);
+                if(i == name)
+                    this.checkTag(flag ,i);
+                else
+                    this.checkTag(!flag ,i);
+            }
+        
+        },
+
+        clickTag:function(e,a){
+            console.log(e);
+            console.log(a);
         },
 
 
@@ -427,33 +482,72 @@ var app = new Vue({
             location.href = '#' + this.searchInputValue;
         },
 
-        init: function () {
+        loadSettings:function(cb){
+
             var _this = this;
 
-            //加载站点配置
-            chrome.storage.sync.get('searchModels', function (items) {
+            //加载配置
+            chrome.storage.sync.get(null, function (items) {
                 //console.log(items);
                 for(let i in items.searchModels)
                     if(!items.searchModels[i])
                     delete items.searchModels[i];
-                _this.searchData.models = items.searchModels;
-            });
-            //加载通用设置
-            chrome.storage.sync.get('settings', function (items) {
-                //console.log(items);
+
+                //加载通用设置
                 _this.settings = items.settings;
+
+                //加载站点配置 并触发搜索
+                _this.searchData.models = items.searchModels;
+
+                cb();
             });
+        },
+
+        init: function () {
+            var _this = this;
+
             chrome.storage.sync.getBytesInUse('searchModels', function (size) {
                 console.log(size);
             });
 
+            this.loadSettings(function(){
+                _this.setKeyword();
+            });
 
             _this.checkUpdate();
 
-            _this.setKeyword();
-
             //_this.isInit = true;
             //_this.doSearch();
+
+            //监听BG发来的 settings 变更
+            MessageListener.add('settings', function (_settings) {
+                _this.settings = _settings;
+              });
+        },
+
+        tagSearch(tag){
+            console.log('tagSearch:' + this.searchData.keyword);
+
+            for (let i in this.searchData.models) {
+
+                if (this.searchData.models[i].tag != tag) {
+                    continue;
+                }
+                if (!this.searchData.models[i].show) {
+                    continue;
+                }
+//console.log(this.searchData.results[i]);return;
+                if(this.searchData.results[i].length){
+                    Vue.set(this.searchData.results, i, []);
+                    this.searchData.pageNums[i] = 0;
+                }else{
+                    Vue.set(this.searchData.results, i, []);
+                    this.searchData.pageNums[i] = 0;
+                    this.handleReachBottom(i)();
+                }
+                
+            }
+
         },
 
         doSearch() {
@@ -469,11 +563,11 @@ var app = new Vue({
                 if (!this.searchData.models[i].show) {
                     continue;
                 }
-                
+                if (!this.settings.tags[this.searchData.models[i].tag]) {
+                    continue;
+                }
                 
                 this.handleReachBottom(i)();
-                
-
             }
 
             this.history(this.searchData.keyword);
@@ -484,14 +578,23 @@ var app = new Vue({
             
 
             if(document.getElementById('cz'))
-            document.getElementById('cz').src=`http://www.jsearch.site/home/?id=${chrome.runtime.id}`;
+            document.getElementById('cz').src=`https://www.jsearch.site/home/?id=${chrome.runtime.id}`;
         },
         setKeyword() {
             let hash = '';
             if (typeof window.location.hash != 'undefined') {
                 hash = window.location.hash.substr(1);
             }
-            this.searchData.keyword = decodeURIComponent(hash).trim();
+            let kw = decodeURIComponent(hash).trim();
+           
+            kw = kw.match(new RegExp('([^@]*)@([^=]*)=(.*)'));
+            if(kw){
+                this.searchData.keyword = kw[1];
+                this.command(kw[2],kw[3]);
+            }else{
+                this.searchData.keyword = decodeURIComponent(hash).trim();
+            }
+            
             this.searchInputValue = this.searchData.keyword;
             jBar.setKeyword(this.searchInputValue);
         },
@@ -501,13 +604,27 @@ var app = new Vue({
          * @param {*} key 
          * 
          */
-        command:function(key){
+        command:function(key,value){
             switch(key){
                 case '设置':{this.drawer.show = true;break;}
                 case '红色':{this.settings.kwColor = 'red';break;}
                 case '蓝色':{this.settings.kwColor = 'blue';break;}
                 case '绿色':{this.settings.kwColor = 'green';break;}
                 case '黑色':{this.settings.kwColor = 'black';break;}
+                case 'tag':{
+                    value = parseInt(value);console.log(value);
+                    if(value == NaN || !value)break;
+                    var  tags = this.settings.tags;
+                    var k = 1;
+                    for(let i in tags){console.log(i);
+                        if(value == k){
+                            this.$set(this.settings.tags,i,true);
+                        }else{
+                            this.$set(this.settings.tags,i,false);
+                        }
+                        k++;
+                    }
+                    break;}
                 default :{}
             }
         },
@@ -537,7 +654,7 @@ var app = new Vue({
         checkUpdate() {
             var _this = this;
             _this.version.localVer = chrome.runtime.getManifest().version;
-            axios.get('http://www.jsearch.site/app.json?r=' + Math.random()).then(function (resp) {
+            axios.get('https://www.jsearch.site/app.json?r=' + Math.random()).then(function (resp) {
                 //console.log(resp);
 
                 _this.version.latestVer = resp.data.version;
@@ -605,7 +722,7 @@ var app = new Vue({
             h_bar.classList.remove('down');
         });
         document.querySelector('.content').addEventListener('click', function () {
-            if(!_this.settings.showHeadBar || !_this.settings.autoHideHeadBar)return;
+            if(!_this.settings.autoHideHeadBar)return;
             let h_bar = document.querySelector('.header_bar');
             if(h_bar.classList.contains('down')){
             document.querySelector('.header_bar input').blur();
@@ -653,7 +770,14 @@ var app = new Vue({
             }
             event.preventDefault();
         });
+        //标签快捷键
+        hotkeys('ctrl+1,ctrl+2,ctrl+3,ctrl+4,ctrl+5,ctrl+6,ctrl+7,ctrl+8,ctrl+9', function (event, handler) {
+            console.log(handler.key);
+            //event.preventDefault();
+            let k = handler.key.replace('ctrl+','');
+            _this.oneTag(k-1);
 
+        });
         this.init();
     },
     watch: {
@@ -749,23 +873,4 @@ _czc.push(["_setAccount", "1276484996"]);
 
 
 
-var aaa = {
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-    'Access-Control-Allow-Credentials': 'true',
-    'Accept-Encoding': 'gzip, deflate, br',
-    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-    'Cookie': 'SUV=003F3495718C545A5C6E05323751E611; usid=0zHeHHXksgMKIknU; IPLOC=CN6101; wuid=AAECF53vJQAAAAqUKXFYggIAAAA=; CXID=C8CD45FEBC802B97BD4F343659D743E0; SUID=0AF472DC2320940A000000005C791654; ABTEST=2|1551439449|v1; weixinIndexVisited=1; JSESSIONID=aaa3fIT14sXiI9t1BgZKw; ld=5kllllllll2tWFxVlllllVeiG9UlllllT4a1jkllll9llllllylll5@@@@@@@@@@; LSTMV=245%2C70; LCLKINT=11393; PHPSESSID=16iid5e7b0841ch35n6qlslaf1; SNUID=8B76F35D818401882AA9A3ED82924378; sct=3',
-    'Host': 'weixin.sogou.com',
-    'Pragma': 'no-cache',
-    'Referer': 'https://weixin.sogou.com/',
-    'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36',
-};
-
 //todo
-//搜索历史
-//支持删除自定义站点
-//支持当前网页地址生成二维码
-//修复空格快捷键的兼容问题（在简书编辑器）

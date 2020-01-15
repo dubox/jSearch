@@ -1,6 +1,7 @@
 var RunTime = {
     settings:{searchInAddress : true},
-    wxUrls:null //
+    wxUrls:null ,//
+    extRootUrl:chrome.extension.getURL('')
 };
 
 chrome.webRequest.onBeforeRequest.addListener(
@@ -31,7 +32,7 @@ chrome.webRequest.onBeforeRequest.addListener(
         }
 
          //处理微信搜索屏蔽问题
-         if(details.initiator.indexOf('chrome-extension://')===0){
+         if((details.initiator+'/') == RunTime.extRootUrl){
             if(!/^(https:\/\/weixin\.sogou\.com\/link.*)(https:\/\/weixin\.sogou\.com\/weixin.*)$/.test(details.url))return;
             RunTime.wxUrls = details.url.match(/^(https:\/\/weixin\.sogou\.com\/link.*)(https:\/\/weixin\.sogou\.com\/weixin.*)$/);
             if(!RunTime.wxUrls || RunTime.wxUrls.length<3)return;
@@ -51,8 +52,8 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 chrome.webRequest.onBeforeSendHeaders.addListener(
     function(details) {
-        //console.log(details);
-        if(details.initiator.indexOf('chrome-extension://')!==0)return ;
+        
+        if(details.initiator+'/' != RunTime.extRootUrl)return ;
 
 
         if(RunTime.wxUrls && RunTime.wxUrls.length >= 3){
@@ -88,6 +89,30 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
         ["blocking","extraHeaders", "requestHeaders"]);
 
 
+        /** 
+
+    chrome.webRequest.onHeadersReceived.addListener(
+            function(details) {
+                
+                //if(details.initiator+'/' != RunTime.extRootUrl)return ;
+                if(details.url.indexOf('https') === 0)return;
+
+                console.log(details);
+                for (var i = 0; i < details.responseHeaders.length; ++i) {
+                    if (details.responseHeaders[i].name === "Set-Cookie") {
+                        details.responseHeaders[i].value = details.responseHeaders[i].value + '; SameSite=Lax; Secure'; //应对chrome的cookie新政策
+                    }
+                }
+                    //console.log(details);  ; SameSite=None; Secure
+                    return {responseHeaders: details.responseHeaders};
+                
+            },
+                {urls: ["<all_urls>"]},
+                ["blocking","extraHeaders", "responseHeaders"]);
+*/
+
+
+
 
 // 监听来自content-script的消息 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
@@ -107,7 +132,32 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             }
             
         });
+        return;
     }
+
+    //地址栏搜索 开关
+    if(request.dataType == 'searchInAddress'){
+        chrome.storage.sync.get('settings',function(items){
+            items.settings.BG.searchInAddress = !items.settings.BG.searchInAddress;
+            chrome.storage.sync.set({
+                settings: items.settings
+            });
+        });
+        return;
+    }
+
+    /**标签搜索
+    if(request.dataType == 'tagSearch'){
+        chrome.storage.sync.get('settings',function(items){
+            var tags = items.settings.tags;
+            for(){
+
+            }
+            
+        });
+        return;
+    }
+    */
     
 });
 
@@ -203,12 +253,14 @@ function trans(from, to) {
 
 
 
+
 chrome.runtime.onInstalled.addListener(details => {
     var defaultSettings = {
         searchModels: [{
                 type: 'baidu',
                 symbol: '',
                 scope: 'www.baidu.com',
+                tag: '',
                 show: true,
                 canEdit: false,
                 canDelete: false
@@ -217,6 +269,7 @@ chrome.runtime.onInstalled.addListener(details => {
                 type: 'google',
                 symbol: '',
                 scope: 'www.google.com',
+                tag: '',
                 show: false,
                 canEdit: false,
                 canDelete: false
@@ -225,6 +278,7 @@ chrome.runtime.onInstalled.addListener(details => {
                 type: 'bing',
                 symbol: '',
                 scope: 'cn.bing.com',
+                tag: '',
                 show: true,
                 canEdit: false,
                 canDelete: false
@@ -233,6 +287,7 @@ chrome.runtime.onInstalled.addListener(details => {
                 type: 'baidu',
                 symbol: 'site:',
                 scope: 'www.zhihu.com',
+                tag: '',
                 show: true,
                 canEdit: true,
                 canDelete: true
@@ -241,6 +296,7 @@ chrome.runtime.onInstalled.addListener(details => {
                 type: 'baidu',
                 symbol: 'site:',
                 scope: 'www.jianshu.com',
+                tag: '',
                 show: true,
                 canEdit: true,
                 canDelete: true
@@ -249,7 +305,8 @@ chrome.runtime.onInstalled.addListener(details => {
                 type: 'weixin',
                 symbol: '1', //公众号
                 scope: 'weixin.sogou.com',
-                show: true,
+                tag: '',
+                show: false,
                 canEdit: false,
                 canDelete: false
             },
@@ -257,7 +314,8 @@ chrome.runtime.onInstalled.addListener(details => {
                 type: 'weixin',
                 symbol: '2', //公众号文章
                 scope: 'weixin.sogou.com',
-                show: true,
+                tag: '',
+                show: false,
                 canEdit: false,
                 canDelete: false
             },
@@ -265,6 +323,7 @@ chrome.runtime.onInstalled.addListener(details => {
                 type: 'bookmarks',
                 symbol: '',
                 scope: 'bookmarks & history',
+                tag: '',
                 show: true,
                 canEdit: false,
                 canDelete: false
@@ -273,6 +332,7 @@ chrome.runtime.onInstalled.addListener(details => {
                 type: 'baidu',
                 symbol: 'inurl:',
                 scope: 'www.zhihu.com/people',
+                tag: '',
                 show: true,
                 canEdit: true,
                 canDelete: true
@@ -294,6 +354,7 @@ chrome.runtime.onInstalled.addListener(details => {
             autoHideHeadBar:true,
             kwColor:'green',
             orderByTime:true,   //按结果加载时间排序，先加载出来的结果排在前面
+            tags:{}
             
         }
     };
@@ -320,7 +381,14 @@ chrome.runtime.onInstalled.addListener(details => {
                         items.searchModels.push(defaultSettings.searchModels[i]);
                     }
                 }
-                //
+                //同步数据结构
+                for (let i in items.searchModels) {
+                    for (let j in defaultSettings.searchModels[0]) {
+                        if(typeof items.searchModels[i][j] == 'undefined')
+                        items.searchModels[i][j] = defaultSettings.searchModels[0][j];
+                    }
+                }
+                console.log(items.searchModels)
 
             } else {
                 //设置初始配置

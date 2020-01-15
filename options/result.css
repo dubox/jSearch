@@ -540,7 +540,7 @@ div.op-img-address-divide-high,div.op-img-star-divide-high {
 
 #b_results p {
     font: 13px/normal Arial, Helvetica, Sans-Serif;
-    color: #666;
+    /*color: #666;*/
 }
 
 #b_results p strong {
