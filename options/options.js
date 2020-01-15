@@ -563,7 +563,7 @@ var app = new Vue({
                 if (!this.searchData.models[i].show) {
                     continue;
                 }
-                if (!this.settings.tags[this.searchData.models[i].tag]) {
+                if (Object.keys(this.settings.tags).length && !this.settings.tags[this.searchData.models[i].tag]) {
                     continue;
                 }
                 
