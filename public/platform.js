@@ -1,4 +1,4 @@
-if(window.navigator.platform.toLowerCase().indexOf('win') > -1){
+if(window.navigator.platform.toLowerCase().indexOf('win') > -1 && window.navigator.platform.toLowerCase().indexOf('mac') == -1){
     document.write(`<style>    
     ::-webkit-scrollbar
     {
