@@ -302,6 +302,24 @@ chrome.runtime.onInstalled.addListener(details => {
                 canDelete: true
             },
             {
+                type: 'baidu',
+                symbol: 'site:',
+                scope: 'www.myzaker.com',
+                tag: '',
+                show: true,
+                canEdit: true,
+                canDelete: true
+            },
+            {
+                type: 'baidu',
+                symbol: 'site:',
+                scope: 'www.bilibili.com',
+                tag: '',
+                show: true,
+                canEdit: true,
+                canDelete: true
+            },
+            {
                 type: 'weixin',
                 symbol: '1', //公众号
                 scope: 'weixin.sogou.com',
