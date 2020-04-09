@@ -1,6 +1,6 @@
 
 #jsearch-bar .jbar-input {
-    width: 500px;
+    width: 520px;
     height: 50px;
     border: 2px solid rgb(219, 232, 255);/* #c8ccd0;border-right:0; */
     
@@ -10,7 +10,7 @@
     -webkit-transition: all .100s;
     transition: all .100s;
     
-    box-shadow: 0.2em .5em 1.8em #757575,inset 0 0 .5em #757575;
+    box-shadow: 0em 1.2em 2.8em rgba(0,0,0,0.6),inset 0 0 .5em #757575;
     position: relative;
     box-sizing: content-box;
   }
@@ -26,17 +26,17 @@
     border: 0;
     outline: none;
     font-size: 1.2em;
-    color: #A2ACB3;
-    width: 440px;
+    color: rgb(219, 232, 255);
+    width: 420px;
     height: 100%;
     padding: .25em 0 ;
     font-family: "Arial Rounded MT Bold","Helvetica Rounded",Arial,sans-serif;
-    caret-color:#0092ff;
+    caret-color:rgb(219, 232, 255);
     box-sizing: border-box;
   }
   #jsearch-bar input::selection{
-    background:rgb(219, 232, 255);
-    color: rgb(32, 32, 32);
+    background:rgb(170, 170, 170);
+    color: rgb(219, 232, 255);
   }
   
   #jsearch-bar {
