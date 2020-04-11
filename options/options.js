@@ -223,7 +223,7 @@ var app = new Vue({
                                 }
                                 axios.get(`https://cn.bing.com/search?q=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&first=${_this.searchData.pageNums[index]*10+1}&filters=${filters}`)
                                 .then(function (response) {
-                                    let res_obj = $(response.data.replace(/src="\//g, 'src="https://cn.bing.com/')).find('#b_results');
+                                    let res_obj = $(response.data.replace(/src="\//g, 'src="https://cn.bing.com/').replace(/href="\//g, 'href="https://cn.bing.com/')).find('#b_results');
                                     res_obj.children(`:gt(${res_obj.children().length-4})`).remove();
                                     res_obj.find('img').each(function () {
                                         let src= $(this).attr('data-src-hq');
