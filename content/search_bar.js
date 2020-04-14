@@ -223,6 +223,9 @@ function jBar() {
     settings = obj;
   }
 
+  this.getHistory = function(num){
+    return getHistory(num);
+  };
 
   function checkKey(keyItem) {
     return settings.hotkeys.includes(keyItem);

@@ -778,6 +778,19 @@ var app = new Vue({
             _this.oneTag(k-1);
 
         });
+
+
+        //顶部搜索框 搜索历史——方向键选择
+        hotkeys('up,down', function (event, handler) {
+            if (document.querySelector('#header_bar').classList.contains('down')){
+                if (handler.key == 'up'){
+                    _this.searchInputValue = jBar.getHistory(1);
+                }else if(handler.key == 'down'){
+                    _this.searchInputValue = jBar.getHistory(-1);
+                }
+            }
+            
+        });
         this.init();
     },
     watch: {
