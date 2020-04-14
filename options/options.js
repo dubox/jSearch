@@ -259,7 +259,7 @@ var app = new Vue({
 
                                 //_this.searchData.results[index] = [];
 
-                                if (_this.searchData.results[index].length > 0 || !_this.searchData.keyword) {
+                                if (_this.searchData.results[index].length > 0 ) {
                                     resolve();
                                     return false;
                                 }
