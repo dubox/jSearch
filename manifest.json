@@ -1,69 +1,67 @@
 {
-    "manifest_version": 2,
-  
-    "name": "jSearch",
-    "short_name": "聚搜",
-    "description": "jSearch(聚搜)是一款专注内容的搜索扩展，一次搜索聚合多平台内容;",
-    "version": "1.3.1",
-    "update_url": "http://upext.chrome.360.cn/intf.php?method=ExtUpdate.query",
-    "icons": {
-      "16": "public/icons/icon128.png",
-      "48": "public/icons/icon128.png",
-     "128": "public/icons/icon128.png" 
-    },
-     "author":"dubox(dubo_x@qq.com)",
+  "manifest_version": 2,
 
-    "background":
-    {
-      "scripts": ["bg/main.js"]
-    },
-    "permissions": [
-        "contextMenus",
-        "tabs",
-        "bookmarks",
-        "history",
-        "notifications",
-        "webRequest",
-        "webRequestBlocking",
-        "storage",
-        "chrome://favicon/",
-        "*://*/*",
-        "\u003Call_urls>",
-        "http://*/*",
-        "https://*/*"
+  "name": "jSearch",
+  "short_name": "聚搜",
+  "description": "jSearch(聚搜)是一款专注内容的搜索扩展，一次搜索聚合多平台内容;",
+  "version": "1.3.2",
+  "update_url": "http://upext.chrome.360.cn/intf.php?method=ExtUpdate.query",
+  "icons": {
+    "16": "public/icons/icon128.png",
+    "48": "public/icons/icon128.png",
+    "128": "public/icons/icon128.png"
+  },
+  "author": "dubox(dubo_x@qq.com)",
+
+  "background": {
+    "scripts": ["bg/main.js"]
+  },
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "bookmarks",
+    "history",
+    "notifications",
+    "webRequest",
+    "webRequestBlocking",
+    "storage",
+    "chrome://favicon/",
+    "*://*/*",
+    "\u003Call_urls>",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [{
+    "js": [
+
+      "public/hotkeys.min.js",
+      "content/search_bar_effect.js",
+      "content/search_bar.js",
+      "content/content.js"
+
     ],
-    "content_scripts": [
-      {
-        "js":[
-              
-              "public/hotkeys.min.js",
-              "content/search_bar_effect.js",
-              "content/search_bar.js",
-              "content/content.js"
-              
-            ],
-        "css": ["content/search_bar.css"],
-        "matches":[
-          "\u003Call_urls>",
-          "http://*/*",
-          "https://*/*"
-            ],
-            "run_at": "document_idle"
-        }
+    "css": ["content/search_bar.css"],
+    "matches": [
+      "\u003Call_urls>",
+      "http://*/*",
+      "https://*/*"
     ],
-    "options_page": "options/search.html",
+    "run_at": "document_idle"
+  }],
+  "options_page": "options/search.html",
 
-    "browser_action": {
-     
-      "default_title": "jSearch(聚搜)",      
-      "default_popup": "action/popup.html"       
-    },
-    
-    "web_accessible_resources": [
-      ],
+  "browser_action": {
+
+    "default_title": "jSearch(聚搜)",
+    "default_popup": "action/popup.html"
+  },
+
+  "web_accessible_resources": [],
 
 
-      "omnibox": { "keyword" : "j" },
+  "omnibox": {
+    "keyword": "j"
+  },
 
-      "content_security_policy": "script-src 'self' 'unsafe-eval' 'unsafe-inline';default-src 'self' 'unsafe-inline' 'unsafe-eval'  https://*/ chrome://*; connect-src 'self' 'unsafe-inline' 'unsafe-eval'  data: chrome://* https://*/  http://* ;img-src 'self' data: chrome://* chrome-resource://* 'unsafe-inline' 'unsafe-eval' http://* https://*; object-src 'self' ;style-src 'self' 'unsafe-inline' 'unsafe-eval';font-src 'self' 'unsafe-inline' 'unsafe-eval';frame-src http://* https://*"
-  }
+  "content_security_policy": "script-src 'self' 'unsafe-eval' 'unsafe-inline';default-src 'self' 'unsafe-inline' 'unsafe-eval'  https://*/ chrome://*; connect-src 'self' 'unsafe-inline' 'unsafe-eval'  data: chrome://* https://*/  http://* ;img-src 'self' data: chrome://* chrome-resource://* 'unsafe-inline' 'unsafe-eval' http://* https://*; object-src 'self' ;style-src 'self' 'unsafe-inline' 'unsafe-eval';font-src 'self' 'unsafe-inline' 'unsafe-eval';frame-src http://* https://*"
+}
