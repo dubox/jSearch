@@ -17,16 +17,16 @@ function jBar() {
   //******** 加载设置 *************
   var settings = {};
   chrome.storage.sync.get('settings', function (items) {
-      settings = items.settings.jBar;
+    settings = items.settings.jBar;
   });
- //更新设置
+  //更新设置
   MessageListener.add('settings', function (_settings) {
     settings = _settings.jBar;
   });
 
   //************* runtime **************
   var runtime = {
-    command:'' //搜索命令
+    command: '' //搜索命令
   };
   runtime.isInExtension = isInExtension();
 
@@ -34,11 +34,11 @@ function jBar() {
     runtime.history = items.searchHistory;
   });
   runtime.historyIndex = -1;
-  MessageListener.add('searchHistory', function (searchHistory) {  //更新搜索历史
+  MessageListener.add('searchHistory', function (searchHistory) { //更新搜索历史
     runtime.history = searchHistory;
   });
 
-  
+
 
 
   jBarEffects();
@@ -52,6 +52,7 @@ function jBar() {
     //ecs 和 tab 只做退出操作
     if (handler.key == 'esc' || handler.key == 'tab') {
       if (jBar.classList.contains('jBar-show')) {
+        event.preventDefault();
         jBarToggle(0);
         return false;
       } else {
@@ -59,10 +60,11 @@ function jBar() {
       }
     }
 
-    if (handler.key == 'space' && checkKey('space')) {
+    if (handler.key == 'space') {
       //当前焦点在搜索框 且搜索框无任何内容时 按空格可退出搜索
       if (jBar.classList.contains('jBar-show')) {
         if (jBar_input.value == '') {
+          event.preventDefault();
           jBarToggle(0);
           return false;
         } else {
@@ -74,24 +76,39 @@ function jBar() {
     //识别当前是否在可编辑区域，在可编辑区域 只能由 ctrl+j 唤醒编辑框
     if (checkEditable(event.target || event.srcElement)) {
       if (handler.key == 'ctrl+j') {
+        event.preventDefault();
         jBarToggle();
       }
       return;
     }
-
+    event.preventDefault();
     jBarToggle();
     return false;
   });
 
   //标签搜索
   hotkeys('ctrl+1,ctrl+2,ctrl+3,ctrl+4,ctrl+5,ctrl+6,ctrl+7,ctrl+8,ctrl+9', function (event, handler) {
-   
+
     jBarToggle();
-    let k = handler.key.replace('ctrl+','');
-    runtime.command = '@tag='+k;
+    let k = handler.key.replace('ctrl+', '');
+    runtime.command = '@tag=' + k;
     return false;
 
-});
+  });
+
+  hotkeys('*', function (event, handler) {
+
+    if ((hotkeys.shift && settings.customHotKey[0] == 'shift') ||
+      (hotkeys.alt && settings.customHotKey[0] == 'alt') ||
+      (hotkeys.ctrl && settings.customHotKey[0] == 'ctrl')
+    ) {
+      if (settings.customHotKey[1] && hotkeys.isPressed(settings.customHotKey[1])) {
+        event.preventDefault();
+        jBarToggle();
+      }
+    }
+  });
+
 
   function jBarToggle(show) {
     show = show || 2;
@@ -103,11 +120,11 @@ function jBar() {
       let sel_text = window.getSelection().toString();
       if (!/\n/.test(sel_text) && sel_text.length > 0 && sel_text.length < 30) {
         jBar_input.value = sel_text;
-      }else{
+      } else {
         jBar_input.value = getHistory();
       }
       jBar_input.focus();
-     
+
     }
   }
 
@@ -162,14 +179,14 @@ function jBar() {
 
   //搜索历史——方向键选择
   hotkeys('up,down', function (event, handler) {
-    if (jBar.classList.contains('jBar-show')){
-      if (handler.key == 'up'){
-          jBar_input.value = getHistory(1);
-      }else if(handler.key == 'down'){
+    if (jBar.classList.contains('jBar-show')) {
+      if (handler.key == 'up') {
+        jBar_input.value = getHistory(1);
+      } else if (handler.key == 'down') {
         jBar_input.value = getHistory(-1);
       }
     }
-      
+
   });
 
   //搜索历史——鼠标滚轮选择
@@ -181,33 +198,40 @@ function jBar() {
       jBar_input.value = getHistory(1);
     }
     e.preventDefault();
-},{ passive: false });
+  }, {
+    passive: false
+  });
 
 
-  function getHistory(num){
-    if(!settings.history)return '';
+  function getHistory(num) {
+    if (!settings.history) return '';
     let index = 0;
-    if(num){
+    if (num) {
       index = runtime.historyIndex + num;
-      if(index < 0) index = 0;//runtime.history.length-1;
-      if(index >= runtime.history.length) index = 0;
+      if (index < 0) index = 0; //runtime.history.length-1;
+      if (index >= runtime.history.length) index = 0;
     }
-      runtime.historyIndex = index;
-      return runtime.history[index] || '';
+    runtime.historyIndex = index;
+    return runtime.history[index] || '';
   }
 
 
 
   function goSearch() {
     //
-    let kw = encodeURIComponent(jBar_input.value)+runtime.command;
+    let kw = encodeURIComponent(jBar_input.value) + runtime.command;
     if (runtime.isInExtension) {
       location.href = chrome.extension.getURL('/options/search.html') + '?#' + kw;
       jBarToggle(0);
     } else {
       jBar_input.blur();
-      sendToBg({goSearch:{inExist:settings.inExist,kw:kw}},function(res){
-        if(!res)
+      sendToBg({
+        goSearch: {
+          inExist: settings.inExist,
+          kw: kw
+        }
+      }, function (res) {
+        if (!res)
           window.open(`https://chrome.jsearch.site/?q=${kw}`);
       });
       //
@@ -223,7 +247,7 @@ function jBar() {
     settings = obj;
   }
 
-  this.getHistory = function(num){
+  this.getHistory = function (num) {
     return getHistory(num);
   };
 

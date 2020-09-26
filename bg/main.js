@@ -1,7 +1,9 @@
 var RunTime = {
-    settings:{searchInAddress : true},
-    wxUrls:null ,//
-    extRootUrl:chrome.extension.getURL('')
+    settings: {
+        searchInAddress: true
+    },
+    wxUrls: null, //
+    extRootUrl: chrome.extension.getURL('')
 };
 
 chrome.webRequest.onBeforeRequest.addListener(
@@ -9,9 +11,9 @@ chrome.webRequest.onBeforeRequest.addListener(
         //console.log(chrome.extension.getURL('../options/search.html')+'?#'+GetQueryString(details.url,'wd'))
         //console.log(details);
 
-       
 
-        if(RunTime.settings.searchInAddress){
+
+        if (RunTime.settings.searchInAddress) {
 
             if (1 && details.type == "main_frame" && typeof details.initiator == 'undefined') {
                 if (/^http[s]?:\/\/([^.]+\.)?google\..+/.test(details.url))
@@ -31,65 +33,79 @@ chrome.webRequest.onBeforeRequest.addListener(
             //console.log('aaa');
         }
 
-         //处理微信搜索屏蔽问题
-         if((details.initiator+'/') == RunTime.extRootUrl){
-            if(!/^(https:\/\/weixin\.sogou\.com\/link.*)(https:\/\/weixin\.sogou\.com\/weixin.*)$/.test(details.url))return;
+        //处理微信搜索屏蔽问题
+        if ((details.initiator + '/') == RunTime.extRootUrl) {
+            if (!/^(https:\/\/weixin\.sogou\.com\/link.*)(https:\/\/weixin\.sogou\.com\/weixin.*)$/.test(details.url)) return;
             RunTime.wxUrls = details.url.match(/^(https:\/\/weixin\.sogou\.com\/link.*)(https:\/\/weixin\.sogou\.com\/weixin.*)$/);
-            if(!RunTime.wxUrls || RunTime.wxUrls.length<3)return;
+            if (!RunTime.wxUrls || RunTime.wxUrls.length < 3) return;
             return {
                 redirectUrl: RunTime.wxUrls[1]
             };
         }
 
-        
+
 
     }, //
     {
-        urls: ["*://www.baidu.com/*", "*://*/search?q=*", "*://chrome.jsearch.site/*","*://weixin.sogou.com/link?*"]
+        urls: ["*://www.baidu.com/*", "*://*/search?q=*", "*://chrome.jsearch.site/*", "*://weixin.sogou.com/link?*"]
     }, //
     ["blocking"]);
 //https://weixin.sogou.com/weixin?type=2&query=swoole
 
 chrome.webRequest.onBeforeSendHeaders.addListener(
-    function(details) {
-        
-        if(details.initiator+'/' != RunTime.extRootUrl)return ;
+    function (details) {
+
+        if (details.initiator + '/' != RunTime.extRootUrl) return;
 
 
-        if(RunTime.wxUrls && RunTime.wxUrls.length >= 3){
-            var Referer = 0,SecFetchUser = 0,SecFetchSite = 0;
+        if (RunTime.wxUrls && RunTime.wxUrls.length >= 3) {
+            var Referer = 0,
+                SecFetchUser = 0,
+                SecFetchSite = 0;
             for (var i = 0; i < details.requestHeaders.length; ++i) {
 
                 if (details.requestHeaders[i].name === 'Referer') {
-                Referer = 1;
-                details.requestHeaders[i].value = RunTime.wxUrls[2];
+                    Referer = 1;
+                    details.requestHeaders[i].value = RunTime.wxUrls[2];
                 }
                 if (details.requestHeaders[i].name === 'Sec-Fetch-User') {
                     SecFetchUser = 1;
                     details.requestHeaders[i].value = "?1";
                 }
-                
+
                 if (details.requestHeaders[i].name === 'Sec-Fetch-Site') {
                     SecFetchSite = 1;
                     details.requestHeaders[i].value = "same-origin";
                 }
             }
-            if(!Referer)
-            details.requestHeaders.push({'name':'Referer','value':RunTime.wxUrls[2]}); 
-            if(!SecFetchUser)
-            details.requestHeaders.push({'name':'Sec-Fetch-User','value':'?1'}); 
-            if(!SecFetchSite)
-            details.requestHeaders.push({'name':'Sec-Fetch-Site','value':'same-origin'}); 
+            if (!Referer)
+                details.requestHeaders.push({
+                    'name': 'Referer',
+                    'value': RunTime.wxUrls[2]
+                });
+            if (!SecFetchUser)
+                details.requestHeaders.push({
+                    'name': 'Sec-Fetch-User',
+                    'value': '?1'
+                });
+            if (!SecFetchSite)
+                details.requestHeaders.push({
+                    'name': 'Sec-Fetch-Site',
+                    'value': 'same-origin'
+                });
 
             //console.log(details);
-            return {requestHeaders: details.requestHeaders};
+            return {
+                requestHeaders: details.requestHeaders
+            };
         }
+    }, {
+        urls: ["*://weixin.sogou.com/link?*"]
     },
-        {urls: ["*://weixin.sogou.com/link?*"]},
-        ["blocking","extraHeaders", "requestHeaders"]);
+    ["blocking", "extraHeaders", "requestHeaders"]);
 
 
-        /** 
+/** 
 
     chrome.webRequest.onHeadersReceived.addListener(
             function(details) {
@@ -115,29 +131,32 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
 
 // 监听来自content-script的消息 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     sendResponse('ok');
-    if(request.dataType == 'goSearch'){ //实现 jBar 在新标签页或已有标签页打开搜索
+    if (request.dataType == 'goSearch') { //实现 jBar 在新标签页或已有标签页打开搜索
         let kw = request.data.kw;
         let inExist = request.data.inExist;
-        findJTab(function(tabJ ,tabCurr){
+        findJTab(function (tabJ, tabCurr) {
             //console.log(tabJ);
-            if(inExist && tabJ){
-                chrome.tabs.update(tabJ.id, {url:chrome.extension.getURL('/options/search.html') + '?#' + kw,active:true});
-            }else{
+            if (inExist && tabJ) {
+                chrome.tabs.update(tabJ.id, {
+                    url: chrome.extension.getURL('/options/search.html') + '?#' + kw,
+                    active: true
+                });
+            } else {
                 chrome.tabs.create({
-                    url:chrome.extension.getURL('/options/search.html') + '?#' + kw,
-                    index:tabCurr.index+1
+                    url: chrome.extension.getURL('/options/search.html') + '?#' + kw,
+                    index: tabCurr.index + 1
                 });
             }
-            
+
         });
         return;
     }
 
     //地址栏搜索 开关
-    if(request.dataType == 'searchInAddress'){
-        chrome.storage.sync.get('settings',function(items){
+    if (request.dataType == 'searchInAddress') {
+        chrome.storage.sync.get('settings', function (items) {
             items.settings.BG.searchInAddress = !items.settings.BG.searchInAddress;
             chrome.storage.sync.set({
                 settings: items.settings
@@ -158,24 +177,31 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         return;
     }
     */
-    
+
 });
 
 //监听 storage变化
-chrome.storage.onChanged.addListener(function(changes ,type){
-    
+chrome.storage.onChanged.addListener(function (changes, type) {
+
     //console.log(type,changes);
-    if(type == 'sync'){
+    if (type == 'sync') {
 
         //广播搜索历史到各个页面
-        if(changes.searchHistory){
-            broadcast({dataType:'searchHistory',data:changes.searchHistory.newValue});
+        if (changes.searchHistory) {
+            broadcast({
+                dataType: 'searchHistory',
+                data: changes.searchHistory.newValue
+            });
         }
 
         //更新后台 运行时数据
-        if(changes.settings){
+        if (changes.settings) {
             RunTime.settings = changes.settings.newValue.BG;
-            broadcast({dataType:'settings',data:changes.settings.newValue});
+            //广播新设置到各标签页
+            broadcast({
+                dataType: 'settings',
+                data: changes.settings.newValue
+            });
         }
     }
 });
@@ -184,43 +210,43 @@ chrome.storage.onChanged.addListener(function(changes ,type){
  * 向标签页广播消息
  * @param {*} data 
  */
-function broadcast(data){
-    chrome.tabs.getAllInWindow(function(tabs){
-        for(let i in tabs){
-            if(tabs[i].url.indexOf('chrome://')===0)continue;
-            
-                chrome.tabs.sendMessage(
-                    tabs[i].id, 
-                    data
-                    /** 这个回调会导致连接失败时 runtime.lastError 会报错；
+function broadcast(data) {
+    chrome.tabs.getAllInWindow(function (tabs) {
+        for (let i in tabs) {
+            if (tabs[i].url.indexOf('chrome://') === 0) continue;
+
+            chrome.tabs.sendMessage(
+                tabs[i].id,
+                data
+                /** 这个回调会导致连接失败时 runtime.lastError 会报错；
                      * 目前导致连接失败的原因有：1.以chrome://开头的tab 是连不上的；2.在插件刷新之前就打开的tab页
                     , 
                     function(response) {
                             //console.log(response);
                             return true;
                 } */
-                );
-            
+            );
+
         }
-        
+
     })
 }
 
 
-function findJTab(cb){
+function findJTab(cb) {
     let searchUrl = chrome.extension.getURL('');
-    chrome.tabs.getAllInWindow(function(tabs){
+    chrome.tabs.getAllInWindow(function (tabs) {
         let tabJ = tabCurr = -1;
-        for(let i in tabs){
-            if(tabJ == -1 && tabs[i].url.indexOf(searchUrl) > -1){
+        for (let i in tabs) {
+            if (tabJ == -1 && tabs[i].url.indexOf(searchUrl) > -1) {
                 tabJ = i;
             }
-            if(tabs[i].active){
+            if (tabs[i].active) {
                 tabCurr = i;
             }
-            if(tabJ != -1 && tabCurr != -1)break;
+            if (tabJ != -1 && tabCurr != -1) break;
         }
-        cb(tabJ>-1?tabs[tabJ]:null ,tabs[tabCurr]);
+        cb(tabJ > -1 ? tabs[tabJ] : null, tabs[tabCurr]);
     })
 }
 
@@ -359,21 +385,22 @@ chrome.runtime.onInstalled.addListener(details => {
         settings: {
             jBar: {
                 hotkeys: ['space', 'tab', 'j', 'ctrl+j', 'esc'],
-                inExist:true,   //在已有 jSearch 标签页打开
+                customHotKey: ['ctrl', 'j'],
+                inExist: true, //在已有 jSearch 标签页打开
                 onSelection: false,
-                history:true
+                history: true
             },
-            BG:{
-                searchInAddress : true
+            BG: {
+                searchInAddress: true
             },
             pageScroll: ['navKeys', 'mLeftKey+mw', 'alt+mw'],
             resultListWidth: 600,
-            showHeadBar:true,
-            autoHideHeadBar:true,
-            kwColor:'green',
-            orderByTime:true,   //按结果加载时间排序，先加载出来的结果排在前面
-            tags:{}
-            
+            showHeadBar: true,
+            autoHideHeadBar: true,
+            kwColor: 'green',
+            orderByTime: true, //按结果加载时间排序，先加载出来的结果排在前面
+            tags: {}
+
         }
     };
     if (details.reason === 'install') {
@@ -402,8 +429,8 @@ chrome.runtime.onInstalled.addListener(details => {
                 //同步数据结构
                 for (let i in items.searchModels) {
                     for (let j in defaultSettings.searchModels[0]) {
-                        if(typeof items.searchModels[i][j] == 'undefined')
-                        items.searchModels[i][j] = defaultSettings.searchModels[0][j];
+                        if (typeof items.searchModels[i][j] == 'undefined')
+                            items.searchModels[i][j] = defaultSettings.searchModels[0][j];
                     }
                 }
                 console.log(items.searchModels)
@@ -413,12 +440,12 @@ chrome.runtime.onInstalled.addListener(details => {
                 items.searchModels = defaultSettings.searchModels;
             }
             if (typeof items.settings != 'undefined') {
-               
+
                 trans(defaultSettings.settings, items.settings);
 
                 //加载后台配置
                 RunTime.settings = items.settings.BG;
-                
+
             } else {
                 //设置初始配置
                 items.settings = defaultSettings.settings;

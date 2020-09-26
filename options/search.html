@@ -17,203 +17,286 @@
     <!--iview 3.2.2-->
     <script type="text/javascript" src="../public/iview.3.5.3.min.js"></script>
     <style>
-
-        html,body{
+        html,
+        body {
             width: 100%;
             height: 100%;
             padding: 0;
             margin: 0;
         }
 
-        .content{
-                width: 100%;
-                height: 500px;
-                overflow: hidden;
-                position: fixed;
-                background-color: rgba(255, 255, 255, 0.8);
-            }
-            .content::before{
-                content: ' just Search it';
-                text-align: center;
-                width: 100%;
-                line-height: 100%;
-                display: block;
-                top: 67%;
-                font-size: 53px;
-                font-family: fantasy,monospace;
-                position: fixed;
-                color: rgb(92, 92, 92);
-                filter: blur(2px);
-            }
-            
-            .layout::before{
-                background: url('/public/jsearch-logo.svg') no-repeat center 100px;
-                
-                background-size: auto 50%;
-                width: 100%;
-                height: 100%;
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: 0; /*z-index 设为 -1时 父元素必须绝对定位，只在这框架里有此问题，不知是 vue 的锅还是 iview 的；*/
-                filter: blur(10px);
-            }
-            .slider{
-                overflow-x: auto;
-                overflow-y: hidden;
-                display: flex;
-                height: 100%;
-                width: 100%;
-            }
-            .col{
-                height: 100%;
-                width: 600px;
-                float: left;
-                padding: 0 2px 0 2px;
-                flex-shrink: 0;
-                flex-grow:1;
-                transition: all .8s;
-                position: relative;
-            }
-            .model_logo{
-                position: absolute;
-                z-index: 9999999999;
-                right: 3px;
-                top: 50px;
-                
-                height: 28px;
-                width: 28px;
-                padding: 2px;
-                opacity: 0.6;
-                background-color: #e8e8e8;
-            }
-            .col:hover .model_logo{opacity: 1;
-                box-shadow: -1px 0px 5px #e0e0e0;
-            }
-            .list-over{color:#c5c8ce;}
-            .col .ivu-scroll-content{min-height: 100%;}/*解决第一页高度不够无法翻页问题*/
-            .ivu-card{
-                background-color: rgba(255, 255, 255, 1);
-            }
-            
-            .header_bar{
-                background-color: rgba(255,255,255,0.8);    
-                box-shadow: 0 0 1px rgba(0,0,0,0.25);
-                top:-100px;    
-                position: fixed;
-                width:100%;    
-                z-index: 1000;
-                transition: all .8s cubic-bezier(0.68,-0.55, 0.19, 2.03);
-            }
-            .down{top:0;}
-            .top_area{
-                width: 100%;
-                height: 20px;
-                position: fixed;
-                z-index: 900;
-            }
-            .top_area2{
+        .content {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            position: fixed;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .content::before {
+            content: ' just Search it';
+            text-align: center;
+            width: 100%;
+            line-height: 100%;
+            display: block;
+            top: 67%;
+            font-size: 53px;
+            font-family: fantasy, monospace;
+            position: fixed;
+            color: rgb(92, 92, 92);
+            filter: blur(2px);
+        }
+
+        .layout::before {
+            background: url('/public/jsearch-logo.svg') no-repeat center 100px;
+
+            background-size: auto 50%;
+            width: 100%;
+            height: 100%;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            /*z-index 设为 -1时 父元素必须绝对定位，只在这框架里有此问题，不知是 vue 的锅还是 iview 的；*/
+            filter: blur(10px);
+        }
+
+        .slider {
+            overflow-x: auto;
+            overflow-y: hidden;
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        .col {
+            height: 100%;
+            width: 600px;
+            float: left;
+            padding: 0 2px 0 2px;
+            flex-shrink: 0;
+            flex-grow: 1;
+            transition: all .8s;
+            position: relative;
+        }
+
+        .model_logo {
+            position: absolute;
+            z-index: 9999999999;
+            right: 3px;
+            top: 50px;
+
+            height: 28px;
+            width: 28px;
+            padding: 2px;
+            opacity: 0.6;
+            background-color: #e8e8e8;
+        }
+
+        .col:hover .model_logo {
+            opacity: 1;
+            box-shadow: -1px 0px 5px #e0e0e0;
+        }
+
+        .list-over {
+            color: #c5c8ce;
+        }
+
+        .col .ivu-scroll-content {
+            min-height: 100%;
+        }
+
+        /*解决第一页高度不够无法翻页问题*/
+        .ivu-card {
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        .header_bar {
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
+            top: -100px;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: all .8s cubic-bezier(0.68, -0.55, 0.19, 2.03);
+        }
+
+        .down {
+            top: 0;
+        }
+
+        .top_area {
+            width: 100%;
+            height: 20px;
+            position: fixed;
+            z-index: 900;
+        }
+
+        .top_area2 {
+            height: 0px;
+        }
+
+        .top_area3 {
+            width: 100%;
+            height: 20px;
+            height: 64px;
+            z-index: -1;
+        }
+
+        .ivu-form-item {
+            margin-bottom: 5px;
+        }
+
+        .setting_form .ivu-form-item {
+            margin-bottom: 0px;
+        }
+
+        .setting_form>.ivu-row-flex {
+            min-height: 32px;
+        }
+
+        .drawer-footer {
+            position: absolute;
+            width: 100%;
+            bottom: 5px;
+            left: 0;
+            /*box-shadow: 0 -1px 1px rgba(0,0,0,0.15);*/
+            padding-top: 5px;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .alipay .slid-show {
+            transition: max-height 1s;
+            max-height: 0px;
+            display: block;
+            overflow: hidden;
+        }
+
+        .alipay:hover .slid-show {
+            max-height: 300px;
+        }
+
+        @-webkit-keyframes alipay {
+            from {
                 height: 0px;
             }
-            .top_area3{
-                width: 100%;
-                height: 20px;
-                height: 64px;
-                z-index: -1;
-            }
-            .ivu-form-item {
-    margin-bottom: 14px;}
-    .setting_form  .ivu-form-item {
-    margin-bottom: 0px ;}
-            .setting_form > .ivu-row-flex{min-height: 32px;}
-            
-            .drawer-footer{
-                position: absolute;
-                width: 100%;
-                bottom: 5px;
-                left: 0;
-                /*box-shadow: 0 -1px 1px rgba(0,0,0,0.15);*/
-                padding-top: 5px;
-                background: rgba(255,255,255,0.6);
-            }
-            .alipay .slid-show{
-                transition: max-height 1s;
-                max-height:0px;
-                display: block;
-                overflow: hidden;
-            }
 
-            .alipay:hover .slid-show{
-                max-height: 300px;
+            to {
+                height: 100px;
             }
-            @-webkit-keyframes alipay{
-                from {height: 0px;}
-                to{height: 100px;}
-            }
-           
+        }
 
-            /* VUE过渡动画   可以设置不同的进入和离开动画 */
-/* 设置持续时间和动画函数 */
-.slide-list-enter-active {
-  transition: all 1s ease;
-}
-.slide-list-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-list-enter, .slide-list-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
-[v-cloak]{
-        display : none;
-}
 
-body .ivu-icon{
-    font-family: Ionicons !important;
-}
+        /* VUE过渡动画   可以设置不同的进入和离开动画 */
+        /* 设置持续时间和动画函数 */
+        .slide-list-enter-active {
+            transition: all 1s ease;
+        }
 
-/*字体覆盖*/
-.col *{
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif !important;
-    color:rgb(136, 136, 136);
-    line-height:24px !important;
-}
-.col a,.col cite{
-    font-size: 12px !important;
-    color: rgb(187, 187, 187)  !important;
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif !important;
-    font-style: normal;
-}
-.col h2,.col h3,.col h3>span,.col h3>a,.col h2>a,.col h2 strong ,.txt-box>.tit>a{
-    font-size: 18px !important;
-    font-weight: 700 !important;
-    color: rgb(51, 51, 51)  !important;
-    margin-bottom: 6px;
-}
-.col h2 a:visited,.col h3 a:visited,.col a:visited>h3>span,.col h3>a:visited,.col h2>a:visited ,.txt-box>.tit>a:visited{
-   
-    color: rgb(145, 145, 145)  !important;
-}
-/*关键词*/
-.green .c-container em, .green .g em, .green  li.b_algo p strong, .green li.b_algo h2 strong, .green .news-list2 em, .green .news-list em{
-    color: #00a06a !important;
-}
-.red .c-container em, .red .g em, .red  li.b_algo p strong, .red li.b_algo h2 strong, .red .news-list2 em, .red .news-list em{
-    color: #ec665a !important;
-}
-.blue .c-container em, .blue .g em, .blue  li.b_algo p strong, .blue li.b_algo h2 strong, .blue .news-list2 em, .blue .news-list em{
-    color: #3d86e4 !important;
-}
-.black .c-container em, .black .g em, .black  li.b_algo p strong, .black li.b_algo h2 strong, .black .news-list2 em, .black .news-list em{
-    color: rgb(51, 51, 51) !important;
-}
-/*统一风格*/
-.c-container ,.g ,.b_algo{
-    border-bottom: 1px solid #f2f2f2 !important;
-    padding: 16px 0 !important;
-}
+        .slide-list-leave-active {
+            transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+
+        .slide-list-enter,
+        .slide-list-leave-to
+
+        /* .slide-fade-leave-active for below version 2.1.8 */
+            {
+            transform: translateX(10px);
+            opacity: 0;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        body .ivu-icon {
+            font-family: Ionicons !important;
+        }
+
+        /*字体覆盖*/
+        .col * {
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
+            color: rgb(136, 136, 136);
+            line-height: 24px !important;
+        }
+
+        .col a,
+        .col cite {
+            font-size: 12px !important;
+            color: rgb(187, 187, 187) !important;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
+            font-style: normal;
+        }
+
+        .col h2,
+        .col h3,
+        .col h3>span,
+        .col h3>a,
+        .col h2>a,
+        .col h2 strong,
+        .txt-box>.tit>a {
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            color: rgb(51, 51, 51) !important;
+            margin-bottom: 6px;
+        }
+
+        .col h2 a:visited,
+        .col h3 a:visited,
+        .col a:visited>h3>span,
+        .col h3>a:visited,
+        .col h2>a:visited,
+        .txt-box>.tit>a:visited {
+
+            color: rgb(145, 145, 145) !important;
+        }
+
+        /*关键词*/
+        .green .c-container em,
+        .green .g em,
+        .green li.b_algo p strong,
+        .green li.b_algo h2 strong,
+        .green .news-list2 em,
+        .green .news-list em {
+            color: #00a06a !important;
+        }
+
+        .red .c-container em,
+        .red .g em,
+        .red li.b_algo p strong,
+        .red li.b_algo h2 strong,
+        .red .news-list2 em,
+        .red .news-list em {
+            color: #ec665a !important;
+        }
+
+        .blue .c-container em,
+        .blue .g em,
+        .blue li.b_algo p strong,
+        .blue li.b_algo h2 strong,
+        .blue .news-list2 em,
+        .blue .news-list em {
+            color: #3d86e4 !important;
+        }
+
+        .black .c-container em,
+        .black .g em,
+        .black li.b_algo p strong,
+        .black li.b_algo h2 strong,
+        .black .news-list2 em,
+        .black .news-list em {
+            color: rgb(51, 51, 51) !important;
+        }
+
+        /*统一风格*/
+        .c-container,
+        .g,
+        .b_algo {
+            border-bottom: 1px solid #f2f2f2 !important;
+            padding: 16px 0 !important;
+        }
     </style>
 </head>
 
@@ -222,33 +305,41 @@ body .ivu-icon{
     <div id="app" v-cloak>
 
         <Layout class="layout">
-            <div id="top_area" :class="'top_area '+ (settings.showHeadBar&&!settings.autoHideHeadBar?'top_area2':'')"></div>
-            <i-header id="header_bar" :class="'header_bar '+ (settings.showHeadBar&&!settings.autoHideHeadBar?'down':'')">
+            <div id="top_area" :class="'top_area '+ (settings.showHeadBar&&!settings.autoHideHeadBar?'top_area2':'')">
+            </div>
+            <i-header id="header_bar"
+                :class="'header_bar '+ (settings.showHeadBar&&!settings.autoHideHeadBar?'down':'')">
                 <Row type="flex" align="middle" class="opacity-7">
-                    <i-col span="4" style="position: relative;"><span style="font-size:24px;font-weight:bold;color: #2d8cf0;">jSearch<span style="font-size:14px;">&nbsp;聚搜</span></span><strong style="
+                    <i-col span="4" style="position: relative;"><span
+                            style="font-size:24px;font-weight:bold;color: #2d8cf0;">jSearch<span
+                                style="font-size:14px;">&nbsp;聚搜</span></span><strong style="
                         position: absolute;
                         top: 19px;
                         left: 40px;
                     ">just Search it!</strong></i-col>
                     <i-col span="4">
                         <form v-bind:action="'#'+searchInputValue" target="_top">
-                            <i-input search placeholder="Enter something..." v-model="searchInputValue" @on-search="searchInputSubmit"></i-input>
+                            <i-input search placeholder="Enter something..." v-model="searchInputValue"
+                                @on-search="searchInputSubmit"></i-input>
                         </form>
                     </i-col>
                     <i-col span="1"> </i-col>
-                    <i-col span="12"> 
-                        <Tag  color="primary" checkable v-for="(value, key, index) in settings.tags" :name="key" :checked="value" @on-change="checkTag" >{{key}}</Tag>
+                    <i-col span="12">
+                        <Tag color="primary" checkable v-for="(value, key, index) in settings.tags" :name="key"
+                            :checked="value" @on-change="checkTag">{{key}}</Tag>
                     </i-col>
                     <i-col span="1"> </i-col>
 
                     <i-col span="1">
-                        <i-button type="text" shape="circle" @click="drawer.show = true" style="background:none;box-shadow:none;">
+                        <i-button type="text" shape="circle" @click="drawer.show = true"
+                            style="background:none;box-shadow:none;">
                             <Badge :text="version.notice">
                                 <Icon type="ios-cog-outline" :size='30' />
                             </Badge>
                         </i-button>
                     </i-col>
-                    <i-col span="1" style="text-align:center;"><a href="https://github.com/dubox/jSearch" target="_blank">
+                    <i-col span="1" style="text-align:center;"><a href="https://github.com/dubox/jSearch"
+                            target="_blank">
                             <Icon type="logo-github" :size='30' />
                         </a></i-col>
                 </Row>
@@ -256,28 +347,36 @@ body .ivu-icon{
             </i-header>
 
             <div :class="'content '+ settings.kwColor" v-bind:style="{height:clientHeight+'px'}">
-                
+
                 <transition-group name="slide-list" class="slider" tag="div">
-                    <div class="col" v-bind:style="{ width: settings.resultListWidth + 'px' ,order:resultsIndex(index1)}" v-for="(item1, index1) in searchData.models"
-                        :key="index1" v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
-                        <div class="model_logo" v-if="item1.type!='bookmarks'" v-bind:style="{top:(settings.showHeadBar&&!settings.autoHideHeadBar?114:50)+'px'}" ><a :href="'http://'+item1.scope"><img width="24px" :src="'chrome://favicon/http://'+item1.scope" v-real-img="'https://'+(item1.scope+'/').replace(/\/.*$/,'/favicon.ico')" /></a></div>
-                        <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight"
-                            distance-to-edge="15">
+                    <div class="col"
+                        v-bind:style="{ width: settings.resultListWidth + 'px' ,order:resultsIndex(index1)}"
+                        v-for="(item1, index1) in searchData.models" :key="index1"
+                        v-if="item1.show && searchData.results[index1][0]!='' && searchData.results[index1].length>0">
+                        <div class="model_logo" v-if="item1.type!='bookmarks'"
+                            v-bind:style="{top:(settings.showHeadBar&&!settings.autoHideHeadBar?114:50)+'px'}"><a
+                                :href="'http://'+item1.scope"><img width="24px"
+                                    :src="'chrome://favicon/http://'+item1.scope"
+                                    v-real-img="'https://'+(item1.scope+'/').replace(/\/.*$/,'/favicon.ico')" /></a>
+                        </div>
+                        <Scroll v-if="item1.type!='bookmarks'" :on-reach-bottom="handleReachBottom(index1)"
+                            :height="clientHeight" distance-to-edge="15">
                             <div class=" top_area3" v-if="settings.showHeadBar&&!settings.autoHideHeadBar"></div>
-                            
-                            <Card dis-hover v-for="(item, index) in searchData.results[index1]" :key="index" v-if="item!=''"
-                                style="margin-bottom:5px;overflow: hidden;">
+
+                            <Card dis-hover v-for="(item, index) in searchData.results[index1]" :key="index"
+                                v-if="item!=''" style="margin-bottom:5px;overflow: hidden;">
 
                                 <span v-html="item"></span>
 
                             </Card>
-                            <Alert class="opacity-7" type="warning" v-if="searchData.results[index1][searchData.results[index1].length-1] == ''">
+                            <Alert class="opacity-7" type="warning"
+                                v-if="searchData.results[index1][searchData.results[index1].length-1] == ''">
                                 No more ...
                             </Alert>
 
                         </Scroll>
-                        <Scroll v-if="item1.type=='bookmarks'" :on-reach-bottom="handleReachBottom(index1)" :height="clientHeight"
-                            distance-to-edge="15">
+                        <Scroll v-if="item1.type=='bookmarks'" :on-reach-bottom="handleReachBottom(index1)"
+                            :height="clientHeight" distance-to-edge="15">
                             <div class=" top_area3" v-if="settings.showHeadBar&&!settings.autoHideHeadBar"></div>
                             <Card dis-hover style="margin-bottom:5px;">
                                 <div class="result c-container " v-for="(item, index) in searchData.results[index1]"
@@ -291,7 +390,8 @@ body .ivu-icon{
 
                                         <span class=" newTimeFactor_before_abs m">{{item.dateAdded}}&nbsp;-&nbsp;</span>
                                         {{item.url}} -
-                                        <Icon :type="item.tag=='bookmark'?'ios-bookmark':'ios-time'" :title="item.tag" />
+                                        <Icon :type="item.tag=='bookmark'?'ios-bookmark':'ios-time'"
+                                            :title="item.tag" />
                                     </div>
                                 </div>
                             </Card>
@@ -316,43 +416,48 @@ body .ivu-icon{
                     <span style="color:coral;" v-if="version.localVer==version.latestVer">
                         &nbsp;&nbsp;&nbsp;&nbsp;已是最新版</span>
                     <span style="color:coral;" v-if="version.notice=='new'">
-                        &nbsp;&nbsp;&nbsp;&nbsp;发现新版本：<a href="https://github.com/dubox/jSearch/releases" target="_blank">v{{version.latestVer}}</a></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;发现新版本：<a href="https://github.com/dubox/jSearch/releases"
+                            target="_blank">v{{version.latestVer}}</a></span>
                 </i-col>
             </Row>
             <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">配置站点</Divider>
             <i-form :model="searchData.models">
 
-                <Row :gutter="10" type="flex" align="middle" v-for="(item, index) in searchData.models" v-dragging="{ item: item, list: searchData.models, group: 'models'}"
-                    :key="index" :draggable="drawer.itemDraggable" title="拖动站点可以排序">
+                <Row :gutter="10" type="flex" align="middle" v-for="(item, index) in searchData.models"
+                    v-dragging="{ item: item, list: searchData.models, group: 'models'}" :key="index"
+                    :draggable="drawer.itemDraggable" title="拖动站点可以排序">
                     <i-col span="4">
                         <form-item>
-                            <i-select v-model="item.type" placeholder="搜索引擎" :disabled="!item.canEdit">
+                            <i-select size="small" v-model="item.type" placeholder="搜索引擎" :disabled="!item.canEdit">
                                 <i-option value="baidu">百度</i-option>
                                 <i-option value="google">谷歌</i-option>
                                 <i-option value="bing">bing国际版</i-option>
                                 <i-option v-if="item.type == 'bookmarks'" value="bookmarks">书签&浏览历史</i-option>
                                 <i-option v-if="item.type == 'weixin' && item.symbol=='1'" value="weixin">公众号</i-option>
-                                <i-option v-if="item.type == 'weixin' && item.symbol=='2'" value="weixin">公众号文章</i-option>
+                                <i-option v-if="item.type == 'weixin' && item.symbol=='2'" value="weixin">公众号文章
+                                </i-option>
 
                             </i-select>
                         </form-item>
                     </i-col>
                     <i-col span="4">
                         <form-item>
-                            <i-select v-model="item.tag" placeholder="分组">
-                                <i-option  v-for="(value, key, index) in settings.tags" :value="key">{{key}}</i-option>
+                            <i-select size="small" v-model="item.tag" placeholder="分组">
+                                <i-option v-for="(value, key, index) in settings.tags" :value="key">{{key}}</i-option>
                             </i-select>
                         </form-item>
                     </i-col>
                     <i-col span="13">
                         <form-item>
-                            <i-input :value="item.scope" @on-blur="if($event.target.composing)return;item.scope =$event.target.value;drawer.itemDraggable = true;"
-                                placeholder="输入想要搜索的网站域名或一个Url" :disabled="!item.canEdit" autocomplete="on" @on-focus="drawer.itemDraggable = false;" />
+                            <i-input size="small" :value="item.scope"
+                                @on-blur="if($event.target.composing)return;item.scope =$event.target.value;drawer.itemDraggable = true;"
+                                placeholder="输入想要搜索的网站域名或一个Url" :disabled="!item.canEdit" autocomplete="on"
+                                @on-focus="drawer.itemDraggable = false;" />
                         </form-item>
                     </i-col>
                     <i-col span="3">
                         <form-item>
-                            <i-switch v-model="item.show" />
+                            <i-switch size="small" v-model="item.show" />
                         </form-item>
                     </i-col>
 
@@ -364,7 +469,7 @@ body .ivu-icon{
                 <Row :gutter="10" type="flex" align="middle">
                     <i-col span="4">
                         <form-item>
-                            <i-select v-model="settingFormData.type" placeholder="please choose the type">
+                            <i-select size="small" v-model="settingFormData.type" placeholder="please choose the type">
                                 <i-option value="baidu">百度</i-option>
                                 <i-option value="google">谷歌</i-option>
                                 <i-option value="bing">bing国际版</i-option>
@@ -373,21 +478,21 @@ body .ivu-icon{
                     </i-col>
                     <i-col span="4">
                         <form-item>
-                            <i-select v-model="settingFormData.tag" placeholder="分组" >
-                                <i-option  v-for="(value, key, index) in settings.tags" :value="key">{{key}}</i-option>
+                            <i-select size="small" v-model="settingFormData.tag" placeholder="分组">
+                                <i-option v-for="(value, key, index) in settings.tags" :value="key">{{key}}</i-option>
                             </i-select>
                         </form-item>
                     </i-col>
                     <i-col span="13">
                         <form-item>
-                            <i-input v-model="settingFormData.scope" placeholder="输入想要搜索的网站域名或一个Url" />
+                            <i-input size="small" v-model="settingFormData.scope" placeholder="输入想要搜索的网站域名或一个Url" />
 
                         </form-item>
                         <input style="display:none;" />
                     </i-col>
                     <i-col span="3">
                         <form-item>
-                            <i-button type="primary" @click="settingAddSearchScope">Add</i-button>
+                            <i-button size="small" type="primary" @click="settingAddSearchScope">Add</i-button>
 
                         </form-item>
                     </i-col>
@@ -398,37 +503,54 @@ body .ivu-icon{
             <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">站点分组</Divider>
             <Row :gutter="32" type="flex" align="middle">
                 <i-col span="24">
-                    <i-input search placeholder="添加分组"  @on-search="addTag" style="width: 200px;" enter-button="Add"></i-input>
-                    <br/>
-                    <Tag  closable v-for="(value, key, index) in settings.tags" :name="key"  @on-close="removeTag">{{key}}</Tag>
+                    <i-input size="small" search placeholder="添加分组" @on-search="addTag" style="width: 200px;"
+                        enter-button="Add">
+                    </i-input>
+                    <br />
+                    <Tag closable v-for="(value, key, index) in settings.tags" :name="key" @on-close="removeTag">{{key}}
+                    </Tag>
                 </i-col>
             </Row>
 
             <Divider orientation="left" dashed style="font-size:12px;font-weight:normal;">通用设置</Divider>
             <i-form :model="settingFormData" class="setting_form">
-                <Row :gutter="32" type="flex" align="middle">
+                <Row :gutter="12" type="flex" align="middle">
                     <i-col span="17">
                         <form-item label="快捷搜索框(jBar)：">
                             <checkbox-group v-model="settings.jBar.hotkeys">
                                 <Checkbox label="space">空格</Checkbox>
                                 <Checkbox label="j">j</Checkbox>
-                                <Checkbox label="ctrl+j">Ctrl+j</Checkbox>
+
                                 <Checkbox label="tab">Tab</Checkbox>
                                 <Checkbox label="esc">ESC</Checkbox>
+                                <Checkbox label="ctrl+j">ctrl+j</Checkbox>
                             </checkbox-group>
                         </form-item>
+
                     </i-col>
-                    
+                    <i-col span="5">
+                        <i-input size="small" v-model="settings.jBar.customHotKey[1]"
+                            :readonly="runTime.waitSettingSync" maxlength="1">
+                            <i-select size="small" v-model="settings.jBar.customHotKey[0]" slot="prepend"
+                                style="width: 60px;">
+                                <i-option value="ctrl">ctrl</i-option>
+                                <i-option value="alt">alt</i-option>
+                                <i-option value="shift">shift</i-option>
+
+                            </i-select>
+                        </i-input>
+                    </i-col>
+
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
-                        <i-col span="7" style="padding-right: 0px;">
-                                <form-item label="地址栏搜索：">
-                                    <i-switch v-model="settings.BG.searchInAddress" size="small" style="margin-left: 20px;" />
-                                </form-item>
-                               
-                            </i-col>
-                            <i-col span="4" style="padding-left: 0px;">or &nbsp;&nbsp;<strong> Shift+D </strong></i-col>
-                    
+                    <i-col span="7" style="padding-right: 0px;">
+                        <form-item label="地址栏搜索：">
+                            <i-switch v-model="settings.BG.searchInAddress" size="small" style="margin-left: 20px;" />
+                        </form-item>
+
+                    </i-col>
+                    <i-col span="4" style="padding-left: 0px;">or &nbsp;&nbsp;<strong> Shift+D </strong></i-col>
+
                     <i-col span="6">
                         <form-item label="划词搜索：">
                             <i-switch v-model="settings.jBar.onSelection" size="small" />
@@ -436,12 +558,12 @@ body .ivu-icon{
                     </i-col>
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
-                        <i-col span="11">
-                                <form-item label="在已有jSearch标签页中打开：">
-                                    <i-switch v-model="settings.jBar.inExist" size="small" />
-                                </form-item>
-                            </i-col>
-                   
+                    <i-col span="11">
+                        <form-item label="在已有jSearch标签页中打开：">
+                            <i-switch v-model="settings.jBar.inExist" size="small" />
+                        </form-item>
+                    </i-col>
+
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="24">
@@ -459,78 +581,81 @@ body .ivu-icon{
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="8">列表宽度：
 
-                        <input-number :max="1000" :min="100" :step="50" v-model="settings.resultListWidth"></input-number>
+                        <input-number size="small" :max="1000" :min="100" :step="50" v-model="settings.resultListWidth">
+                        </input-number>
                         <input style="display:none;" />
                     </i-col>
-                    
+
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
-                        <i-col span="5">顶部搜索条：</i-col>
+                    <i-col span="5">顶部搜索条：</i-col>
                     <i-col span="4">
                         开关
-                            <i-switch v-model="settings.showHeadBar" size="small" />
-                            
+                        <i-switch v-model="settings.showHeadBar" size="small" />
+
                     </i-col>
                     <i-col span="7">
-                            自动隐藏
-                            <i-switch v-model="settings.autoHideHeadBar" size="small" />
-                        </i-col>
-                    
+                        自动隐藏
+                        <i-switch v-model="settings.autoHideHeadBar" size="small" />
+                    </i-col>
+
                 </Row>
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="24">
-                            搜索词颜色:
+                        搜索词颜色:
                         <radio-group v-model="settings.kwColor">
-                            <Radio label="red" ></Radio>
+                            <Radio label="red"></Radio>
                             <Radio label="green"></Radio>
                             <Radio label="blue"></Radio>
                             <Radio label="black"></Radio>
                         </radio-group>
-                    
+
                     </i-col>
                 </Row>
-               
+
                 <Row :gutter="32" type="flex" align="middle">
                     <i-col span="10">搜索结果自然排序：
                         <i-switch v-model="settings.orderByTime" size="small" />
-                        
-                </i-col>
-                <i-col span="8">搜索历史：
+
+                    </i-col>
+                    <i-col span="8">搜索历史：
                         <i-switch v-model="settings.jBar.history" size="small" />
-                        
-                </i-col>
-                
-                
-            </Row>
-                
+
+                    </i-col>
+
+
+                </Row>
+
             </i-form>
-            <div class="drawer-footer">
+            <div class="drawer-footer" style="z-index: 10;">
 
                 <Card style="float: right;margin-right: 5px;" class="alipay">
-                    <img src="../public/imgs/wechat.png" width="" style="margin: 0 auto;" class="slid-show">
+                    <img src="../public/imgs/wechat.png" width="" style="margin: 0 auto;max-width: 100%;"
+                        class="slid-show">
                     <div style="text-align:center;width: 100%;" class="slid-show">
-                        
+
                         <h5 style="display: none;">您的捐赠是对我最大的鼓励和支持</h5>
                         <h5 style="display: none;">Your donation is the greatest encouragement and support for me.</h5>
 
                         <Divider dashed style="margin:5px 0;width: 100%;"></Divider>
                     </div>
                     <div style="text-align:center">
-                        <h5>如果有任何问题或建议可反馈至：<a href="https://github.com/dubox/jSearch/issues" target="_blank">issues@jSearch</a></h5>
+                        <h5>如果有任何问题或建议可反馈至：<a href="https://github.com/dubox/jSearch/issues"
+                                target="_blank">issues@jSearch</a></h5>
                     </div>
 
                 </Card>
             </div>
         </Drawer>
     </div>
-    
+
     <script type="text/javascript" src="../public/hotkeys.min.js"></script>
     <script type="text/javascript" src="../content/search_bar_effect.js"></script>
     <script type="text/javascript" src="../content/search_bar.js"></script>
     <script type="text/javascript" src="../content/content.js"></script>
     <script type="text/javascript" src="options.js"></script>
     <iframe id="cz" src="" style="display:none;"></iframe>
-    
+
 </body>
 
 </html>
