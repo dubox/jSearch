@@ -11,7 +11,7 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 * 支持地址栏搜索
 * 超级方便的搜索快捷键
 * 生成当前网页二维码
-  
+  eng
 帮你开启新世界大门。   
 
 (查看[更新日志](https://github.com/dubox/jSearch/releases/)有助于您了解更详细的功能细节)
@@ -67,7 +67,7 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 ![](https://oscimg.oschina.net/oscnet/a0065a9798427ef1b4574d0f676c81d95a1.jpg)  
 △ 一个额外的功能：点击地址栏右侧的本插件图标，可以生成当前所在页面的地址二维码
 
-
+#Update check, Add readme file.
 
 ### &鸣谢
 感谢开源项目：[VUE](https://github.com/vuejs/vue) 、[iview](https://github.com/iview/iview) 、[hotkeys.js](https://github.com/jaywcjlove/hotkeys)、[vue-dragging](https://github.com/hilongjw/vue-dragging)、[qrcodejs](https://github.com/davidshimjs/qrcodejs)
