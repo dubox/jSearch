@@ -85,7 +85,7 @@ var app = new Vue({
                 searchInAddress: true
             },
             pageScroll: [],
-            resultListWidth: 600,
+            resultListWidth: 400,
             showHeadBar: true,
             autoHideHeadBar: true,
             kwColor: 'green',

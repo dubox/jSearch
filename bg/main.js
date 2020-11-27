@@ -394,7 +394,7 @@ chrome.runtime.onInstalled.addListener(details => {
                 searchInAddress: true
             },
             pageScroll: ['navKeys', 'mLeftKey+mw', 'alt+mw'],
-            resultListWidth: 600,
+            resultListWidth: 400,
             showHeadBar: true,
             autoHideHeadBar: true,
             kwColor: 'green',

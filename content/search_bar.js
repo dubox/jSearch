@@ -26,16 +26,17 @@ function jBar() {
 
   //************* runtime **************
   var runtime = {
-    command: '' //搜索命令
+    command: '', //搜索命令
+    history:[]
   };
   runtime.isInExtension = isInExtension();
 
   chrome.storage.sync.get('searchHistory', function (items) { //加载搜索历史
-    runtime.history = items.searchHistory;
+    runtime.history = items.searchHistory || [];console.log('ssss',items.searchHistory)
   });
   runtime.historyIndex = -1;
   MessageListener.add('searchHistory', function (searchHistory) { //更新搜索历史
-    runtime.history = searchHistory;
+    runtime.history = searchHistory || [];
   });
 
 
