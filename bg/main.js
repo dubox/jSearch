@@ -47,7 +47,12 @@ chrome.webRequest.onBeforeRequest.addListener(
 
     }, //
     {
-        urls: ["*://www.baidu.com/*", "*://*/search?q=*", "*://chrome.jsearch.site/*", "*://weixin.sogou.com/link?*"]
+        urls: [
+            "*://www.baidu.com/*",
+            "*://*/search?q=*",
+            "*://chrome.jsearch.site/*",
+            "*://weixin.sogou.com/link?*"
+        ]
     }, //
     ["blocking"]);
 //https://weixin.sogou.com/weixin?type=2&query=swoole

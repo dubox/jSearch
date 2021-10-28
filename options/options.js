@@ -121,8 +121,11 @@ var app = new Vue({
 
                 return new Promise(resolve => {
                     var search_scope = _this.searchData.models[index].symbol != '' ?
-                        _this.searchData.models[index].symbol + _this.searchData.models[index].scope :
-                        '';
+                        _this.searchData.models[index].symbol + _this.searchData.models[index].scope : '';
+                    if (_this.searchData.keyword == '' && search_scope == '') {
+                        resolve();
+                        return false;
+                    }
                     switch (_this.searchData.models[index].type) {
                         case 'baidu': {
                             if (_this.searchData.results[index][_this.searchData.results[index].length - 1] == '') {
@@ -135,13 +138,26 @@ var app = new Vue({
                                 let now = parseInt((new Date()).getTime() / 1000);
                                 gpc = encodeURIComponent(`stf=${now-86400},${now}|stftype=1`);
                             }
-                            axios.get(`https://www.baidu.com/s?wd=${search_scope} ${encodeURIComponent(_this.searchData.keyword)}&pn=${_this.searchData.pageNums[index]*10}&gpc=${gpc}`).then(function (response) {
-                                //console.log(data);
-                                let res_obj = $(response.data.replace(/src="\//g, 'src="https://www.baidu.com/').replace(/src="http:\/\//g, 'src="https://')).find('#content_left');
-                                res_obj.children().not('.c-container').remove();
-                                let res = res_obj[0].outerHTML;
+                            console.log(_this.searchData.pageNums[index]);
+                            let pn = _this.searchData.pageNums[index] * 10;
+                            console.log(pn);
+                            let url_kw = _this.searchData.keyword; //encodeURIComponent(_this.searchData.keyword);
+                            //&pn=${_this.searchData.pageNums[index]*10}&rsv_spt=1&rsv_iqid=0x8f79473e0006dc48&issp=1&f=8&rsv_bp=1&rsv_idx=2&ie=utf-8&tn=baiduhome_pg&rsv_enter=1&rsv_dl=tb&rsv_sug3=5&rsv_sug1=2&rsv_sug7=100&rsv_sug2=0&rsv_btype=i&inputT=2626&rsv_sug4=4260
+                            let wd = encodeURIComponent(search_scope ? search_scope + ' ' : '') + url_kw;
+                            let pn_text = pn > 0 ? `&pn=${pn}&oq=${wd}` : '';
+                            axios.get(`https://www.baidu.com/s?wd=${wd}${pn_text}&tn=baiduhome_pg&ie=utf-8&rsv_idx=2${gpc?'&gpc='+gpc:''}`).then(function (response) {
+                                //console.log(response);
+                                if (response.data.indexOf('<title>百度安全验证</title>') > -1) {
+                                    var res = '<a href="https://www.baidu.com/" target="_blank">百度安全验证</a>'; //.find('body'); //[0].outerHTML;
+                                    //console.log(res);
+                                } else {
+                                    let res_obj = $(response.data.replace(/src="\//g, 'src="https://www.baidu.com/').replace(/src="http:\/\//g, 'src="https://')).find('#content_left');
+                                    res_obj.children().not('.c-container').remove();
+                                    var res = res_obj[0].outerHTML;
+                                }
                                 let text_for_check = $(res).text(); //将字符串再次转换为对象又转为字符串  会经过一次格式化 这样得到的字符串才是稳定的，才能用于比较
-                                //console.log(res);
+
+
                                 //console.log($(_this.searchData.results[index][_this.searchData.results[index].length-1]).text());
                                 //检查现在获得的内容和目前列表中最后一条是否一样  一样则表示没有新内容了
                                 if ($(_this.searchData.results[index][_this.searchData.results[index].length - 1]).text() == text_for_check) {
@@ -515,7 +531,7 @@ var app = new Vue({
             });
 
             this.loadSettings(() => {
-                this.setKeyword();
+                //this.setKeyword();
             });
 
             this.checkUpdate();
@@ -848,8 +864,7 @@ var app = new Vue({
                             this.searchData.models[i].symbol = 'site:';
                     }
                 }
-                //console.log(this.searchData.models);
-                this.doSearch();
+                this.setKeyword();
                 //保存设置到 storage.sync
                 chrome.storage.sync.set({
                     searchModels: this.searchData.models
