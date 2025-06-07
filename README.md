@@ -72,13 +72,9 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 ### &鸣谢
 感谢开源项目：[VUE](https://github.com/vuejs/vue) 、[iview](https://github.com/iview/iview) 、[hotkeys.js](https://github.com/jaywcjlove/hotkeys)、[vue-dragging](https://github.com/hilongjw/vue-dragging)、[qrcodejs](https://github.com/davidshimjs/qrcodejs)
 
-### &关注/捐赠
-
-
-<img width = "400" src="https://www.jsearch.site/public/imgs/wechat.png"><img width = "400" src="https://www.jsearch.site/public/imgs/wepay.jpg">  
-
-- 您的捐赠是对我最大的鼓励和支持
-- And please give a star : [github](https://github.com/dubox/jSearch/) ,[码云](https://gitee.com/dubox/jSearch)  
+### &关注
+![](http://emoji.thisnet.cn/thisnet/uploadqrcode_for_gh_56000c7b7ada_258%20(1).jpg)  
+公众号
 
 
 [![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
