@@ -77,4 +77,3 @@ jSearch(聚搜)是一款专注内容的chrome搜索扩展，一次搜索聚合�
 公众号
 
 
-[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
